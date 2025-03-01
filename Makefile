@@ -1,3 +1,5 @@
+# TODO: replace LIBFT
+
 NAME		= minishell
 CC			= cc
 # CFLAGS		= -Wall -Wextra -Werror -lreadline -Iincludes
