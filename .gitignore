@@ -1,0 +1,4 @@
+.vscode
+minishell
+valgrind-out.txt
+tests.log
