@@ -2,17 +2,17 @@
 
 NAME		= minishell
 CC			= cc
-# CFLAGS		= -Wall -Wextra -Werror -lreadline -Iincludes
-CFLAGS		= -Iincludes -lreadline # ! temporarily ignoring errors while testing
-# CFLAGS		= -g # ! for debugging
+# CFLAGS		= -Wall -Wextra -Werror -Iincludes -I /home/my-home-dir/.local/include
+CFLAGS		= -Iincludes -I /home/my-home-dir/.local/include
+LDFLAGS		= -L /home/my-home-dir/.local/lib -lreadline -lncurses
 LIBFT		= libft/libft.a
 
-SRC_DIR=srcs
+SRC_DIR		= srcs
 
 SRCS =	$(SRC_DIR)/main.c		\
-		$(SRC_DIR)/parse.c		\
-		$(SRC_DIR)/pipe.c		\
 		$(SRC_DIR)/signal.c		\
+#		$(SRC_DIR)/parse.c		\
+		$(SRC_DIR)/pipe.c		\
 		$(SRC_DIR)/execute.c	\
 		$(SRC_DIR)/commands.c	\
 
@@ -23,22 +23,22 @@ all: default
 default: $(NAME)
 
 $(NAME): 	$(LIBFT) $(OBJS)
-			@$(CC) $(CFLAGS) $(OBJS)				\
-			$(LIBFT) -o $(NAME)
+			@$(CC) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
 			@echo Makefile run successfully!
 
 %.o: %.c
-		$(CC) $(CFLAGS) -c $< -o $@
+		@$(CC) $(CFLAGS) -c $< -o $@
 
+# ? Consider adding bonus (if necessary)
 $(LIBFT):
-		make -C libft
+		@make -C libft --silent
 
 clean:
-		@rm $(OBJS)
-		@make fclean -C libft
+		@rm -f $(OBJS)
+		@make fclean -C libft --silent
 	
 fclean: clean
-		@rm -fr $(NAME)
+		@rm -f $(NAME)
 
 re: fclean all
 
