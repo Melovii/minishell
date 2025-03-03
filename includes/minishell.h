@@ -5,13 +5,17 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include <signal.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 
 # define SINGLE_QUOTE 39
 # define DOUBLE_QUOTE 34
+
+// TODO: fix why this is not recognised in signal.c
+// # define _XOPEN_SOURCE 700
+// # define _POSIX_C_SOURCE 200809L
 
 typedef enum e_bool
 {
@@ -73,5 +77,21 @@ typedef struct s_shell
 	char			**envp;			// Copy of environment variables
 	t_bool			is_interactive;	// Whether shell is running interactively
 }	t_shell;
+
+// ! FUNCTION PROTOTYPES
+
+// * Lexing
+// process_input(input);
+
+// * Execution
+
+// * Builtins
+
+// * Environment
+
+// * Signals
+void setup_signals(void);
+
+// * Utils
 
 #endif
