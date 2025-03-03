@@ -7,7 +7,7 @@ void	shell_loop(void)
 	while (1)
 	{
 		input = readline("minishell$ ");
-		if (!input)
+		if (!input)	// * Handles Ctrl + D
 		{
 			printf("exit\n");
 			break ;
@@ -15,7 +15,7 @@ void	shell_loop(void)
 		
 		printf("%s\n", input); // ? test
 		add_history(input); // ? do we need to use rl_clear_histroy for leaks ?
-		process_input(input); // TODO: Implement this function
+		// process_input(input); // TODO: Implement this function
 		free(input); // ? is this necessary
 	}
 	// TODO:
