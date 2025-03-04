@@ -8,6 +8,7 @@ LDFLAGS		= -L /home/my-home-dir/.local/lib -lreadline -lncurses
 LIBFT		= libft/libft.a
 
 SRC_DIR		= srcs
+PARSE_DIR 	= srcs/parse
 
 SRCS =	$(SRC_DIR)/main.c		\
 		$(SRC_DIR)/signal.c		\
@@ -29,9 +30,8 @@ $(NAME): 	$(LIBFT) $(OBJS)
 %.o: %.c
 		@$(CC) $(CFLAGS) -c $< -o $@
 
-# ? Consider adding bonus (if necessary)
 $(LIBFT):
-		@make -C libft --silent
+		@make -C libft bonus --silent
 
 clean:
 		@rm -f $(OBJS)

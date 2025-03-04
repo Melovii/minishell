@@ -1,6 +1,6 @@
 #include "libft.h"
 
-void static	ft_lstmap_helper_func(t_list **head, t_list **lst, t_list *new_node)
+static void	ft_lstmap_helper_func(t_list **head, t_list **lst, t_list *new_node)
 {
 	t_list	*temp;
 
