@@ -1,5 +1,3 @@
-# TODO: replace LIBFT
-
 NAME		= minishell
 CC			= cc
 # CFLAGS		= -Wall -Wextra -Werror -Iincludes -I /home/my-home-dir/.local/include
@@ -9,7 +7,7 @@ LIBFT		= libft/libft.a
 
 SRC_DIR		= srcs
 PARSE_DIR 	= srcs/parse
-KEY_DIR		= srcs/parse/key_symbols
+TOKEN_DIR	= srcs/parse/token
 
 SRCS =	$(SRC_DIR)/main.c				\
 		$(SRC_DIR)/free.c				\
@@ -17,9 +15,9 @@ SRCS =	$(SRC_DIR)/main.c				\
 		$(PARSE_DIR)/parse.c			\
 		$(PARSE_DIR)/token_list.c		\
 		$(PARSE_DIR)/utils.c			\
-		$(KEY_DIR)/default_token.c		\
-		$(KEY_DIR)/operators_token.c	\
-		$(KEY_DIR)/quotes_token.c		\
+		$(TOKEN_DIR)/default_token.c	\
+		$(TOKEN_DIR)/operators_token.c	\
+		$(TOKEN_DIR)/quotes_token.c		\
 #		$(SRC_DIR)/parse.c				\
 		$(SRC_DIR)/pipe.c				\
 		$(SRC_DIR)/execute.c			\
