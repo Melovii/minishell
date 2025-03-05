@@ -9,13 +9,21 @@ LIBFT		= libft/libft.a
 
 SRC_DIR		= srcs
 PARSE_DIR 	= srcs/parse
+KEY_DIR		= srcs/parse/key_symbols
 
-SRCS =	$(SRC_DIR)/main.c		\
-		$(SRC_DIR)/signal.c		\
-#		$(SRC_DIR)/parse.c		\
-		$(SRC_DIR)/pipe.c		\
-		$(SRC_DIR)/execute.c	\
-		$(SRC_DIR)/commands.c	\
+SRCS =	$(SRC_DIR)/main.c				\
+		$(SRC_DIR)/free.c				\
+		$(SRC_DIR)/signal.c				\
+		$(PARSE_DIR)/parse.c			\
+		$(PARSE_DIR)/token_list.c		\
+		$(PARSE_DIR)/utils.c			\
+		$(KEY_DIR)/default_token.c		\
+		$(KEY_DIR)/operators_token.c	\
+		$(KEY_DIR)/quotes_token.c		\
+#		$(SRC_DIR)/parse.c				\
+		$(SRC_DIR)/pipe.c				\
+		$(SRC_DIR)/execute.c			\
+		$(SRC_DIR)/commands.c			\
 
 OBJS = $(SRCS:.c=.o)
 

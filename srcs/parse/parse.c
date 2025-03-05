@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static t_token	*tokenise_input(t_shell *shell, char *input)
+static void	tokenise_input(t_shell *shell, char *input)
 {
 	// TODO:
 	// Control default input that without operators and quotes
@@ -34,5 +34,5 @@ void	process_input(t_shell *shell, char *input)
 	// Take input, call tokenise_input
 	// Execute command
 
-	shell->token_list = tokenise_input(shell, input);
+	tokenise_input(shell, input);
 }
