@@ -22,7 +22,7 @@ static void	tokenise_input(t_shell *shell, char *input)
 		else if (is_quote(input[i]))
 			token_quote(shell, input, &i);
 		else
-			token_default(shell, input, &i);
+			token_default(shell, input, &i, NULL);
 	}
 }
 

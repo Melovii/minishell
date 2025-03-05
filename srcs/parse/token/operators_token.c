@@ -17,6 +17,7 @@ void	token_operator(t_shell *shell, char *input, int *i)
 		handle_output_rdrct(shell, input, i);
 }
 
+// * purpose: tokenizing "|" operators
 static void	handle_pipe(t_shell *shell, char *input, int *i)
 {
 	if (is_operator(input[*i + 1]))
@@ -26,6 +27,7 @@ static void	handle_pipe(t_shell *shell, char *input, int *i)
 	(*i) += 1;
 }
 
+// * purpose: tokenizing "<, <<" operators
 static void	handle_input_rdrct(t_shell *shell, char *input, int *i)
 {
 	if (input[(*i) + 1] == INPUT_RDRCT)
@@ -44,6 +46,7 @@ static void	handle_input_rdrct(t_shell *shell, char *input, int *i)
 		cr_add_token(shell, &(shell->token_list), "<", TK_RED_IN);
 }
 
+// * purpose: tokenizing ">, >>" operators
 static void	handle_output_rdrct(t_shell *shell, char *input, int *i)
 {
 	if (input[(*i) + 1] == OUTPUT_RDRCT)
