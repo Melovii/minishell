@@ -13,3 +13,19 @@ t_bool	is_quote(char c)
 		return (C_TRUE);
 	return (C_FALSE);
 }
+
+char *ultimate_join(t_shell *shell, char *s1, char *s2)
+{
+	char *new;
+
+	new = ft_strjoin(s1, (s2));
+	if (!new)
+	{
+		free(s1);
+		free(s2);
+		shut_program_err(shell);
+	}
+	free(s1);
+	free(s2);
+	return (new);
+}

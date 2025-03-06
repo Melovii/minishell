@@ -10,11 +10,7 @@ static void	fill_pure_token(char *input, int *i, char *token);
 // TODO: Tokenize Deafult
 char	*token_default(t_shell *shell, char *input, int *i, char *token)
 {
-	if (token)
-	{
-		return (token);
-	}
-	else 
+	if (!token)
 	{
 		token = ft_calloc(determine_len(input, i) + 1, sizeof(char));
 		if (token == NULL)
@@ -22,11 +18,24 @@ char	*token_default(t_shell *shell, char *input, int *i, char *token)
 	}
 	fill_pure_token(input, i, token);
 	// TODO: add interactive mode + quote statements
-	// if (is_quote(input[(*i) + 1]))
-	// ! empty if block for quote
-	// else
+	if (is_quote(input[(*i) + 1]))
+		return (concat_quote(shell, input, i, token));
 	return (token);
-	// free(token);
+}
+
+char *concat_default(t_shell *shell, char *input, int *i, char *token)
+{
+	char *added;
+
+	(*i) += 1;
+	added = ft_calloc(determine_len(input, i) + 1, sizeof(char));
+	if (!added)
+		shut_program_err(shell);
+	fill_pure_token(input, i, added);
+	token = ultimate_join(shell, token, added);
+	if (is_quote(input[(*i) + 1]))
+		return (concat_quote(shell, input, i, token));
+	return (token);
 }
 
 static void	fill_pure_token(char *input, int *i, char *token)

@@ -108,6 +108,7 @@ void					setup_signals(void);
 // * Parse Utils
 t_bool					is_operator(char c);
 t_bool					is_quote(char c);
+char 					*ultimate_join(t_shell *shell, char *s1, char *s2);
 
 // * Tokenization
 void					cr_add_token(t_shell *shell, t_token **h, char *v,
@@ -116,6 +117,9 @@ void					cr_add_token(t_shell *shell, t_token **h, char *v,
 char	*token_default(t_shell *shell, char *input, int *i, char *token);
 void	token_operator(t_shell *shell, char *input, int *i);
 char 	*token_quote(t_shell *shell, char *input, int *i, char *token);
+
+char *concat_default(t_shell *shell, char *input, int *i, char *token);
+char *concat_quote(t_shell *shell, char *input, int *i, char *token);
 
 // * Utils
 

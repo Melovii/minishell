@@ -9,24 +9,40 @@ static void	fill_pure_token(char *input, int *i, char *token, char quote_type);
 // TODO: Tokenize Double and Single Quotes
 char 	*token_quote(t_shell *shell, char *input, int *i, char *token)
 {
-	if (token)
+	if (!token)
 	{
-		return (token);
-	}
-	else 
-	{
-		token = ft_calloc(determine_len(input, i, input[*i]), sizeof(char));
+		token = ft_calloc(determine_len(input, i, input[*i]) + 1, sizeof(char));
 		if (!token)
 			shut_program_err(shell);
 	}
 	fill_pure_token(input, i, token, input[*i]);
 	// TODO: add interactive mode + quote statements
-	// if (is_quote(input[(*i) + 1]))
-	// ! empty if block for quote
-	// else
+	if (is_quote(input[(*i) + 1]))
+		return (concat_quote(shell, input, i, token));
+	else if (ft_isalnum(input[(*i) + 1]))
+		return (concat_default(shell, input, i, token));
 	return (token);
-	// free(token);
 }
+
+char *concat_quote(t_shell *shell, char *input, int *i, char *token)
+{
+	char *added;
+	char	quote_type;
+
+	(*i) += 1;
+	quote_type = input[*i];
+	added = ft_calloc(determine_len(input, i, quote_type) + 1, sizeof(char));
+	if (!added)
+		shut_program_err(shell);
+	fill_pure_token(input, i, added, quote_type);
+	token = ultimate_join(shell, token, added);
+	if (is_quote(input[(*i) + 1]))
+		return (concat_quote(shell, input, i, token));
+	if (ft_isalnum(input[(*i) + 1]))
+		return (concat_default(shell, input, i, token));
+	return (token);
+}
+
 
 static void	fill_pure_token(char *input, int *i, char *token, char quote_type)
 {
