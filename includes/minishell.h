@@ -112,10 +112,10 @@ t_bool					is_quote(char c);
 // * Tokenization
 void					cr_add_token(t_shell *shell, t_token **h, char *v,
 							t_token_type type);
-void					token_default(t_shell *shell, char *input, int *i,
-							char *token);
+
+char	*token_default(t_shell *shell, char *input, int *i, char *token);
 void	token_operator(t_shell *shell, char *input, int *i);
-void	token_quote(t_shell *shell, char *input, int *i);
+char 	*token_quote(t_shell *shell, char *input, int *i, char *token);
 
 // * Utils
 

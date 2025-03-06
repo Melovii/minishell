@@ -8,9 +8,13 @@ static void	fill_pure_token(char *input, int *i, char *token);
 // *				(i/index)-> current input index
 // *				(value)-> is it come from another function or is it token start
 // TODO: Tokenize Deafult
-void	token_default(t_shell *shell, char *input, int *i, char *token)
+char	*token_default(t_shell *shell, char *input, int *i, char *token)
 {
-	if (!token)
+	if (token)
+	{
+		return (token);
+	}
+	else 
 	{
 		token = ft_calloc(determine_len(input, i) + 1, sizeof(char));
 		if (token == NULL)
@@ -21,7 +25,7 @@ void	token_default(t_shell *shell, char *input, int *i, char *token)
 	// if (is_quote(input[(*i) + 1]))
 	// ! empty if block for quote
 	// else
-	cr_add_token(shell, &(shell->token_list), token, TK_WORD);
+	return (token);
 	// free(token);
 }
 
@@ -42,7 +46,7 @@ static void	fill_pure_token(char *input, int *i, char *token)
 	token[j] = '\0';
 }
 
-// * purpose: 		determining the lenght of the token (without quotes)
+// * purpose: 		determining the length of the token (without quotes)
 // * parameters:	(input)-> client input, (*i/index)->> current cursor index
 static int	determine_len(char *input, int *i)
 {

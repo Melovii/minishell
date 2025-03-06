@@ -12,7 +12,6 @@ static void	tokenise_input(t_shell *shell, char *input)
 	int	i;
 
 	i = -1;
-
 	while (input[++i])
 	{
 		if (input[i] == SPACE)
@@ -20,9 +19,13 @@ static void	tokenise_input(t_shell *shell, char *input)
 		else if (is_operator(input[i]))
 			token_operator(shell, input, &i);
 		else if (is_quote(input[i]))
-			token_quote(shell, input, &i);
+		{
+			cr_add_token(shell, &(shell->token_list), 
+				token_quote(shell, input, &i, NULL), TK_WORD);
+		}
 		else
-			token_default(shell, input, &i, NULL);
+			cr_add_token(shell, &(shell->token_list), 
+				token_default(shell, input, &i, NULL), TK_WORD);
 	}
 }
 
