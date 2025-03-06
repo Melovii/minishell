@@ -24,7 +24,6 @@ static void	handle_pipe(t_shell *shell, char *input, int *i)
 		shut_program_err(shell);
 	else
 		cr_add_token(shell, &(shell->token_list), "|", TK_PIPE);
-	(*i) += 1;
 }
 
 // * purpose: tokenizing "<, <<" operators
