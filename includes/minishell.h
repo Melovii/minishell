@@ -108,6 +108,7 @@ void					setup_signals(void);
 // * Parse Utils
 t_bool					is_operator(char c);
 t_bool					is_quote(char c);
+t_bool	is_quote_open(char *input);
 char 					*ultimate_join(t_shell *shell, char *s1, char *s2);
 
 // * Tokenization
@@ -120,6 +121,9 @@ char 	*token_quote(t_shell *shell, char *input, int *i, char *token);
 
 char *concat_default(t_shell *shell, char *input, int *i, char *token);
 char *concat_quote(t_shell *shell, char *input, int *i, char *token);
+
+// * Interactive Mode
+char	*interactive_loop(t_shell *shell, char *input);
 
 // * Utils
 

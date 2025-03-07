@@ -6,7 +6,6 @@ static void	fill_pure_token(char *input, int *i, char *token, char quote_type);
 // * purpose: tokenizing double and single quotes and return the token value
 // * parameters:	(shell)-> main struct, (input)-> str from client
 // *				(i/index)-> current input index
-// TODO: Tokenize Double and Single Quotes
 char 	*token_quote(t_shell *shell, char *input, int *i, char *token)
 {
 	if (!token)
@@ -16,7 +15,7 @@ char 	*token_quote(t_shell *shell, char *input, int *i, char *token)
 			shut_program_err(shell);
 	}
 	fill_pure_token(input, i, token, input[*i]);
-	// TODO: add interactive mode + quote statements
+	// TODO: add interactive mode
 	if (is_quote(input[(*i) + 1]))
 		return (concat_quote(shell, input, i, token));
 	else if (ft_isalnum(input[(*i) + 1]))
