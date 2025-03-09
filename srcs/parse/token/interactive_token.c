@@ -4,6 +4,7 @@ static void duo_interactive(t_shell *shell, int mode);
 
 void handle_interactive(t_shell *shell)
 {
+	shell->is_interactive = C_TRUE;
 	if (is_quote_open(shell))
 		duo_interactive(shell, 1);
 	else if (does_any_heredoc_remain(shell))

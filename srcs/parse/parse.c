@@ -35,6 +35,7 @@ void	process_input(t_shell *shell)
 {
 	while (is_interactive(shell))
 		handle_interactive(shell);
+	shell->is_interactive = C_FALSE;
 	add_history(shell->history);
 	printf("%s\n", shell->input);
 	// tokenise_input(shell, shell->input);
