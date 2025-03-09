@@ -36,6 +36,7 @@ void	process_input(t_shell *shell, char *input)
 	// TODO:
 	// Take input, call tokenise_input
 	// Execute command
-
+	if (is_interactive(shell, input))
+		handle_interactive(shell, input);
 	tokenise_input(shell, input);
 }

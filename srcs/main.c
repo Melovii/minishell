@@ -15,22 +15,9 @@ void	shell_loop(t_shell *shell)
 			printf("exit\n");
 			break ;
 		}
-		if (!is_quote_open(input))
-		{
-			printf("%s\n", input); // ? test
-			add_history(input); // ? do we need to use rl_clear_histroy for leaks ?
-			process_input(shell, input); // TODO: Implement this function
-			display_tokens(shell->token_list);
-			free(input); // ? is this necessary
-		}
-		else
-		{
-			input = interactive_loop(shell, input);
-			printf("%s\n", input);
-			add_history(input); // ? do we need to use rl_clear_histroy for leaks ?
-			process_input(shell, input); // TODO: Implement this function
-			display_tokens(shell->token_list);
-		}
+		printf("%s\n", input);
+		process_input(shell, input);
+		printf("%s", shell->token_list->value);
 	}
 	// TODO:
 	// // Display a prompt (minishell$ ).

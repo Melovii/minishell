@@ -8,7 +8,6 @@ t_token	*new_token(char *value, t_token_type type)
 	new = ft_calloc(1, sizeof(t_token));
 	if (!new)
 		return (NULL);
-	new->next = NULL;
 	new->type = type;
 	new->value = ft_strdup(value);
 	if (new->value == NULL)

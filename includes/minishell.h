@@ -44,6 +44,13 @@ typedef enum e_token_type
 	TK_EOF      // End of file/input
 }						t_token_type;
 
+typedef struct s_heredoc
+{
+	char 			*limiter;
+	char			*file_name;
+	struct s_token	*next;
+}		t_heredoc;
+
 // * Struct for tokens (Lexing)
 typedef struct s_token
 {
@@ -91,10 +98,10 @@ typedef struct s_shell
 // free_all(t_shell *shell)
 
 // * shutting program
-void					shut_program_err(t_shell *shell);
+void	shut_program_err(t_shell *shell);
 
 // * Lexing
-void					process_input(t_shell *shell, char *input);
+void	process_input(t_shell *shell, char *input);
 
 // * Execution
 
@@ -103,28 +110,31 @@ void					process_input(t_shell *shell, char *input);
 // * Environment
 
 // * Signals
-void					setup_signals(void);
+void	setup_signals(void);
 
 // * Parse Utils
-t_bool					is_operator(char c);
-t_bool					is_quote(char c);
-t_bool	is_quote_open(char *input);
-char 					*ultimate_join(t_shell *shell, char *s1, char *s2);
+t_bool	is_operator(char c);
+t_bool	is_quote(char c);
+char 	*ultimate_join(t_shell *shell, char *s1, char *s2);
+
 
 // * Tokenization
-void					cr_add_token(t_shell *shell, t_token **h, char *v,
+void	cr_add_token(t_shell *shell, t_token **h, char *v,
 							t_token_type type);
 
 char	*token_default(t_shell *shell, char *input, int *i, char *token);
 void	token_operator(t_shell *shell, char *input, int *i);
 char 	*token_quote(t_shell *shell, char *input, int *i, char *token);
 
-char *concat_default(t_shell *shell, char *input, int *i, char *token);
-char *concat_quote(t_shell *shell, char *input, int *i, char *token);
+char 	*concat_default(t_shell *shell, char *input, int *i, char *token);
+char 	*concat_quote(t_shell *shell, char *input, int *i, char *token);
 
 // * Interactive Mode
-char	*interactive_loop(t_shell *shell, char *input);
-
+t_bool 	is_interactive(t_shell *shell, char *input);
+t_bool	ends_with_pipe(t_shell *shell, char *input);
+void	handle_interactive(t_shell *shell, char *input);
+t_bool	is_quote_open(char *input);
+t_bool	ends_with_pipe(t_shell *shell, char *input);
 // * Utils
 
 #endif
