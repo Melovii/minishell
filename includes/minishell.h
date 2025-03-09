@@ -48,7 +48,7 @@ typedef struct s_heredoc
 {
 	char 			*limiter;
 	char			*file_name;
-	struct s_token	*next;
+	struct s_heredoc	*next;
 }		t_heredoc;
 
 // * Struct for tokens (Lexing)
@@ -85,11 +85,15 @@ typedef struct s_env
 // * Shell state structure (Global shell context)
 typedef struct s_shell
 {
-	t_token *token_list;   // Linked list of tokens
-	t_command *cmd_list;   // Linked list of commands
-	t_env *env_list;       // Linked list of environment variables
-	char **envp;           // Copy of environment variables
-	t_bool is_interactive; // Whether shell is running interactively
+	char		*input;
+	char		*history;
+	t_token 	*token_list;   // Linked list of tokens
+	t_heredoc	*heredoc_list;
+	t_command	*cmd_list;   // Linked list of commands
+	t_env 		*env_list;       // Linked list of environment variables
+	char 		**envp;           // Copy of environment variables
+	t_bool 		is_interactive; // Whether shell is running interactively
+	int			num_heredoc;
 }						t_shell;
 
 // ! FUNCTION PROTOTYPES
@@ -101,7 +105,7 @@ typedef struct s_shell
 void	shut_program_err(t_shell *shell);
 
 // * Lexing
-void	process_input(t_shell *shell, char *input);
+void	process_input(t_shell *shell);
 
 // * Execution
 
@@ -118,9 +122,14 @@ t_bool	is_quote(char c);
 char 	*ultimate_join(t_shell *shell, char *s1, char *s2);
 
 
-// * Tokenization
+// * Tokenization // Token List
 void	cr_add_token(t_shell *shell, t_token **h, char *v,
 							t_token_type type);
+
+// * Heredoc List
+int     heredoc_list_len(t_heredoc *head);
+void	cr_add_heredoc(t_shell *shell, t_heredoc **h, char *limiter);
+
 
 char	*token_default(t_shell *shell, char *input, int *i, char *token);
 void	token_operator(t_shell *shell, char *input, int *i);
@@ -130,11 +139,15 @@ char 	*concat_default(t_shell *shell, char *input, int *i, char *token);
 char 	*concat_quote(t_shell *shell, char *input, int *i, char *token);
 
 // * Interactive Mode
-t_bool 	is_interactive(t_shell *shell, char *input);
-t_bool	ends_with_pipe(t_shell *shell, char *input);
-void	handle_interactive(t_shell *shell, char *input);
-t_bool	is_quote_open(char *input);
-t_bool	ends_with_pipe(t_shell *shell, char *input);
+t_bool 	is_interactive(t_shell *shell);
+t_bool	ends_with_pipe(t_shell *shell);
+void	handle_interactive(t_shell *shell);
+t_bool	is_quote_open(t_shell *shell);
+int		count_heredoc(t_shell *shell);
+t_bool	does_any_heredoc_remain(t_shell *shell);
+
+
+
 // * Utils
 
 #endif

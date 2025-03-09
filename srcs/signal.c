@@ -7,6 +7,8 @@
 // Handle user interrupts and termination signals gracefully
 // Ensure Minishell behaves correctly when receiving signals like SIGINT (Ctrl+C) and SIGQUIT (Ctrl+\)
 
+// TODO: handle interactive mode signals and memory leaks
+
 void signal_handler(int signum)
 {
 	if (signum == SIGINT)

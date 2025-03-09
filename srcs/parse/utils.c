@@ -4,7 +4,7 @@ static	t_bool	does_complete(char *input, int *i, char quote_type);
 
 t_bool	is_operator(char c)
 {
-	if (c == INPUT_RDRCT || c == OUTPUT_RDRCT | c == PIPE)
+	if (c == INPUT_RDRCT || c == OUTPUT_RDRCT || c == PIPE)
 		return (C_TRUE);
 	return (C_FALSE);
 }
@@ -16,16 +16,16 @@ t_bool	is_quote(char c)
 	return (C_FALSE);
 }
 // * purpose: check the whole string whether is completed or not by quotes
-t_bool	is_quote_open(char *input)
+t_bool	is_quote_open(t_shell *shell)
 {
 	int	i;
 
 	i = -1;
-	while (input[++i])
+	while (shell->input[++i])
 	{
-		if (is_quote(input[i]))
+		if (is_quote(shell->input[i]))
 		{
-			if (!does_complete(input, &i, input[i]))
+			if (!does_complete(shell->input, &i, shell->input[i]))
 				return (C_TRUE);
 		}
 	}
@@ -51,14 +51,10 @@ char *ultimate_join(t_shell *shell, char *s1, char *s2)
 {
 	char *new;
 
-	new = ft_strjoin(s1, (s2));
-	if (!new)
-	{
-		free(s1);
-		free(s2);
-		shut_program_err(shell);
-	}
+	new = ft_strjoin(s1, s2);
 	free(s1);
 	free(s2);
+	if (!new)
+		shut_program_err(shell);
 	return (new);
 }

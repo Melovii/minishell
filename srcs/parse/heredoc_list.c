@@ -31,7 +31,7 @@ void	add_heredoc_back(t_shell *shell, t_heredoc **heredoc_head, t_heredoc *added
 	temp_head->next = added;
 }
 
-int     heredoc_list_len(t_heredoc *head)
+int	heredoc_list_len(t_heredoc *head)
 {
     int len;
 
@@ -48,12 +48,13 @@ int     heredoc_list_len(t_heredoc *head)
 // * purpose: combine add_heredoc_back() and new_heredoc() functions
 // * parameters:	(shell)-> main struct, (h/head)-> head of heredoc list,
 // *				(limiter)-> limiter of the heredoc
-void	cr_add_token(t_shell *shell, t_heredoc **h, char *limiter)
+void	cr_add_heredoc(t_shell *shell, t_heredoc **h, char *limiter)
 {
-	t_token	*new;
+	t_heredoc	*new;
 
 	new = new_heredoc(limiter);
 	if (!new)
 		shut_program_err(shell); //! check later
+	new->file_name = ft_itoa(heredoc_list_len(*h));
     add_heredoc_back(shell, h, new);
 }

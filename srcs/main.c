@@ -15,13 +15,16 @@ void	shell_loop(t_shell *shell)
 			printf("exit\n");
 			break ;
 		}
-		printf("%s\n", input);
-		process_input(shell, input);
-		printf("%s", shell->token_list->value);
+		shell->input = ft_strdup(input);
+		free(input);
+		if (!shell->input)
+			shut_program_err(shell);
+		shell->history = ft_strdup(shell->input);
+		process_input(shell);
 	}
 	// TODO:
 	// // Display a prompt (minishell$ ).
-	// Read user input (Parse & Tokenise).
+	// // Read user input (Parse & Tokenise).
 	// Process and execute the command.
 	// // Add the command that is run to history.
 	// // Repeat until the user exits.
@@ -48,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 	shell = init_shell();
 	if (!shell)
 		return (ALLOC_ERR); // ? special message for any error maybe?
-	setup_signals(); // TODO: Implement this function
+	setup_signals();
 	shell_loop(shell);
 	return (0);
 }
