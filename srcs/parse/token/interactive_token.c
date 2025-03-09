@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void	duo_interactive(t_shell *shell, int mode);
+static void duo_interactive(t_shell *shell, int mode);
 
-void	handle_interactive(t_shell *shell)
+void handle_interactive(t_shell *shell)
 {
 	if (is_quote_open(shell))
 		duo_interactive(shell, 1);
@@ -12,18 +12,38 @@ void	handle_interactive(t_shell *shell)
 		duo_interactive(shell, 2);
 }
 
-
-void	duo_interactive(t_shell *shell, int mode)
+void start_heredoc(t_shell *shell, const char *delimeter)
 {
-	char	*added;
+	char *line;
+	char *content = ft_strdup("");
 
-	if (mode == 1)	// * Handle quote in interactive mode
+	while (1)
+	{
+		// ! Check if we need to exit (handling CTRL + D) (SAME FOR QUOTE/PIPE)
+		line = readline("heredoc>");
+	}
+	if (ft_strncmp(line, delimeter, ft_strlen(line)) == 0) // ! check if line >= delimeter
+	{
+		content = ft_strjoin(content, line);
+		content = ft_strjoin(content, '\n');
+	}
+	// TODO: Free the line and extras
+	free(line);
+}
+
+
+	
+static void duo_interactive(t_shell *shell, int mode)
+{
+	char *added;
+
+	if (mode == 1) // * Handle quote in interactive mode
 	{
 		shell->input = ultimate_join(shell, shell->input, ft_strdup("\n"));
 		shell->history = ultimate_join(shell, shell->history, ft_strdup("\n"));
 		added = readline("quote> ");
 	}
-	else if (mode == 2)	// * Handle pipe in interactive mode
+	else if (mode == 2) // * Handle pipe in interactive mode
 	{
 		shell->input = ultimate_join(shell, shell->input, ft_strdup(" "));
 		shell->history = ultimate_join(shell, shell->history, ft_strdup(" "));

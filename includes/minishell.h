@@ -147,7 +147,6 @@ int		count_heredoc(t_shell *shell);
 t_bool	does_any_heredoc_remain(t_shell *shell);
 
 
-
 // * Utils
 
 #endif
