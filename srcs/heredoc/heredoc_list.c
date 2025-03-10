@@ -9,6 +9,7 @@ t_heredoc	*new_heredoc(char *limiter)
 	if (!new)
 		return (NULL);
     new->limiter = limiter;
+	new->is_filled = C_FALSE;
 	return (new);
 }
 
@@ -38,6 +39,7 @@ int	heredoc_list_len(t_heredoc *head)
     len = 0;
     while (head)
     {
+		head = head->next;
         len++;
     }
     return (len);
@@ -56,5 +58,6 @@ void	cr_add_heredoc(t_shell *shell, t_heredoc **h, char *limiter)
 	if (!new)
 		shut_program_err(shell); //! check later
 	new->file_name = ft_itoa(heredoc_list_len(*h));
+	new->no = heredoc_list_len(*h) + 1;
     add_heredoc_back(shell, h, new);
 }

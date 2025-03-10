@@ -1,6 +1,7 @@
 #include "minishell.h"
 
 static void duo_interactive(t_shell *shell, int mode);
+static void start_heredoc(t_shell *shell);
 
 void handle_interactive(t_shell *shell)
 {
@@ -8,32 +9,18 @@ void handle_interactive(t_shell *shell)
 	if (is_quote_open(shell))
 		duo_interactive(shell, 1);
 	else if (does_any_heredoc_remain(shell))
-		printf("heredeoc remains\n");
+		start_heredoc(shell);
 	else if (ends_with_pipe(shell))
 		duo_interactive(shell, 2);
 }
 
-void start_heredoc(t_shell *shell, const char *delimeter)
+static void start_heredoc(t_shell *shell)
 {
-	char *line;
-	char *content = ft_strdup("");
-
-	while (1)
-	{
-		// ! Check if we need to exit (handling CTRL + D) (SAME FOR QUOTE/PIPE)
-		line = readline("heredoc>");
-	}
-	if (ft_strncmp(line, delimeter, ft_strlen(line)) == 0) // ! check if line >= delimeter
-	{
-		content = ft_strjoin(content, line);
-		content = ft_strjoin(content, '\n');
-	}
-	// TODO: Free the line and extras
-	free(line);
+	heredoc_interactive(shell, shell->input);
+	fill_heredocs(shell);
 }
 
 
-	
 static void duo_interactive(t_shell *shell, int mode)
 {
 	char *added;

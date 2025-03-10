@@ -46,8 +46,10 @@ typedef enum e_token_type
 
 typedef struct s_heredoc
 {
+	int				no;
 	char 			*limiter;
 	char			*file_name;
+	t_bool			is_filled;
 	struct s_heredoc	*next;
 }		t_heredoc;
 
@@ -87,13 +89,14 @@ typedef struct s_shell
 {
 	char		*input;
 	char		*history;
+	int			num_heredoc;
+	int			heredoc_index;
 	t_token 	*token_list;   // Linked list of tokens
 	t_heredoc	*heredoc_list;
 	t_command	*cmd_list;   // Linked list of commands
 	t_env 		*env_list;       // Linked list of environment variables
 	char 		**envp;           // Copy of environment variables
 	t_bool 		is_interactive; // Whether shell is running interactively
-	int			num_heredoc;
 }						t_shell;
 
 // ! FUNCTION PROTOTYPES
@@ -130,7 +133,11 @@ void	cr_add_token(t_shell *shell, t_token **h, char *v,
 int     heredoc_list_len(t_heredoc *head);
 void	cr_add_heredoc(t_shell *shell, t_heredoc **h, char *limiter);
 
+// * Heredoc utils
+void heredoc_interactive(t_shell *shell, char *input);
+void	fill_heredocs(t_shell *shell);
 
+// * Token utils functions
 char	*token_default(t_shell *shell, char *input, int *i, char *token);
 void	token_operator(t_shell *shell, char *input, int *i);
 char 	*token_quote(t_shell *shell, char *input, int *i, char *token);
@@ -148,5 +155,6 @@ t_bool	does_any_heredoc_remain(t_shell *shell);
 
 
 // * Utils
+t_bool are_strs_equal(char *s1, char *s2);
 
 #endif

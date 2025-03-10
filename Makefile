@@ -13,9 +13,12 @@ TOKEN_DIR	= $(PARSE_DIR)/token
 SRCS =	$(SRC_DIR)/main.c					\
 		$(SRC_DIR)/free.c					\
 		$(SRC_DIR)/signal.c					\
+		$(SRC_DIR)/utils.c					\
 		$(PARSE_DIR)/parse.c				\
 		$(PARSE_DIR)/token_list.c			\
 		$(HEREDOC)/heredoc_list.c			\
+		$(HEREDOC)/heredoc.c				\
+		$(HEREDOC)/heredoc_two.c			\
 		$(PARSE_DIR)/utils.c				\
 		$(PARSE_DIR)/utils_two.c			\
 		$(TOKEN_DIR)/default_token.c		\

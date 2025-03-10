@@ -31,12 +31,15 @@
 
 // ? Example: ["ls", "-l", "|", "grep", "minishell", ">", "output.txt"]
 
+
 void	process_input(t_shell *shell)
 {
 	while (is_interactive(shell))
 		handle_interactive(shell);
 	shell->is_interactive = C_FALSE;
 	add_history(shell->history);
+	shell->heredoc_list = NULL;  //! clear the  heredoc_list after the finish execution
+	shell->heredoc_index = 0;	// ! same as above
 	printf("%s\n", shell->input);
 	// tokenise_input(shell, shell->input);
 	// TODO: Create command linked list

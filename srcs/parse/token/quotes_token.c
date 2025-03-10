@@ -28,7 +28,6 @@ char *concat_quote(t_shell *shell, char *input, int *i, char *token)
 	char *added;
 	char	quote_type;
 
-	(*i) += 1;
 	quote_type = input[*i];
 	added = ft_calloc(determine_len(input, i, quote_type) + 1, sizeof(char));
 	if (!added)

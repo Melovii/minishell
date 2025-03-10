@@ -25,11 +25,10 @@ t_bool	ends_with_pipe(t_shell *shell)
 
 t_bool	does_any_heredoc_remain(t_shell *shell)
 {
-	if (heredoc_list_len(shell->heredoc_list) == count_heredoc(shell))
+	if (heredoc_list_len(shell->heredoc_list) == shell->num_heredoc)
 		return (C_FALSE);
 	return (C_TRUE);
 }
-
 
 int	count_heredoc(t_shell *shell)
 {
@@ -49,7 +48,6 @@ int	count_heredoc(t_shell *shell)
 		}
 		i++;
 	}
-	// printf("%d\n", count);
 	return (count);
 }
 

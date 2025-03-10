@@ -27,7 +27,6 @@ char *concat_default(t_shell *shell, char *input, int *i, char *token)
 {
 	char *added;
 
-	(*i) += 1;
 	added = ft_calloc(determine_len(input, i) + 1, sizeof(char));
 	if (!added)
 		shut_program_err(shell);
