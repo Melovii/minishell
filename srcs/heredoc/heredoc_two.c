@@ -26,7 +26,8 @@ void	fill_heredocs(t_shell *shell)
 	display_heredoc_list(heredoc_head);
 	while  (heredoc_head)
 	{
-		fill_one_heredoc(shell, heredoc_head);
+		if (heredoc_head->is_filled == C_FALSE)
+			fill_one_heredoc(shell, heredoc_head);
 		heredoc_head = heredoc_head->next;
 	}
 }

@@ -31,6 +31,8 @@
 
 // ? Example: ["ls", "-l", "|", "grep", "minishell", ">", "output.txt"]
 
+void	clear_heredoc(t_shell *shell);
+
 
 void	process_input(t_shell *shell)
 {
@@ -38,10 +40,35 @@ void	process_input(t_shell *shell)
 		handle_interactive(shell);
 	shell->is_interactive = C_FALSE;
 	add_history(shell->history);
+	clear_heredoc(shell);
 	shell->heredoc_list = NULL;  //! clear the  heredoc_list after the finish execution
 	shell->heredoc_index = 0;	// ! same as above
 	printf("%s\n", shell->input);
 	// tokenise_input(shell, shell->input);
 	// TODO: Create command linked list
 	// TODO: Execute command
+}
+
+// ? find correct file for these functions
+
+void	clean_one_heredoc(t_heredoc *node)
+{
+	unlink(node->file_name);
+	free(node->file_name);
+	free(node->limiter);
+	free(node);
+}
+
+void	clear_heredoc(t_shell *shell)
+{
+	t_heredoc *heredoc_head;
+	t_heredoc *temp;
+
+	heredoc_head = shell->heredoc_list;
+	while (heredoc_head)
+	{
+		temp = heredoc_head->next;
+		clean_one_heredoc(heredoc_head);
+		heredoc_head = temp;
+	}
 }
