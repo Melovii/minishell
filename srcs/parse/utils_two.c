@@ -16,7 +16,7 @@ t_bool	ends_with_pipe(t_shell *shell)
 	if (!(shell->input))
 		shut_program_err(shell);	// TODO: change error handling implementation
 	i = ft_strlen(shell->input) - 1;
-	while (i >= 0 && shell->input[i] == SPACE)
+	while (i >= 0 && is_space(shell->input[i]))
 		i--;
 	if (i >= 0 && shell->input[i] == PIPE)
 		return (C_TRUE);

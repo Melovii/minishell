@@ -106,7 +106,7 @@ void					make_ready_for_next_prompt(t_shell *shell);
 
 // * shutting program
 void					shut_program_err(t_shell *shell);
-void					shut_program_err(t_shell *shell);
+void					shut_program_default(t_shell *shell);
 
 // * Lexing
 void					process_input(t_shell *shell);

@@ -18,7 +18,7 @@ void	shut_program_err(t_shell *shell)
 	exit(EXIT_FAILURE);
 }
 
-void	shut_program_err(t_shell *shell)
+void	shut_program_default(t_shell *shell)
 {
 	free_shell(shell);
 	exit(EXIT_SUCCESS);

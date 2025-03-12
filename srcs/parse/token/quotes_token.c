@@ -14,7 +14,6 @@ char 	*token_quote(t_shell *shell, char *input, int *i)
 	if (!token)
 		shut_program_err(shell);
 	fill_pure_token(input, i, token, input[*i]);
-	// TODO: add interactive mode
 	if (is_quote(input[(*i) + 1]))
 		return (concat_quote(shell, input, i, token));
 	else if (ft_isalnum(input[(*i) + 1]))

@@ -62,7 +62,7 @@ static int	determine_len(char *input, int *i)
 
 	j = *i;
 	len = 0;
-	while (!(is_operator(input[j]) || is_quote(input[j]) || input[j] == SPACE
+	while (!(is_operator(input[j]) || is_quote(input[j]) || is_space(input[j])
 			|| input[j] == '\0'))
 	{
 		j++;
