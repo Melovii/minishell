@@ -18,7 +18,7 @@ static t_bool is_heredoc(char *input, int *i)
 // * purpose: helper function that using recursive to find the limiter
 static char *concat_limiter(t_shell *shell, char *input, int *i, char *limiter)
 {
-	if (input[*i] == '\0' || input[*i] == SPACE) // end of the limiter
+	if (input[*i] == '\0' || is_space(input[*i])) // end of the limiter
 		return (limiter);
 	else if (is_operator(input[*i]))  // end of the limiter by coming operators
 		return (limiter);
@@ -33,7 +33,7 @@ static char *concat_limiter(t_shell *shell, char *input, int *i, char *limiter)
 static char *find_limiter(t_shell *shell, char *input, int i)
 {
 	i++;
-	while (input[i] && input[i] == SPACE)
+	while (input[i] && is_space(input[i]))
 		i++;
 	if (input[i] == '\0')
 		return (NULL);

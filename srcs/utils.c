@@ -8,3 +8,10 @@ t_bool are_strs_equal(char *s1, char *s2)
 		return (C_TRUE);
 	return (C_FALSE);
 }
+
+t_bool	is_space(char c)
+{
+	if ((c >= 9 && c <= 13) || c == SPACE)
+		return (C_TRUE);
+	return (C_FALSE);
+}
