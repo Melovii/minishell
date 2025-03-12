@@ -18,6 +18,12 @@ void	shut_program_err(t_shell *shell)
 	exit(EXIT_FAILURE);
 }
 
+void	shut_program_err(t_shell *shell)
+{
+	free_shell(shell);
+	exit(EXIT_SUCCESS);
+}
+
 void	make_ready_for_next_prompt(t_shell *shell)
 {
 	if (!shell)
