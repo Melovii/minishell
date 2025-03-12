@@ -48,6 +48,7 @@ static void	fill_one_heredoc(t_shell *shell, t_heredoc *node)
 		if (are_strs_equal(added, node->limiter))
 		{
 			node->is_filled = C_TRUE;
+			free(added);
 			break ;
 		}
 		fill_the_buffer(shell, node, added);
