@@ -8,14 +8,13 @@ static void	fill_pure_token(char *input, int *i, char *token);
 // *				(i/index)-> current input index
 // *				(value)-> is it come from another function or is it token start
 // TODO: Tokenize Deafult
-char	*token_default(t_shell *shell, char *input, int *i, char *token)
+char	*token_default(t_shell *shell, char *input, int *i)
 {
-	if (!token)
-	{
-		token = ft_calloc(determine_len(input, i) + 1, sizeof(char));
-		if (token == NULL)
-			shut_program_err(shell);
-	}
+	char *token;
+
+	token = ft_calloc(determine_len(input, i) + 1, sizeof(char));
+	if (token == NULL)
+		shut_program_err(shell);
 	fill_pure_token(input, i, token);
 	// TODO: add interactive mode + quote statements
 	if (is_quote(input[(*i) + 1]))

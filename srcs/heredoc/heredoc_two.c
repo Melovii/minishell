@@ -63,4 +63,5 @@ static void fill_the_buffer(t_shell *shell, t_heredoc *node, char *added)
 	if (fd < 0)
 		shut_program_err(shell); // ! check later
 	ft_putendl_fd(added, fd);
+	close(fd);
 }

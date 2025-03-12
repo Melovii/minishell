@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+static void	clear_token_node(t_token *node);
+
 //* purpose: creating a new token node (without any connection)
 t_token	*new_token(char *value, t_token_type type)
 {
@@ -48,7 +50,33 @@ void	cr_add_token(t_shell *shell, t_token **h, char *v, t_token_type type)
 	t_token	*new;
 
 	new = new_token(v, type);
+	free(v);
 	if (!new)
 		shut_program_err(shell); //! check later
 	add_token_back(shell, h, new);
+}
+
+void	clear_token_list(t_shell *shell)
+{
+	t_token	*temp;
+	t_token *token_head;
+
+	if (!shell || !(shell->token_list))
+		return ;
+	token_head = shell->token_list;
+	while (token_head)
+	{
+		temp = token_head->next;
+		clear_token_node(token_head);
+		token_head = temp;
+	}
+	shell->token_list = NULL;
+}
+
+static void	clear_token_node(t_token *node)
+{
+	if (!node)
+		return ;
+	free(node->value);
+	free(node);
 }

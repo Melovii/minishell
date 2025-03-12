@@ -19,6 +19,7 @@ SRCS =	$(SRC_DIR)/main.c					\
 		$(HEREDOC)/heredoc_list.c			\
 		$(HEREDOC)/heredoc.c				\
 		$(HEREDOC)/heredoc_two.c			\
+		$(HEREDOC)/heredoc_clean.c			\
 		$(PARSE_DIR)/utils.c				\
 		$(TOKEN_DIR)/token_list.c			\
 		$(PARSE_DIR)/utils_two.c			\

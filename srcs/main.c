@@ -10,12 +10,9 @@ void	shell_loop(t_shell *shell)
 		if (!input)	// * Handles Ctrl + D
 		{
 			printf("exit\n");
-			break ;
-		}
-		shell->input = ft_strdup(input);
-		free(input);
-		if (!shell->input)
 			shut_program_err(shell);
+		}
+		shell->input = input;
 		shell->history = ft_strdup(shell->input);
 		process_input(shell);
 	}

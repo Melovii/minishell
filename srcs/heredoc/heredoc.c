@@ -30,7 +30,6 @@ static char *concat_limiter(t_shell *shell, char *input, int *i, char *limiter)
 
 // !	if find_limiter return (NULL) that means there is a problem
 // !	handle error management
-
 static char *find_limiter(t_shell *shell, char *input, int i)
 {
 	i++;
