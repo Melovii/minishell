@@ -14,7 +14,7 @@ static void	tokenise_input(t_shell *shell, char *input)
 	i = -1;
 	while (input[++i])
 	{
-		if (input[i] == SPACE)
+		if (is_space(input[i]))
 			continue ;
 		else if (is_operator(input[i]))
 			token_operator(shell, input, &i);

@@ -102,9 +102,10 @@ typedef struct s_shell
 // ! FUNCTION PROTOTYPES
 
 // * freeing memory
-void make_ready_for_next_prompt(t_shell *shell);
+void					make_ready_for_next_prompt(t_shell *shell);
 
 // * shutting program
+void					shut_program_err(t_shell *shell);
 void					shut_program_err(t_shell *shell);
 
 // * Lexing
@@ -159,5 +160,6 @@ t_bool					does_any_heredoc_remain(t_shell *shell);
 
 // * Utils
 t_bool					are_strs_equal(char *s1, char *s2);
+t_bool					is_space(char c);
 
 #endif
