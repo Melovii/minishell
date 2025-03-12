@@ -3,11 +3,11 @@
 void	shell_loop(t_shell *shell)
 {
 	char	*input;
-	
+
 	while (1)
 	{
 		input = readline("minishell$ ");
-		if (!input)	// * Handles Ctrl + D
+		if (!input) // * Handles Ctrl + D
 		{
 			printf("exit\n");
 			shut_program_err(shell);
@@ -37,7 +37,6 @@ t_shell	*init_shell(void)
 	return (new);
 }
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
@@ -49,6 +48,3 @@ int	main(int argc, char **argv, char **envp)
 	shell_loop(shell);
 	return (0);
 }
-
-
-

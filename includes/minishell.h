@@ -153,10 +153,10 @@ char					*concat_quote(t_shell *shell, char *input, int *i,
 // * Interactive Mode
 t_bool					is_interactive(t_shell *shell);
 t_bool					ends_with_pipe(t_shell *shell);
-void					handle_interactive(t_shell *shell);
 t_bool					is_quote_open(t_shell *shell);
-int						count_heredoc(t_shell *shell);
 t_bool					does_any_heredoc_remain(t_shell *shell);
+void					handle_interactive(t_shell *shell);
+int						count_heredoc(t_shell *shell);
 
 // * Utils
 t_bool					are_strs_equal(char *s1, char *s2);

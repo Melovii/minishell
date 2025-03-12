@@ -59,7 +59,7 @@ void	cr_add_token(t_shell *shell, t_token **h, char *v, t_token_type type)
 void	clear_token_list(t_shell *shell)
 {
 	t_token	*temp;
-	t_token *token_head;
+	t_token	*token_head;
 
 	if (!shell || !(shell->token_list))
 		return ;

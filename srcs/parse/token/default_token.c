@@ -6,11 +6,11 @@ static void	fill_pure_token(char *input, int *i, char *token);
 // * purpose: tokenizing default input
 // * parameters:	(shell)-> main struct, (input)-> str from client
 // *				(i/index)-> current input index
-// *				(value)-> is it come from another function or is it token start
+//*		(value)->is it come from another function or is it token start
 // TODO: Tokenize Deafult
 char	*token_default(t_shell *shell, char *input, int *i)
 {
-	char *token;
+	char	*token;
 
 	token = ft_calloc(determine_len(input, i) + 1, sizeof(char));
 	if (token == NULL)
@@ -22,9 +22,9 @@ char	*token_default(t_shell *shell, char *input, int *i)
 	return (token);
 }
 
-char *concat_default(t_shell *shell, char *input, int *i, char *token)
+char	*concat_default(t_shell *shell, char *input, int *i, char *token)
 {
-	char *added;
+	char	*added;
 
 	added = ft_calloc(determine_len(input, i) + 1, sizeof(char));
 	if (!added)

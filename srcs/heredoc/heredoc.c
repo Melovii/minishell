@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-static t_bool is_heredoc(char *input, int *i)
+static t_bool	is_heredoc(char *input, int *i)
 {
-	int j;
+	int	j;
 
 	j = *i;
 	if (input[j + 1] == INPUT_RDRCT)
@@ -16,11 +16,11 @@ static t_bool is_heredoc(char *input, int *i)
 }
 
 // * purpose: helper function that using recursive to find the limiter
-static char *concat_limiter(t_shell *shell, char *input, int *i, char *limiter)
+static char	*concat_limiter(t_shell *shell, char *input, int *i, char *limiter)
 {
 	if (input[*i] == '\0' || is_space(input[*i])) // end of the limiter
 		return (limiter);
-	else if (is_operator(input[*i]))  // end of the limiter by coming operators
+	else if (is_operator(input[*i])) // end of the limiter by coming operators
 		return (limiter);
 	else if (is_quote(input[*i]))
 		return (concat_quote(shell, input, i, limiter));
@@ -30,7 +30,7 @@ static char *concat_limiter(t_shell *shell, char *input, int *i, char *limiter)
 
 // !	if find_limiter return (NULL) that means there is a problem
 // !	handle error management
-static char *find_limiter(t_shell *shell, char *input, int i)
+static char	*find_limiter(t_shell *shell, char *input, int i)
 {
 	i++;
 	while (input[i] && is_space(input[i]))
@@ -40,7 +40,7 @@ static char *find_limiter(t_shell *shell, char *input, int i)
 	return (concat_limiter(shell, input, &i, ft_strdup("")));
 }
 
-void heredoc_interactive(t_shell *shell, char *input)
+void	heredoc_interactive(t_shell *shell, char *input)
 {
 	int	i;
 
@@ -51,8 +51,8 @@ void heredoc_interactive(t_shell *shell, char *input)
 		{
 			if (is_heredoc(input, &i))
 			{
-				cr_add_heredoc(shell, &(shell->heredoc_list), 
-					find_limiter(shell, input, i));
+				cr_add_heredoc(shell, &(shell->heredoc_list),
+						find_limiter(shell, input, i));
 			}
 		}
 		i++;

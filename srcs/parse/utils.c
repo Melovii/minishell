@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static	t_bool	does_complete(char *input, int *i, char quote_type);
+static t_bool	does_complete(char *input, int *i, char quote_type);
 
 t_bool	is_operator(char c)
 {
@@ -33,7 +33,7 @@ t_bool	is_quote_open(t_shell *shell)
 }
 
 // * purpose: check whether quote is completed or not
-static	t_bool	does_complete(char *input, int *i, char quote_type)
+static t_bool	does_complete(char *input, int *i, char quote_type)
 {
 	(*i) += 1; // pass the first quote
 	while (input[*i])
@@ -47,9 +47,9 @@ static	t_bool	does_complete(char *input, int *i, char quote_type)
 	return (C_FALSE);
 }
 
-char *ultimate_join(t_shell *shell, char *s1, char *s2)
+char	*ultimate_join(t_shell *shell, char *s1, char *s2)
 {
-	char *new;
+	char	*new;
 
 	new = ft_strjoin(s1, s2);
 	free(s1);

@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-static void duo_interactive(t_shell *shell, int mode);
-static void start_heredoc(t_shell *shell);
+static void	duo_interactive(t_shell *shell, int mode);
+static void	start_heredoc(t_shell *shell);
 
-void handle_interactive(t_shell *shell)
+void	handle_interactive(t_shell *shell)
 {
 	shell->is_interactive = C_TRUE;
 	if (is_quote_open(shell))
@@ -14,15 +14,15 @@ void handle_interactive(t_shell *shell)
 		duo_interactive(shell, 2);
 }
 
-static void start_heredoc(t_shell *shell)
+static void	start_heredoc(t_shell *shell)
 {
 	heredoc_interactive(shell, shell->input);
 	fill_heredocs(shell);
 }
 
-static void duo_interactive(t_shell *shell, int mode)
+static void	duo_interactive(t_shell *shell, int mode)
 {
-	char *added;
+	char	*added;
 
 	if (mode == 1) // * Handle quote in interactive mode
 	{

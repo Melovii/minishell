@@ -65,6 +65,10 @@ leaks:
 	--log-file=valgrind-out.txt		\
 	./minishell						\
 
+
+# alternative ====>>>> valgrind --leak-check=full  --show-leak-kinds=all   --track-origins=yes --verbose   --log-file=valgrind-out.txt ./minishell 
+
+
 test:
 	bash tests.sh
 
