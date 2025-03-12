@@ -19,7 +19,10 @@ char 	*token_quote(t_shell *shell, char *input, int *i, char *token)
 	if (is_quote(input[(*i) + 1]))
 		return (concat_quote(shell, input, i, token));
 	else if (ft_isalnum(input[(*i) + 1]))
+	{
+		(*i)++;
 		return (concat_default(shell, input, i, token));
+	}
 	return (token);
 }
 
@@ -38,7 +41,10 @@ char *concat_quote(t_shell *shell, char *input, int *i, char *token)
 	if (is_quote(input[(*i) + 1]))
 		return (concat_quote(shell, input, i, token));
 	if (ft_isalnum(input[(*i) + 1]))
+	{
+		(*i)++;
 		return (concat_default(shell, input, i, token));
+	}
 	return (token);
 }
 
