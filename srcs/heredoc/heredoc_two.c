@@ -3,6 +3,8 @@
 static void	fill_one_heredoc(t_shell *shell, t_heredoc *node);
 static void fill_the_buffer(t_shell *shell, t_heredoc *node, char *added);
 
+
+// ! Will be deleted
 void display_heredoc_list(t_heredoc *head)
 {
     t_heredoc *current = head;

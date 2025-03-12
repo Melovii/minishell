@@ -20,7 +20,6 @@ static void start_heredoc(t_shell *shell)
 	fill_heredocs(shell);
 }
 
-
 static void duo_interactive(t_shell *shell, int mode)
 {
 	char *added;
@@ -41,7 +40,6 @@ static void duo_interactive(t_shell *shell, int mode)
 		if (!added)
 			shut_program_err(shell);
 	}
-
 	if (!added)
 		shut_program_err(shell);
 	shell->input = ultimate_join(shell, shell->input, ft_strdup(added));
