@@ -8,14 +8,15 @@ t_heredoc	*new_heredoc(char *limiter)
 	new = ft_calloc(1, sizeof(t_heredoc));
 	if (!new)
 		return (NULL);
-    new->limiter = limiter;
+	new->limiter = limiter;
 	new->is_filled = C_FALSE;
 	return (new);
 }
 
 //! check later
 // * purpose: add a new node last of heredoc linked list
-void	add_heredoc_back(t_shell *shell, t_heredoc **heredoc_head, t_heredoc *added)
+void	add_heredoc_back(t_shell *shell, t_heredoc **heredoc_head,
+		t_heredoc *added)
 {
 	t_heredoc	*temp_head;
 
@@ -34,15 +35,15 @@ void	add_heredoc_back(t_shell *shell, t_heredoc **heredoc_head, t_heredoc *added
 
 int	heredoc_list_len(t_heredoc *head)
 {
-    int len;
+	int	len;
 
-    len = 0;
-    while (head)
-    {
+	len = 0;
+	while (head)
+	{
 		head = head->next;
-        len++;
-    }
-    return (len);
+		len++;
+	}
+	return (len);
 }
 
 //! check later
@@ -59,5 +60,5 @@ void	cr_add_heredoc(t_shell *shell, t_heredoc **h, char *limiter)
 		shut_program_err(shell); //! check later
 	new->file_name = ft_itoa(heredoc_list_len(*h));
 	new->no = heredoc_list_len(*h) + 1;
-    add_heredoc_back(shell, h, new);
+	add_heredoc_back(shell, h, new);
 }

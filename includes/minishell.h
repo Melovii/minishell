@@ -46,12 +46,12 @@ typedef enum e_token_type
 
 typedef struct s_heredoc
 {
-	int				no;
-	char 			*limiter;
-	char			*file_name;
-	t_bool			is_filled;
+	int					no;
+	char				*limiter;
+	char				*file_name;
+	t_bool				is_filled;
 	struct s_heredoc	*next;
-}		t_heredoc;
+}						t_heredoc;
 
 // * Struct for tokens (Lexing)
 typedef struct s_token
@@ -87,28 +87,29 @@ typedef struct s_env
 // * Shell state structure (Global shell context)
 typedef struct s_shell
 {
-	char		*input;
-	char		*history;
-	int			num_heredoc;
-	int			heredoc_index;
-	t_token 	*token_list;   // Linked list of tokens
-	t_heredoc	*heredoc_list;
-	t_command	*cmd_list;   // Linked list of commands
-	t_env 		*env_list;       // Linked list of environment variables
-	char 		**envp;           // Copy of environment variables
-	t_bool 		is_interactive; // Whether shell is running interactively
+	char				*input;
+	char				*history;
+	int					num_heredoc;
+	int					heredoc_index;
+	t_token *token_list; // Linked list of tokens
+	t_heredoc			*heredoc_list;
+	t_command *cmd_list;   // Linked list of commands
+	t_env *env_list;       // Linked list of environment variables
+	char **envp;           // Copy of environment variables
+	t_bool is_interactive; // Whether shell is running interactively
 }						t_shell;
 
 // ! FUNCTION PROTOTYPES
 
 // * freeing memory
-// free_all(t_shell *shell)
+void					make_ready_for_next_prompt(t_shell *shell);
 
 // * shutting program
-void	shut_program_err(t_shell *shell);
+void					shut_program_err(t_shell *shell);
+void					shut_program_default(t_shell *shell);
 
 // * Lexing
-void	process_input(t_shell *shell);
+void					process_input(t_shell *shell);
 
 // * Execution
 
@@ -117,44 +118,48 @@ void	process_input(t_shell *shell);
 // * Environment
 
 // * Signals
-void	setup_signals(void);
+void					setup_signals(void);
 
 // * Parse Utils
-t_bool	is_operator(char c);
-t_bool	is_quote(char c);
-char 	*ultimate_join(t_shell *shell, char *s1, char *s2);
-
+t_bool					is_operator(char c);
+t_bool					is_quote(char c);
+char					*ultimate_join(t_shell *shell, char *s1, char *s2);
 
 // * Tokenization // Token List
-void	cr_add_token(t_shell *shell, t_token **h, char *v,
+void					cr_add_token(t_shell *shell, t_token **h, char *v,
 							t_token_type type);
+void					clear_token_list(t_shell *shell);
 
 // * Heredoc List
-int     heredoc_list_len(t_heredoc *head);
-void	cr_add_heredoc(t_shell *shell, t_heredoc **h, char *limiter);
+int						heredoc_list_len(t_heredoc *head);
+void					cr_add_heredoc(t_shell *shell, t_heredoc **h,
+							char *limiter);
 
 // * Heredoc utils
-void heredoc_interactive(t_shell *shell, char *input);
-void	fill_heredocs(t_shell *shell);
+void					heredoc_interactive(t_shell *shell, char *input);
+void					fill_heredocs(t_shell *shell);
+void					clear_heredoc(t_shell *shell);
 
 // * Token utils functions
-char	*token_default(t_shell *shell, char *input, int *i, char *token);
-void	token_operator(t_shell *shell, char *input, int *i);
-char 	*token_quote(t_shell *shell, char *input, int *i, char *token);
+char					*token_default(t_shell *shell, char *input, int *i);
+void					token_operator(t_shell *shell, char *input, int *i);
+char					*token_quote(t_shell *shell, char *input, int *i);
 
-char 	*concat_default(t_shell *shell, char *input, int *i, char *token);
-char 	*concat_quote(t_shell *shell, char *input, int *i, char *token);
+char					*concat_default(t_shell *shell, char *input, int *i,
+							char *token);
+char					*concat_quote(t_shell *shell, char *input, int *i,
+							char *token);
 
 // * Interactive Mode
-t_bool 	is_interactive(t_shell *shell);
-t_bool	ends_with_pipe(t_shell *shell);
-void	handle_interactive(t_shell *shell);
-t_bool	is_quote_open(t_shell *shell);
-int		count_heredoc(t_shell *shell);
-t_bool	does_any_heredoc_remain(t_shell *shell);
-
+t_bool					is_interactive(t_shell *shell);
+t_bool					ends_with_pipe(t_shell *shell);
+t_bool					is_quote_open(t_shell *shell);
+t_bool					does_any_heredoc_remain(t_shell *shell);
+void					handle_interactive(t_shell *shell);
+int						count_heredoc(t_shell *shell);
 
 // * Utils
-t_bool are_strs_equal(char *s1, char *s2);
+t_bool					are_strs_equal(char *s1, char *s2);
+t_bool					is_space(char c);
 
 #endif

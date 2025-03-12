@@ -23,7 +23,7 @@ static void	handle_pipe(t_shell *shell, char *input, int *i)
 	if (is_operator(input[*i + 1]))
 		shut_program_err(shell);
 	else
-		cr_add_token(shell, &(shell->token_list), "|", TK_PIPE);
+		cr_add_token(shell, &(shell->token_list), ft_strdup("|"), TK_PIPE);
 }
 
 // * purpose: tokenizing "<, <<" operators
@@ -33,16 +33,17 @@ static void	handle_input_rdrct(t_shell *shell, char *input, int *i)
 	{
 		if (is_operator(input[(*i) + 2]))
 		{
-			shut_program_err(shell) ; // !  error handling should be :(
+			shut_program_err(shell); // !  error handling should be :(
 		}
 		else
-			cr_add_token(shell, &(shell->token_list), "<<", TK_HEREDOC);
+			cr_add_token(shell, &(shell->token_list), ft_strdup("<<"),
+					TK_HEREDOC);
 		(*i) += 1;
 	}
 	else if (input[(*i) + 1] == OUTPUT_RDRCT | input[(*i) + 1] == PIPE)
 		shut_program_err(shell);
 	else
-		cr_add_token(shell, &(shell->token_list), "<", TK_RED_IN);
+		cr_add_token(shell, &(shell->token_list), ft_strdup("<"), TK_RED_IN);
 }
 
 // * purpose: tokenizing ">, >>" operators
@@ -51,13 +52,14 @@ static void	handle_output_rdrct(t_shell *shell, char *input, int *i)
 	if (input[(*i) + 1] == OUTPUT_RDRCT)
 	{
 		if (is_operator(input[(*i) + 2]))
-			shut_program_err(shell) ; // !  error handling should be :(
+			shut_program_err(shell); // !  error handling should be :(
 		else
-			cr_add_token(shell, &(shell->token_list), ">>", TK_APPEND);
+			cr_add_token(shell, &(shell->token_list), ft_strdup(">>"),
+					TK_APPEND);
 		(*i) += 1;
 	}
 	else if (input[(*i) + 1] == INPUT_RDRCT | input[(*i) + 1] == PIPE)
 		shut_program_err(shell);
 	else
-		cr_add_token(shell, &(shell->token_list), ">", TK_RED_OUT);
+		cr_add_token(shell, &(shell->token_list), ft_strdup(">"), TK_RED_OUT);
 }

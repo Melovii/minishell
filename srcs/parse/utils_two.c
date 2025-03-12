@@ -1,22 +1,22 @@
 #include "minishell.h"
 
-t_bool is_interactive(t_shell *shell)
+t_bool	is_interactive(t_shell *shell)
 {
 	shell->num_heredoc = count_heredoc(shell);
-    if (is_quote_open(shell) || ends_with_pipe(shell)
+	if (is_quote_open(shell) || ends_with_pipe(shell)
 		|| does_any_heredoc_remain(shell))
-        return (C_TRUE);
+		return (C_TRUE);
 	return (C_FALSE);
 }
 
 t_bool	ends_with_pipe(t_shell *shell)
 {
-	int i;
+	int	i;
 
 	if (!(shell->input))
-		shut_program_err(shell);	// TODO: change error handling implementation
+		shut_program_err(shell); // TODO: change error handling implementation
 	i = ft_strlen(shell->input) - 1;
-	while (i >= 0 && shell->input[i] == SPACE)
+	while (i >= 0 && is_space(shell->input[i]))
 		i--;
 	if (i >= 0 && shell->input[i] == PIPE)
 		return (C_TRUE);
@@ -37,7 +37,7 @@ int	count_heredoc(t_shell *shell)
 
 	i = 0;
 	count = 0;
-	while(shell->input[i + 1])
+	while (shell->input[i + 1])
 	{
 		// TODO: add a check for cases such as "<<<"
 		if (shell->input[i] == '<' && shell->input[i + 1] == '<')
@@ -52,6 +52,5 @@ int	count_heredoc(t_shell *shell)
 }
 
 // ? Example: ["ls", "-l", "|", "grep", "minishell", ">", "|"]
-
 
 // "ls -l | greep minishell > |          "

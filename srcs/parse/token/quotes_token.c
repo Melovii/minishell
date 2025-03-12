@@ -6,26 +6,27 @@ static void	fill_pure_token(char *input, int *i, char *token, char quote_type);
 // * purpose: tokenizing double and single quotes and return the token value
 // * parameters:	(shell)-> main struct, (input)-> str from client
 // *				(i/index)-> current input index
-char 	*token_quote(t_shell *shell, char *input, int *i, char *token)
+char	*token_quote(t_shell *shell, char *input, int *i)
 {
+	char	*token;
+
+	token = ft_calloc(determine_len(input, i, input[*i]) + 1, sizeof(char));
 	if (!token)
-	{
-		token = ft_calloc(determine_len(input, i, input[*i]) + 1, sizeof(char));
-		if (!token)
-			shut_program_err(shell);
-	}
+		shut_program_err(shell);
 	fill_pure_token(input, i, token, input[*i]);
-	// TODO: add interactive mode
 	if (is_quote(input[(*i) + 1]))
 		return (concat_quote(shell, input, i, token));
 	else if (ft_isalnum(input[(*i) + 1]))
+	{
+		(*i)++;
 		return (concat_default(shell, input, i, token));
+	}
 	return (token);
 }
 
-char *concat_quote(t_shell *shell, char *input, int *i, char *token)
+char	*concat_quote(t_shell *shell, char *input, int *i, char *token)
 {
-	char *added;
+	char	*added;
 	char	quote_type;
 
 	(*i)++;
@@ -38,10 +39,12 @@ char *concat_quote(t_shell *shell, char *input, int *i, char *token)
 	if (is_quote(input[(*i) + 1]))
 		return (concat_quote(shell, input, i, token));
 	if (ft_isalnum(input[(*i) + 1]))
+	{
+		(*i)++;
 		return (concat_default(shell, input, i, token));
+	}
 	return (token);
 }
-
 
 static void	fill_pure_token(char *input, int *i, char *token, char quote_type)
 {
@@ -57,13 +60,13 @@ static void	fill_pure_token(char *input, int *i, char *token, char quote_type)
 		j++;
 		(*i) += 1;
 	}
-	 // for proper index
+	// for proper index
 	token[j] = '\0';
 }
 
 // * purpose: 		determining the length of the token (without quotes)
 // * parameters:	(input)-> client input, (*i/index)->> current cursor index
-// * tests:			"ali" -> 3,      "ali -> 3,  
+// * tests:			"ali" -> 3,      "ali -> 3,
 static int	determine_len(char *input, int *i, char quote_type)
 {
 	int	len;

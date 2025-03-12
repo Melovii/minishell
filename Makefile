@@ -9,22 +9,24 @@ SRC_DIR		= srcs
 PARSE_DIR 	= $(SRC_DIR)/parse
 HEREDOC		= $(SRC_DIR)/heredoc
 TOKEN_DIR	= $(PARSE_DIR)/token
+INTERACTIVE_DIR = $(PARSE_DIR)/interactive
 
 SRCS =	$(SRC_DIR)/main.c					\
 		$(SRC_DIR)/free.c					\
 		$(SRC_DIR)/signal.c					\
 		$(SRC_DIR)/utils.c					\
 		$(PARSE_DIR)/parse.c				\
-		$(PARSE_DIR)/token_list.c			\
 		$(HEREDOC)/heredoc_list.c			\
 		$(HEREDOC)/heredoc.c				\
 		$(HEREDOC)/heredoc_two.c			\
+		$(HEREDOC)/heredoc_clean.c			\
 		$(PARSE_DIR)/utils.c				\
+		$(TOKEN_DIR)/token_list.c			\
 		$(PARSE_DIR)/utils_two.c			\
 		$(TOKEN_DIR)/default_token.c		\
 		$(TOKEN_DIR)/operators_token.c		\
 		$(TOKEN_DIR)/quotes_token.c			\
-		$(TOKEN_DIR)/interactive_token.c	\
+		$(INTERACTIVE_DIR)/interactive.c	\
 #		$(SRC_DIR)/parse.c				\
 		$(SRC_DIR)/pipe.c				\
 		$(SRC_DIR)/execute.c			\
@@ -62,6 +64,10 @@ leaks:
 	--verbose						\
 	--log-file=valgrind-out.txt		\
 	./minishell						\
+
+
+# alternative ====>>>> valgrind --leak-check=full  --show-leak-kinds=all   --track-origins=yes --verbose   --log-file=valgrind-out.txt ./minishell 
+
 
 test:
 	bash tests.sh

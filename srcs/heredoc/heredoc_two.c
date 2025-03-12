@@ -3,6 +3,8 @@
 static void	fill_one_heredoc(t_shell *shell, t_heredoc *node);
 static void fill_the_buffer(t_shell *shell, t_heredoc *node, char *added);
 
+
+// ! Will be deleted
 void display_heredoc_list(t_heredoc *head)
 {
     t_heredoc *current = head;
@@ -40,10 +42,13 @@ static void	fill_one_heredoc(t_shell *shell, t_heredoc *node)
 	{
 		shell->history = ultimate_join(shell, shell->history, ft_strdup("\n"));
 		added = readline("heredoc> ");
+		if (!added)
+			shut_program_err(shell);
 		shell->history = ultimate_join(shell, shell->history, ft_strdup(added));
 		if (are_strs_equal(added, node->limiter))
 		{
 			node->is_filled = C_TRUE;
+			free(added);
 			break ;
 		}
 		fill_the_buffer(shell, node, added);
@@ -59,4 +64,5 @@ static void fill_the_buffer(t_shell *shell, t_heredoc *node, char *added)
 	if (fd < 0)
 		shut_program_err(shell); // ! check later
 	ft_putendl_fd(added, fd);
+	close(fd);
 }

@@ -25,7 +25,6 @@ t_bool	execute_cmd(char **args)
 	// Execute the command in the child process using execvp()
 	// Wait for the child in the parent process
 	// Handle errors for fork() and execvp()
-
 	if (cmd.is_builtin)
 		handle_builtin(args);
 	else
