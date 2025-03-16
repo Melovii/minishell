@@ -42,8 +42,9 @@ static void	shell_loop(t_shell *shell)
 			add_history(input);
 		shell->token = tokenizer(input);
 		print_tokens(shell->token);	// ! DEBUGGING ONLY
-		// shell->cmd = parse_input(input);
-		// free(input);
+		shell->cmd = parse_input(input);
+		print_cmd_list(shell->cmd);	// ! DEBUGGING ONLY
+		free(input);
 		// if (shell->cmd)
 			// execute_pipeline(shell->cmd);
 		// free_tokens(shell->token);

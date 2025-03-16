@@ -76,9 +76,11 @@ typedef struct s_shell
 // void    run_builtin(t_cmd *cmd);
 
 // * ==========================================================>		Parsing
-void 		print_tokens(t_token *tokens);
+void 		print_tokens(t_token *tokens);		// ! (DEBUG)
+void 		print_cmd_list(t_cmd *cmd);			// ! (DEBUG)
+
 t_token 	*tokenizer(char *input);
-// t_cmd   *parse_input(char *input);
+t_cmd   	*parse_input(char *input);
 // char    **lexer(char *input);
 // int     syntax_checker(char **tokens);
 // t_cmd   *build_ast(t_token *tokens);
