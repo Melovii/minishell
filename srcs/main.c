@@ -1,50 +1,71 @@
 #include "minishell.h"
 
-void	shell_loop(t_shell *shell)
+volatile sig_atomic_t	g_signal = 0;
+
+// * Function to clean up the shell (free_utils.c)
+static void clean(t_shell *shell)
+{
+	if (!shell)
+		return ;
+	
+	// TODO: Implement these function
+	// free_env(shell);
+	// free_tokens(shell->token);
+	// free_cmd(shell->cmd);
+}
+
+// * Function to initialize the shell
+static void	init_shell(t_shell *shell, char **envp)
+{
+	shell->exit_flag = 0;
+	shell->env = NULL;
+	shell->cmd = NULL;
+	shell->token = NULL;
+	init_env(shell, envp);
+	// handle_signals();
+}
+
+// * Function to handle the shell loop
+static void	shell_loop(t_shell *shell)
 {
 	char	*input;
 
-	while (1)
+	while (!shell->exit_flag)
 	{
-		input = readline("minishell$ ");
-		if (!input) // * Handles Ctrl + D
+		input = readline(SHELL_NAME);
+		if (!input)
 		{
 			printf("exit\n");
-			shut_program_err(shell);
+			break;
 		}
-		shell->input = input;
-		shell->history = ft_strdup(shell->input);
-		process_input(shell);
+		if (*input)
+			add_history(input);
+		// shell->token = tokenizer(input);
+		// shell->cmd = parse_input(input);
+		// free(input);
+		// if (shell->cmd)
+			// execute_pipeline(shell->cmd);
+		// free_tokens(shell->token);
+		// free_cmd(shell->cmd);
 	}
-	// TODO:
-	// // Display a prompt (minishell$ ).
-	// // Read user input (Parse & Tokenise).
-	// Process and execute the command.
-	// // Add the command that is run to history.
-	// // Repeat until the user exits.
 }
 
-//* purpose: initialization of main structure (t_shell)
-
-t_shell	*init_shell(void)
-{
-	t_shell	*new;
-
-	new = ft_calloc(1, sizeof(t_shell));
-	if (!new)
-		return (NULL);
-	new->is_interactive = C_FALSE;
-	return (new);
-}
-
+// * Main function
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
-	shell = init_shell();
+	(void)argv;
+	if (argc != 1)
+		return (EXIT_FAILURE);
+
+	shell = ft_calloc(1, sizeof(t_shell));
 	if (!shell)
-		return (ALLOC_ERR); // ? special message for any error maybe?
-	setup_signals();
+		return (EXIT_FAILURE);
+
+	init_shell(shell, envp);
 	shell_loop(shell);
+	// free_env();
+	clean(shell);
 	return (0);
 }

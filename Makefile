@@ -1,59 +1,50 @@
-NAME		= minishell
-CC			= cc
-# CFLAGS		= -Wall -Wextra -Werror -Iincludes -I /home/my-home-dir/.local/include
-CFLAGS		= -Iincludes -I /home/my-home-dir/.local/include
-LDFLAGS		= -L /home/my-home-dir/.local/lib -lreadline -lncurses
-LIBFT		= libft/libft.a
+NAME			= 	minishell
+CC				= 	cc
+CFLAGS			= 	-Iincludes -I /home/my-home-dir/.local/include
+LDFLAGS			= 	-L /home/my-home-dir/.local/lib -lreadline -lncurses
+LIBFT			= 	libft/libft.a
 
-SRC_DIR		= srcs
-PARSE_DIR 	= $(SRC_DIR)/parse
-HEREDOC		= $(SRC_DIR)/heredoc
-TOKEN_DIR	= $(PARSE_DIR)/token
-INTERACTIVE_DIR = $(PARSE_DIR)/interactive
+SRC_DIR			= 	srcs
+OBJ_DIR			= 	objs
+UTILS_DIR		= 	$(SRC_DIR)/utils
+BUILTINS_DIR	= 	$(SRC_DIR)/builtins
+EXEC_DIR		= 	$(SRC_DIR)/exec
+PARSER_DIR		= 	$(SRC_DIR)/parser
+SIG_DIR			= 	$(SRC_DIR)/signals
 
-SRCS =	$(SRC_DIR)/main.c					\
-		$(SRC_DIR)/free.c					\
-		$(SRC_DIR)/signal.c					\
-		$(SRC_DIR)/utils.c					\
-		$(PARSE_DIR)/parse.c				\
-		$(HEREDOC)/heredoc_list.c			\
-		$(HEREDOC)/heredoc.c				\
-		$(HEREDOC)/heredoc_two.c			\
-		$(HEREDOC)/heredoc_clean.c			\
-		$(PARSE_DIR)/utils.c				\
-		$(TOKEN_DIR)/token_list.c			\
-		$(PARSE_DIR)/utils_two.c			\
-		$(TOKEN_DIR)/default_token.c		\
-		$(TOKEN_DIR)/operators_token.c		\
-		$(TOKEN_DIR)/quotes_token.c			\
-		$(INTERACTIVE_DIR)/interactive.c	\
-#		$(SRC_DIR)/parse.c				\
-		$(SRC_DIR)/pipe.c				\
-		$(SRC_DIR)/execute.c			\
-		$(SRC_DIR)/commands.c			\
+SRCS			=	$(SRC_DIR)/main.c				\
+					$(UTILS_DIR)/env_utils.c		\
 
-OBJS = $(SRCS:.c=.o)
+OBJS			=	$(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 all: default
 
 default: $(NAME)
 
-$(NAME): 	$(LIBFT) $(OBJS)
-			@$(CC) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
-			@echo Makefile run successfully!
+$(NAME): $(LIBFT) $(OBJS)
+	@$(CC) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
+	@echo Makefile run successfully!
 
-%.o: %.c
-		@$(CC) $(CFLAGS) -c $< -o $@
+# Ensure that subdirectories in objs exist before compiling
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)/utils
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# Create all necessary object directories
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/utils:
+	@mkdir -p $(OBJ_DIR)/utils
 
 $(LIBFT):
-		@make -C libft bonus --silent
+	@make -C libft bonus --silent
 
 clean:
-		@rm -f $(OBJS)
-		@make fclean -C libft --silent
-	
+	@rm -rf $(OBJ_DIR)
+	@make fclean -C libft --silent
+
 fclean: clean
-		@rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 
@@ -64,10 +55,6 @@ leaks:
 	--verbose						\
 	--log-file=valgrind-out.txt		\
 	./minishell						\
-
-
-# alternative ====>>>> valgrind --leak-check=full  --show-leak-kinds=all   --track-origins=yes --verbose   --log-file=valgrind-out.txt ./minishell 
-
 
 test:
 	bash tests.sh
