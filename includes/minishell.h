@@ -60,48 +60,53 @@ typedef struct s_shell
 	t_token			*token;
 }               t_shell;
 
-// * Built-ins
-int     ft_cd(char **args);
-int     ft_echo(char **args);
-int     ft_env(t_shell *shell);
-int     ft_exit(char **args);
-int     ft_export(t_shell *shell, char **args);
-int     ft_pwd(void);
-int     ft_unset(t_shell *shell, char **args);
+// * ==========================================================>		Built-ins
+// int     	ft_cd(char **args);
+// int     	ft_echo(char **args);
+// int     	ft_env(t_shell *shell);
+// int     	ft_exit(char **args);
+// int     	ft_export(t_shell *shell, char **args);
+// int     	ft_pwd(void);
+// int     	ft_unset(t_shell *shell, char **args);
 
-// * Execution
-void    execute_command(t_cmd *cmd);
-void    execute_pipeline(t_cmd *cmd);
-int     is_builtin(char *cmd);
-void    run_builtin(t_cmd *cmd);
+// * ==========================================================>		Execution
+// void    execute_command(t_cmd *cmd);
+// void    execute_pipeline(t_cmd *cmd);
+// int     is_builtin(char *cmd);
+// void    run_builtin(t_cmd *cmd);
 
-// * Parsing
-t_token *tokenizer(char *input);
-t_cmd   *parse_input(char *input);
-char    **lexer(char *input);
-int     syntax_checker(char **tokens);
-t_cmd   *build_ast(t_token *tokens);
+// * ==========================================================>		Parsing
+void 		print_tokens(t_token *tokens);
+t_token 	*tokenizer(char *input);
+// t_cmd   *parse_input(char *input);
+// char    **lexer(char *input);
+// int     syntax_checker(char **tokens);
+// t_cmd   *build_ast(t_token *tokens);
 
 // * Redirections & Pipes
-int     handle_redirections(t_cmd *cmd);
-int     setup_pipes(t_cmd *cmd);
+// int     handle_redirections(t_cmd *cmd);
+// int     setup_pipes(t_cmd *cmd);
 
-// * Environment management
-void	init_env(t_shell *shell, char **envp);
-char    *get_env_value(char *key);
-void    set_env_value(char *key, char *value);
-void    add_env_var(char *key, char *value);
-void    remove_env_var(char *key);
-void    free_env(void);
+// * ==========================================================>		Environment management
+void		init_env(t_shell *shell, char **envp);
+// char    *get_env_value(char *key);
+// void    set_env_value(char *key, char *value);
+// void    add_env_var(char *key, char *value);
+// void    remove_env_var(char *key);
+// void    free_env(void);
 
-// * Signals
-void    handle_signals(void);
-void    sigint_handler(int signo);
-void    sigquit_handler(int signo);
+// * ==========================================================>		Signals
+// void    handle_signals(void);
+// void    sigint_handler(int signo);
+// void    sigquit_handler(int signo);
 
-// * Utilities
-void    free_cmd(t_cmd *cmd);
-void    free_tokens(t_token *token);
-void    free_shell(t_shell *shell);
+// * ==========================================================>		Utilities
+int			ft_isspace(char c);
+void		skip_spaces(char *input, int *i);
+void		init_env(t_shell *shell, char **envp);
+
+// void    free_cmd(t_cmd *cmd);
+// void    free_tokens(t_token *token);
+// void    free_shell(t_shell *shell);
 
 #endif

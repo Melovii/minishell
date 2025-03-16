@@ -40,7 +40,8 @@ static void	shell_loop(t_shell *shell)
 		}
 		if (*input)
 			add_history(input);
-		// shell->token = tokenizer(input);
+		shell->token = tokenizer(input);
+		print_tokens(shell->token);	// ! DEBUGGING ONLY
 		// shell->cmd = parse_input(input);
 		// free(input);
 		// if (shell->cmd)

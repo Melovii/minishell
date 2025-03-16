@@ -6,35 +6,30 @@ LIBFT			= 	libft/libft.a
 
 SRC_DIR			= 	srcs
 OBJ_DIR			= 	objs
+
 UTILS_DIR		= 	$(SRC_DIR)/utils
 BUILTINS_DIR	= 	$(SRC_DIR)/builtins
 EXEC_DIR		= 	$(SRC_DIR)/exec
-PARSER_DIR		= 	$(SRC_DIR)/parser
+PARSING_DIR		= 	$(SRC_DIR)/parsing
 SIG_DIR			= 	$(SRC_DIR)/signals
 
 SRCS			=	$(SRC_DIR)/main.c				\
+					$(PARSING_DIR)/tokenizer.c		\
+					$(UTILS_DIR)/string_utils.c		\
 					$(UTILS_DIR)/env_utils.c		\
 
-OBJS			=	$(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+OBJS			=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-all: default
-
-default: $(NAME)
+all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	@$(CC) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
-	@echo Makefile run successfully!
+	@echo "Makefile run successfully!"
 
-# Ensure that subdirectories in objs exist before compiling
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)/utils
+# Compile source files into object files inside objs/
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)  # Creates subdirectory for object file if it doesn't exist
 	@$(CC) $(CFLAGS) -c $< -o $@
-
-# Create all necessary object directories
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-
-$(OBJ_DIR)/utils:
-	@mkdir -p $(OBJ_DIR)/utils
 
 $(LIBFT):
 	@make -C libft bonus --silent
@@ -58,5 +53,3 @@ leaks:
 
 test:
 	bash tests.sh
-
-.PHONY: all clean fclean re leaks test
