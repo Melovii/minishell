@@ -3,6 +3,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 AR = ar rcs
 RM = rm -f
+
+SRC_DIR = srcs
+OBJ_DIR = objs
+
 FILES =	ft_atoi.c \
 		ft_memchr.c \
 		ft_split.c \
@@ -38,7 +42,7 @@ FILES =	ft_atoi.c \
 		ft_putstr_fd.c \
 		ft_strmapi.c
 
-BONUS = ft_lstadd_front.c \
+BONUS =	ft_lstadd_front.c \
 		ft_lstdelone.c \
 		ft_lstiter.c \
 		ft_lstlast.c \
@@ -48,8 +52,8 @@ BONUS = ft_lstadd_front.c \
 		ft_lstclear.c \
 		ft_lstadd_back.c
 
-OBJECTS = $(FILES:.c=.o)
-BONUS_OBJ = $(BONUS:.c=.o)
+OBJECTS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(FILES))
+BONUS_OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(BONUS))
 
 all: ${NAME}
 
@@ -57,11 +61,16 @@ $(NAME): $(OBJECTS)
 	$(AR) $(NAME) $(OBJECTS)
 
 bonus: $(OBJECTS) $(BONUS_OBJ)
-
 	$(AR) $(NAME) $(OBJECTS) $(BONUS_OBJ)
 
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
+
 clean:
-	${RM} ${OBJECTS} ${BONUS_OBJ}
+	${RM} -r ${OBJ_DIR}
 
 fclean: clean
 	${RM} ${NAME}

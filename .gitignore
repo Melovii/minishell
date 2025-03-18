@@ -1,4 +1,7 @@
 .vscode
+objs
+libft/objs
 minishell
 valgrind-out.txt
 tests.log
+libft/libft.a
