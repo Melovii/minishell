@@ -27,21 +27,20 @@ void	add_to_cmd_args(t_cmd *cmd, char *value)
 	cmd->args = refill_cmd_args(cmd->args, len, value);
 	if (!cmd->args)
 	{
-		perror("realloc failed");
+		perror("refill_cmd_args() failed");
 		return ; // ! error handling remains
 	}
 }
 
 // * Function to parse the tokens and build a list of commands
 // ? (btw why not just use ft_calloc?)
+// ! Check Later
 t_cmd	*parse_input(char *input)
 {
 	t_token	*tokens;
 	t_cmd	*cmd;
 	t_cmd	*current_cmd;
 
-	cmd = NULL;
-	current_cmd = NULL;
 	tokens = tokenizer(input);
 	if (!tokens)
 		return (NULL);
@@ -49,22 +48,16 @@ t_cmd	*parse_input(char *input)
 	if (!cmd)
 		return (NULL);
 	current_cmd = cmd;
-	current_cmd->args = NULL;
-	current_cmd->in_fd = -1;
-	current_cmd->out_fd = -1;
-	current_cmd->next = NULL;
+	init_cmd(current_cmd);
 	while (tokens)
 	{
-		if (tokens->value && is_strs_equals(tokens->value, "|") == true)
+		if (tokens->value && are_strs_equal(tokens->value, "|") == true)
 		{
 			current_cmd->next = ft_calloc(1, sizeof(t_cmd));
 			if (!current_cmd->next)
 				return (NULL);
 			current_cmd = current_cmd->next;
-			current_cmd->args = NULL;
-			current_cmd->in_fd = -1;
-			current_cmd->out_fd = -1;
-			current_cmd->next = NULL;
+			init_cmd(current_cmd);
 		}
 		else
 			add_to_cmd_args(current_cmd, tokens->value);
@@ -83,7 +76,7 @@ t_cmd	*build_ast(t_token *tokens)
 	current_cmd = NULL;
 	while (tokens)
 	{
-		if (is_strs_equals(tokens->value, "|") == true)
+		if (are_strs_equal(tokens->value, "|") == true)
 		{
 			current_cmd->next = malloc(sizeof(t_cmd));
 			current_cmd = current_cmd->next;
@@ -99,19 +92,19 @@ t_cmd	*build_ast(t_token *tokens)
 }
 
 // * Function to check if the syntax of the tokens is valid
-int	syntax_checker(char **tokens)
+int	syntax_checker(char **tokens) // ?  never used???????
 {
 	int	i;
 
 	i = 0;
 	while (tokens[i])
 	{
-		if ((is_strs_equals(tokens[i], "|") == true && (i == 0 || !tokens[i + 1]
-					|| is_strs_equals(tokens[i + 1], "|") == true)))
+		if ((are_strs_equal(tokens[i], "|") == true && (i == 0 || !tokens[i + 1]
+					|| are_strs_equal(tokens[i + 1], "|") == true)))
 		{
 			return (0);
 		}
-		if ((is_strs_equals(tokens[i], "<") == true || is_strs_equals(tokens[i],
+		if ((are_strs_equal(tokens[i], "<") == true || are_strs_equal(tokens[i],
 					">") == true) && (i == 0 || !tokens[i + 1]))
 		{
 			return (0);

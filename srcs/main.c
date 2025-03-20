@@ -60,11 +60,9 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	if (argc != 1)
 		return (EXIT_FAILURE);
-
 	shell = ft_calloc(1, sizeof(t_shell));
 	if (!shell)
 		return (EXIT_FAILURE);
-
 	init_shell(shell, envp);
 	shell_loop(shell);
 	// free_env();

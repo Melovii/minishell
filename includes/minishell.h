@@ -80,7 +80,10 @@ void 		print_tokens(t_token *tokens);		// ! (DEBUG)
 void 		print_cmd_list(t_cmd *cmd);			// ! (DEBUG)
 
 t_token 	*tokenizer(char *input);
-char **refill_cmd_args(char **old, int len, char *value);
+void		add_token(t_token **tokens, char *value);
+
+char 		**refill_cmd_args(char **old, int len, char *value);
+void		init_cmd(t_cmd *cmd);
 t_cmd   	*parse_input(char *input);
 // char    **lexer(char *input);
 // int     syntax_checker(char **tokens);
@@ -104,8 +107,8 @@ void		init_env(t_shell *shell, char **envp);
 // void    sigquit_handler(int signo);
 
 // * ==========================================================>		Utilities
-int			ft_isspace(char c);
-bool		is_strs_equals(char *s1, char *s2);
+bool		ft_isspace(char c);
+bool		are_strs_equal(char *s1, char *s2);
 void		skip_spaces(char *input, int *i);
 void		init_env(t_shell *shell, char **envp);
 
