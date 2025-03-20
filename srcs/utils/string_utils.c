@@ -12,3 +12,10 @@ void skip_spaces(char *input, int *i)
     while (input[*i] && ft_isspace(input[*i]))
         (*i)++;
 }
+
+bool	is_strs_equals(char *s1, char *s2)
+{
+	if (ft_strlen(s1) == ft_strlen(s2) && ft_strncmp(s1, s2, ft_strlen(s1)) == 0)
+		return (true);
+	return (false);
+}
