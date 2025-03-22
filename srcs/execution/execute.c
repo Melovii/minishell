@@ -2,41 +2,59 @@
 
 static void close_unused_pipes(int **pipe_fd, int num_pipes, int i, int is_child)
 {
+    int j;
+
+	j = 0;
     if (is_child)
     {
-        // In child: Close unused pipe ends (Read/Write ends)
-        if (i > 0)   // Close the read end of the previous pipe
-            close(pipe_fd[i - 1][0]);
-        if (i < num_pipes)  // Close the write end of the current pipe
-            close(pipe_fd[i][1]);
+        // Close all pipes except necessary ones for child process
+        while (j < num_pipes)
+        {
+            if (j != i - 1) // Keep read-end of previous pipe open
+                close(pipe_fd[j][0]);
+            if (j != i) // Keep write-end of current pipe open
+                close(pipe_fd[j][1]);
+            j++;
+        }
     }
     else
     {
-        // In parent: Close both ends of all pipes after fork
-        for (int j = 0; j < num_pipes; j++)
+        j = 0;
+        // Parent closes all pipe ends after forking
+        while (j < num_pipes)
         {
             close(pipe_fd[j][0]);
             close(pipe_fd[j][1]);
+            j++;
         }
     }
 }
 
+
 static void child_prc(t_cmd *cmd, int **pipe_fd, int num_pipes, int i)
 {
-    // Set up the file descriptors for pipes
-    if (cmd->in_fd != STDIN_FILENO)
+    if (cmd->in_fd != STDIN_FILENO) // Set up input redirection
+    {
         dup2(cmd->in_fd, STDIN_FILENO);
-    if (cmd->out_fd != STDOUT_FILENO)
+        close(cmd->in_fd);
+    }
+    else if (i > 0) // Read from previous pipe
+        dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+
+    if (cmd->out_fd != STDOUT_FILENO) // Set up output redirection
+    {
         dup2(cmd->out_fd, STDOUT_FILENO);
+        close(cmd->out_fd);
+    }
+    else if (i < num_pipes) // Write to next pipe
+        dup2(pipe_fd[i][1], STDOUT_FILENO);
 
-    // Close unused pipe ends in the child process
     close_unused_pipes(pipe_fd, num_pipes, i, 1);
-
-    // Execute the command
-    if (execvp(cmd->args[0], cmd->args) == -1)
+    
+	if (execvp(cmd->args[0], cmd->args) == -1) // Execute command
     {
         perror("Execvp failed");
-        exit(EX_KO);  // Ensure the child exits if execvp fails
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -44,11 +62,9 @@ static void parent_prc(pid_t pid)
 {
     int status;
 
-    // Wait for the child process to finish
     if (waitpid(pid, &status, 0) == -1)
-        handle_error("Error waiting for child", EX_KO);
+        perror("Error waiting for child");
 
-    // Handle child exit status
     if (WIFEXITED(status))
         printf("Child exited with status %d\n", WEXITSTATUS(status));
     else if (WIFSIGNALED(status))
@@ -67,28 +83,22 @@ int exec_cmd(t_shell *shell, t_cmd *cmd)
 
     while (cmd)
     {
-		printf("Forking process %d for command: %s\n", i, cmd->args[0]);
+        printf("Forking process %d for command: %s\n", i, cmd->args[0]);
         pid = fork();
         if (pid < 0)
-        {
-            handle_error("Error forking", EX_KO);
-        }
+            handle_error("Error forking", EXIT_FAILURE);
         else if (pid == 0)  // Child process
-        {
             child_prc(cmd, pipe_fd, num_pipes, i);
-        }
-        else  // Parent process
-        {
-            parent_prc(pid);  // Wait for the child to finish
-        }
 
-        // Move to the next command after forking
         cmd = cmd->next;
         i++;
     }
 
-    // Close all pipes in the parent process after forking all children
     close_unused_pipes(pipe_fd, num_pipes, i, 0);
 
-    return (1);  // Return a success status
+    // Wait for all child processes
+	while (i-- > 0)
+		parent_prc(pid);
+
+    return (1);
 }
