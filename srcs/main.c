@@ -42,11 +42,11 @@ static void	shell_loop(t_shell *shell)
 			add_history(input);
 		shell->token = tokenizer(input);
 		print_tokens(shell->token);	// ! DEBUGGING ONLY
-		shell->cmd = parse_input(input);
+		shell->cmd = parse_input(shell);
 		print_cmd_list(shell->cmd);	// ! DEBUGGING ONLY
 		free(input);
-		// if (shell->cmd)
-			// execute_pipeline(shell->cmd);
+		if (shell->cmd)
+			exec_cmd(shell, shell->cmd);
 		// free_tokens(shell->token);
 		// free_cmd(shell->cmd);
 	}
@@ -58,13 +58,11 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	*shell;
 
 	(void)argv;
-	if (argc != 1)
-		return (EXIT_FAILURE);
-
+	if (argc != 1) // TODO: Add invalid number of arguments error code (2)
+		handle_error("Invalid number of arguments", 2);
 	shell = ft_calloc(1, sizeof(t_shell));
 	if (!shell)
 		return (EXIT_FAILURE);
-
 	init_shell(shell, envp);
 	shell_loop(shell);
 	// free_env();

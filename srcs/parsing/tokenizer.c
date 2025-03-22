@@ -1,38 +1,5 @@
 #include "minishell.h"
 
-// * Function to create and return a new token with the given value
-static t_token	*new_token(char *value)
-{
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->value = ft_strdup(value);
-	token->next = NULL;
-	return (token);
-}
-
-// * Function to add a new token to the token list
-static void	add_token(t_token **tokens, char *value)
-{
-	t_token	*new;
-	t_token	*temp;
-
-	new = new_token(value);
-	if (!new)
-		return ;
-	if (!*tokens)
-		*tokens = new;
-	else
-	{
-		temp = *tokens;
-		while (temp->next)
-			temp = temp->next;
-		temp->next = new;
-	}
-}
-
 // * Function to parse special tokens ('<' and '>') and add them to the token list
 static int	get_special_token(char *input, int *i, t_token **tokens)
 {
