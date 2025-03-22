@@ -81,8 +81,8 @@ t_cmd	*build_ast(t_token *tokens)
 			current_cmd->next = malloc(sizeof(t_cmd));
 			current_cmd = current_cmd->next;
 			current_cmd->args = NULL;
-			current_cmd->in_fd = -1;
-			current_cmd->out_fd = -1;
+			current_cmd->in_fd = 0; // ? IS THIS CORRECT?
+			current_cmd->out_fd = 1; // ? IS THIS CORRECT?
 		}
 		else
 			add_to_cmd_args(current_cmd, tokens->value);

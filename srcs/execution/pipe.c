@@ -22,24 +22,29 @@ static int **allocate_pipes(int num_pipes)
 
 static void create_pipes(t_shell *shell, t_cmd *cmd, int **pipe_fd, int num_pipes)
 {
-	(void)shell; // TODO: Use this for error handling later
-	int i;
+    (void)shell; // For future error handling
+    int i;
 
 	i = 0;
-    while (num_pipes)
+    while (i < num_pipes && cmd -> next)
     {
-    	// Create the pipe between the current and next command
-    	pipe(pipe_fd[i]);
+        // Create a pipe between the current command and the next command
+        if (pipe(pipe_fd[i]) == -1)
+            handle_error("pipe() function error", EX_KO); // ! check later
         
-		// Set the current command's output fd
-    	cmd->out_fd = pipe_fd[i][1];
+        // Assign the current command's output file descriptor to the write end of the pipe
+        cmd->out_fd = pipe_fd[i][1];
 
-		// Set the next command's input fd (if any?)
-    	if (cmd->next)
-			cmd->next->in_fd = pipe_fd[i][0];
-    	i++;
+        // If there is a next command, assign its input file descriptor to the read end of the pipe
+        if (cmd->next)
+        {
+            cmd->next->in_fd = pipe_fd[i][0];
+            cmd = cmd->next; // Move to the next command in the linked list
+			i++;
+        }
     }
 }
+
 
 int	**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes)
 {

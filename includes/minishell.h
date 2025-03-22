@@ -122,6 +122,7 @@ void		add_token(t_token **tokens, char *value);
 int			count_pipes(t_cmd *cmd);
 int			is_builtin(char *cmd);
 int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
+void        close_pipes(int **pipe_fd, int num_pipes);
 
 // void    free_cmd(t_cmd *cmd);
 // void    free_tokens(t_token *token);

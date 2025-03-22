@@ -25,8 +25,8 @@ char **refill_cmd_args(char **old, int len, char *value)
 void	init_cmd(t_cmd *cmd)
 {
 	cmd->args = NULL;
-	cmd->in_fd = -1;
-	cmd->out_fd = -1;
+	cmd->in_fd = 0; // ? IS THIS CORRECT?
+	cmd->out_fd = 1; // ? IS THIS CORRECT?
 	cmd->next = NULL;
 }
 
