@@ -35,23 +35,23 @@ void	add_to_cmd_args(t_cmd *cmd, char *value)
 // * Function to parse the tokens and build a list of commands
 // ? (btw why not just use ft_calloc?)
 // ! Check Later
-t_cmd	*parse_input(char *input)
+t_cmd	*parse_input(t_shell *shell)
 {
-	t_token	*tokens;
+	t_token	*token;
 	t_cmd	*cmd;
 	t_cmd	*current_cmd;
 
-	tokens = tokenizer(input);
-	if (!tokens)
-		return (NULL);
+	token = shell->token;
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
 	current_cmd = cmd;
 	init_cmd(current_cmd);
-	while (tokens)
+	while (token)
 	{
-		if (tokens->value && are_strs_equal(tokens->value, "|") == true)
+		if (!token->value)
+			printf("TOKEN VALUE: NULL\n");
+		if (token->value && are_strs_equal(token->value, "|") == true)
 		{
 			current_cmd->next = ft_calloc(1, sizeof(t_cmd));
 			if (!current_cmd->next)
@@ -60,8 +60,8 @@ t_cmd	*parse_input(char *input)
 			init_cmd(current_cmd);
 		}
 		else
-			add_to_cmd_args(current_cmd, tokens->value);
-		tokens = tokens->next;
+			add_to_cmd_args(current_cmd, token->value);
+		token = token->next;
 	}
 	return (cmd);
 }
