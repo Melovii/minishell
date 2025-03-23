@@ -70,14 +70,15 @@ typedef struct s_cmd
 // * Struct for tokens
 typedef struct s_token
 {
-    t_token_type    type;
 	char            *value;
+    t_token_type    type;
 	struct s_token  *next;
 }               t_token;
 
 // * Struct for shell state
 typedef struct s_shell
 {
+	char			**og_env;
 	int				exit_flag;
 	t_env           *env;
 	t_cmd           *cmd;
@@ -145,6 +146,11 @@ int			is_builtin(char *cmd);
 int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
 void        close_pipes(int **pipe_fd, int num_pipes);
 
+int			ft_open_file(char *file_name, int flow);
+char		*ft_find_envp(char **envp);
+char		*ft_find_cmd(char *cmd, char **envp);
+
+void		ft_free_tab(char **tab);
 // void    free_cmd(t_cmd *cmd);
 // void    free_tokens(t_token *token);
 // void    free_shell(t_shell *shell);

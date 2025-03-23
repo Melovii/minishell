@@ -24,7 +24,8 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(UTILS_DIR)/env_utils.c		\
 					$(UTILS_DIR)/error_utils.c		\
 					$(UTILS_DIR)/exec_utils.c		\
-					# $(UTILS_DIR)/builtin_utils.c	\
+					$(UTILS_DIR)/free_utils.c		\
+					$(UTILS_DIR)/path_utils.c		\
 
 OBJS			=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

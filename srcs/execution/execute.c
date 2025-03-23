@@ -31,8 +31,10 @@ static void close_unused_pipes(int **pipe_fd, int num_pipes, int i, int is_child
 }
 
 
-static void child_prc(t_cmd *cmd, int **pipe_fd, int num_pipes, int i)
+static void child_prc(t_cmd *cmd, int **pipe_fd, int num_pipes, int i, t_shell *shell)
 {
+	char	*path;
+
     if (cmd->in_fd != STDIN_FILENO) // Set up input redirection
     {
         dup2(cmd->in_fd, STDIN_FILENO);
@@ -51,11 +53,9 @@ static void child_prc(t_cmd *cmd, int **pipe_fd, int num_pipes, int i)
 
     close_unused_pipes(pipe_fd, num_pipes, i, 1);
     
-	if (execvp(cmd->args[0], cmd->args) == -1) // Execute command
-    {
-        perror("Execvp failed");
-        exit(EXIT_FAILURE);
-    }
+	path = ft_find_cmd(cmd->args[0], shell->og_env);
+	if (execve(path, &cmd->args[0], shell->og_env) == -1) // Execute command
+		handle_error("Execve failed", EX_KO);
 }
 
 static void parent_prc(pid_t pid)
@@ -88,7 +88,7 @@ int exec_cmd(t_shell *shell, t_cmd *cmd)
         if (pid < 0)
             handle_error("Error forking", EXIT_FAILURE);
         else if (pid == 0)  // Child process
-            child_prc(cmd, pipe_fd, num_pipes, i);
+            child_prc(cmd, pipe_fd, num_pipes, i, shell);
 
         cmd = cmd->next;
         i++;
