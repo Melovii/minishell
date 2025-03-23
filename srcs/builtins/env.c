@@ -6,7 +6,7 @@ int	ft_env(t_shell *shell)
 	t_env	*env;
 
 	env = shell->env;
-	if (!env || !env->key || !env->value) // ? Check if this is correct/necessary
+	if (!env || !env->key || !env->value) // TODO: Check if this is correct/necessary
 		return (EX_KO);
 	while (env)
 	{
