@@ -10,7 +10,7 @@ int	count_pipes(t_cmd *cmd)
 		cmd = cmd->next;
 		i++;
 	}
-	printf("Number of pipes: %d\n", i - 1);
+	// printf("Number of pipes: %d\n", i - 1);
 	return (i - 1);
 }
 
