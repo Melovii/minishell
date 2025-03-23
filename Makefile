@@ -10,7 +10,7 @@ OBJ_DIR			= 	objs
 
 UTILS_DIR		= 	$(SRC_DIR)/utils
 BUILTINS_DIR	= 	$(SRC_DIR)/builtins
-EXEC_DIR		= 	$(SRC_DIR)/exec
+EXEC_DIR		= 	$(SRC_DIR)/execution
 PARSING_DIR		= 	$(SRC_DIR)/parsing
 SIG_DIR			= 	$(SRC_DIR)/signals
 
@@ -23,8 +23,8 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(UTILS_DIR)/string_utils.c		\
 					$(UTILS_DIR)/env_utils.c		\
 					$(UTILS_DIR)/error_utils.c		\
-					$(UTILS_DIR)/builtin_utils.c	\
 					$(UTILS_DIR)/exec_utils.c		\
+					# $(UTILS_DIR)/builtin_utils.c	\
 
 OBJS			=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
