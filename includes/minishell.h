@@ -66,7 +66,7 @@ typedef struct s_shell
 
 // * ==========================================================>		Built-ins
 int     	ft_cd(char **args);
-// int     	ft_echo(char **args);
+int     	ft_echo(char **args);
 int     	ft_env(t_shell *shell);
 int     	ft_exit(char **args);
 // int     	ft_export(t_shell *shell, char **args);

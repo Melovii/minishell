@@ -28,8 +28,8 @@ int	exec_builtin(t_shell *shell, char **args)
 	if (strcmp(args[0], "cd") == 0)
 		return ft_cd(args);
 
-	// if (strcmp(args[0], "echo") == 0)
-	// 	return ft_echo(args);
+	if (strcmp(args[0], "echo") == 0)
+		return ft_echo(args);
 
 	if (strcmp(args[0], "pwd") == 0)
 		return ft_pwd();

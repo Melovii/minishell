@@ -29,6 +29,7 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(BUILTINS_DIR)/pwd.c			\
 					$(BUILTINS_DIR)/cd.c			\
 					$(BUILTINS_DIR)/exit.c			\
+					$(BUILTINS_DIR)/echo.c			\
 
 OBJS			=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
