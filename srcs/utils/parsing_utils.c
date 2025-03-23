@@ -39,7 +39,9 @@ static t_token	*new_token(char *value)
 	if (!token)
 		return (NULL);
 	token->value = ft_strdup(value);
+	// ! potential error check
 	token->next = NULL;
+	token->type = NIL;
 	return (token);
 }
 
@@ -61,4 +63,11 @@ void	add_token(t_token **tokens, char *value)
 			temp = temp->next;
 		temp->next = new;
 	}
+}
+
+bool	is_operator(char c)
+{
+	if (c == '|' || c == '>' || c == '<')
+		return (true);
+	return (false);
 }

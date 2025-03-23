@@ -31,6 +31,25 @@
 
 extern volatile sig_atomic_t	g_signal;
 
+// * ==========================================================>		Enums
+
+// * Enum for token types 
+typedef enum	e_token_type
+{
+    WORD,			// Command or argument
+    PIPE,			// '|'
+    REDIRECT_IN,	// '<'
+    REDIRECT_OUT,	// '>'
+    HEREDOC,		// '<<'
+    APPEND,			// '>>'
+    DQUOTE,			// Double quote
+	SQUOTE,			// Single quote
+	NIL				// NULL (default)
+}				t_token_type;
+
+
+// * ==========================================================>		Structures
+
 // * Struct for environment variables
 typedef struct s_env
 {
@@ -52,13 +71,16 @@ typedef struct s_cmd
 typedef struct s_token
 {
 	char            *value;
+    t_token_type    type;
 	struct s_token  *next;
 }               t_token;
 
 // * Struct for shell state
 typedef struct s_shell
 {
+	char			**og_env;
 	int				exit_flag;
+	int				num_pipes;
 	t_env           *env;
 	t_cmd           *cmd;
 	t_token			*token;
@@ -111,6 +133,7 @@ void		init_env(t_shell *shell, char **envp);
 bool		ft_isspace(char c);
 bool		are_strs_equal(char *s1, char *s2);
 void		skip_spaces(char *input, int *i);
+bool	    is_operator(char c);
 int			is_numeric(const char *str);
 
 void		init_env(t_shell *shell, char **envp);
@@ -130,6 +153,11 @@ void        close_pipes(int **pipe_fd, int num_pipes);
 int			exec_builtin(t_shell *shell, char **args);
 int			is_builtin(char *cmd);
 
+int			ft_open_file(char *file_name, int flow);
+char		*ft_find_envp(char **envp);
+char		*ft_find_cmd(char *cmd, char **envp);
+
+void		ft_free_tab(char **tab);
 // void    free_cmd(t_cmd *cmd);
 // void    free_tokens(t_token *token);
 // void    free_shell(t_shell *shell);

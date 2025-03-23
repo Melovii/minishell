@@ -21,6 +21,7 @@ static void	init_shell(t_shell *shell, char **envp)
 	shell->env = NULL;
 	shell->cmd = NULL;
 	shell->token = NULL;
+	shell->og_env = envp;
 	init_env(shell, envp);
 	// handle_signals();
 }
