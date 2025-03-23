@@ -83,7 +83,7 @@ int exec_cmd(t_shell *shell, t_cmd *cmd)
 
     while (cmd)
     {
-        // printf("Forking process %d for command: %s\n", i, cmd->args[0]);
+        printf("Forking process %d for command: %s\n", i, cmd->args[0]);
         pid = fork();
         if (pid < 0)
             handle_error("Error forking", EXIT_FAILURE);

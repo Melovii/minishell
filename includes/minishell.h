@@ -65,13 +65,13 @@ typedef struct s_shell
 }               t_shell;
 
 // * ==========================================================>		Built-ins
-// int     	ft_cd(char **args);
-// int     	ft_echo(char **args);
-// int     	ft_env(t_shell *shell);
-// int     	ft_exit(char **args);
-// int     	ft_export(t_shell *shell, char **args);
-// int     	ft_pwd(void);
-// int     	ft_unset(t_shell *shell, char **args);
+int     	ft_cd(char **args);
+int     	ft_echo(char **args);
+int     	ft_env(t_shell *shell);
+int     	ft_exit(char **args);
+int     	ft_export(t_shell *shell, char **args);
+int     	ft_pwd(void);
+int     	ft_unset(t_shell *shell, char **args);
 
 // * ==========================================================>		Execution
 int			exec_cmd(t_shell *shell, t_cmd *cmd);

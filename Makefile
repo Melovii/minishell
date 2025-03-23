@@ -1,7 +1,7 @@
 NAME			= 	minishell
 CC				= 	cc
-# CFLAGS			= 	-g -Iincludes -I /home/my-home-dir/.local/include
-CFLAGS			= 	-Wall -Wextra -Werror -Iincludes -I /home/my-home-dir/.local/include
+CFLAGS			= 	-g -Iincludes -I /home/my-home-dir/.local/include
+# CFLAGS			= 	-Wall -Wextra -Werror -Iincludes -I /home/my-home-dir/.local/include
 LDFLAGS			= 	-L /home/my-home-dir/.local/lib -lreadline -lncurses
 LIBFT			= 	libft/libft.a
 
