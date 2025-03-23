@@ -72,8 +72,13 @@ t_cmd	*build_ast(t_token *tokens)
 	t_cmd	*cmd;
 	t_cmd	*current_cmd;
 
-	cmd = NULL;
-	current_cmd = NULL;
+	if (!tokens)
+		return (NULL);
+	cmd = ft_calloc(1, sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	init_cmd(cmd);
+	current_cmd = cmd;
 	while (tokens)
 	{
 		if (are_strs_equal(tokens->value, "|") == true)
