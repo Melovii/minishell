@@ -25,7 +25,7 @@ static t_env	*create_env_node(char *env_var)
 }
 
 // * Add node to the environment linked list
-static void	add_env_node(t_env **env_list, t_env *new_node)
+void	add_env_node(t_env **env_list, t_env *new_node)
 {
 	t_env	*current;
 
@@ -40,6 +40,26 @@ static void	add_env_node(t_env **env_list, t_env *new_node)
 	while (current->next)
 		current = current->next;
 	current->next = new_node;
+}
+
+t_env	*find_env_node(t_env *list, char *key)
+{
+	while (list)
+	{
+		if (are_strs_equal(list -> key, key))
+			return (list);
+		list = list -> next;
+	}
+	return (NULL);
+}
+
+void	free_env(t_env *env)
+{
+	if (!env)
+		return ;
+	free(env->key);
+	free(env->value);
+	free(env);
 }
 
 // * Initialize environment variables from envp

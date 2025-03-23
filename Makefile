@@ -30,6 +30,8 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(BUILTINS_DIR)/cd.c			\
 					$(BUILTINS_DIR)/exit.c			\
 					$(BUILTINS_DIR)/echo.c			\
+					$(BUILTINS_DIR)/unset.c			\
+					$(BUILTINS_DIR)/export.c		\
 
 OBJS			=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

@@ -34,11 +34,11 @@ int	exec_builtin(t_shell *shell, char **args)
 	if (strcmp(args[0], "pwd") == 0)
 		return ft_pwd();
 
-	// if (strcmp(args[0], "export") == 0)
-	// 	return ft_export(shell, args);
+	if (strcmp(args[0], "export") == 0)
+		return ft_export(shell, args);
 
-	// if (strcmp(args[0], "unset") == 0)
-	// 	return ft_unset(shell, args);
+	if (strcmp(args[0], "unset") == 0)
+		return ft_unset(shell, args);
 
 	if (strcmp(args[0], "env") == 0)
 		return ft_env(shell);

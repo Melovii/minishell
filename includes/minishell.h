@@ -69,9 +69,9 @@ int     	ft_cd(char **args);
 int     	ft_echo(char **args);
 int     	ft_env(t_shell *shell);
 int     	ft_exit(char **args);
-// int     	ft_export(t_shell *shell, char **args);
+int			ft_export(t_shell *shell, char **args);
 int     	ft_pwd(void);
-// int     	ft_unset(t_shell *shell, char **args);
+int     	ft_unset(t_shell *shell, char **args);
 
 // * ==========================================================>		Execution
 int			exec_cmd(t_shell *shell, t_cmd *cmd);
@@ -114,6 +114,9 @@ void		skip_spaces(char *input, int *i);
 int			is_numeric(const char *str);
 
 void		init_env(t_shell *shell, char **envp);
+t_env		*find_env_node(t_env *list, char *key);
+void		free_env(t_env *env);
+void	add_env_node(t_env **env_list, t_env *new_node);
 
 void		handle_error(const char *message, int exit_status);
 
