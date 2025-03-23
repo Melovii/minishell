@@ -31,6 +31,25 @@
 
 extern volatile sig_atomic_t	g_signal;
 
+// * ==========================================================>		Enums
+
+// * Enum for token types 
+typedef enum	e_token_type
+{
+    WORD,			// Command or argument
+    PIPE,			// '|'
+    REDIRECT_IN,	// '<'
+    REDIRECT_OUT,	// '>'
+    HEREDOC,		// '<<'
+    APPEND,			// '>>'
+    DQUOTE,			// Double quote
+	SQUOTE,			// Single quote
+	NIL				// NULL (default)
+}				t_token_type;
+
+
+// * ==========================================================>		Structures
+
 // * Struct for environment variables
 typedef struct s_env
 {
@@ -51,6 +70,7 @@ typedef struct s_cmd
 // * Struct for tokens
 typedef struct s_token
 {
+    t_token_type    type;
 	char            *value;
 	struct s_token  *next;
 }               t_token;
@@ -110,6 +130,7 @@ void		init_env(t_shell *shell, char **envp);
 bool		ft_isspace(char c);
 bool		are_strs_equal(char *s1, char *s2);
 void		skip_spaces(char *input, int *i);
+bool	    is_operator(char c);
 
 void		init_env(t_shell *shell, char **envp);
 

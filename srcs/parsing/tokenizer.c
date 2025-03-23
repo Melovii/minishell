@@ -24,8 +24,12 @@ static int	get_quoted_token(char *input, int *i, t_token **tokens)
 
 	quote = input[(*i)++];
 	start = *i;
-	while (input[*i] && input[*i] != quote)
+	while (input[*i])
+	{
+		while (input[*i] && input[*i] != quote)
 		(*i)++;
+	}
+	
 	if (!input[*i])
 		return (0);
 	(*i)++;
@@ -43,8 +47,7 @@ static int	get_word_token(char *input, int *i, t_token **tokens)
 	int	start;
 
 	start = *i;
-	while (input[*i] && !ft_isspace(input[*i])
-		&& input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
 		(*i)++;
 	add_token(tokens, ft_substr(input, start, (*i) - start));
 	return (1);
@@ -63,7 +66,7 @@ t_token	*tokenizer(char *input)
 		skip_spaces(input, &i);
 		if (!input[i])
 			break ;
-		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
+		if (is_operator(input[i]))
 			get_special_token(input, &i, &tokens);
 		else if (input[i] == '"' || input[i] == '\'')
 			get_quoted_token(input, &i, &tokens);
@@ -80,7 +83,7 @@ void print_tokens(t_token *tokens)
     printf("Tokens:\n");
     while (tokens)
     {
-        printf("  - \"%s\"\n", tokens->value);
+        printf("  - %s\n", tokens->value);
         tokens = tokens->next;
     }
 }
