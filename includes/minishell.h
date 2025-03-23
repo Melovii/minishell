@@ -65,17 +65,18 @@ typedef struct s_shell
 }               t_shell;
 
 // * ==========================================================>		Built-ins
-int     	ft_cd(char **args);
-int     	ft_echo(char **args);
+// int     	ft_cd(char **args);
+// int     	ft_echo(char **args);
 int     	ft_env(t_shell *shell);
-int     	ft_exit(char **args);
-int     	ft_export(t_shell *shell, char **args);
+// int     	ft_exit(char **args);
+// int     	ft_export(t_shell *shell, char **args);
 int     	ft_pwd(void);
-int     	ft_unset(t_shell *shell, char **args);
+// int     	ft_unset(t_shell *shell, char **args);
 
 // * ==========================================================>		Execution
 int			exec_cmd(t_shell *shell, t_cmd *cmd);
 int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
+
 // int     is_builtin(char *cmd);
 // void    run_builtin(t_cmd *cmd);
 
@@ -120,9 +121,10 @@ void		init_cmd(t_cmd *cmd);
 void		add_token(t_token **tokens, char *value);
 
 int			count_pipes(t_cmd *cmd);
-int			is_builtin(char *cmd);
 int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
 void        close_pipes(int **pipe_fd, int num_pipes);
+int			exec_builtin(t_shell *shell, char **args);
+int			is_builtin(char *cmd);
 
 // void    free_cmd(t_cmd *cmd);
 // void    free_tokens(t_token *token);

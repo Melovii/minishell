@@ -1,22 +1,22 @@
 #include "minishell.h"
 
-// TODO: Change ft_strcmp to are_equal_aksfimasfm
+// TODO: Change strcmp to are_equal_aksfimasfm
 
 int	is_builtin(char *cmd)
 {
-	if (!ft_strcmp(cmd, "cd"))
+	if (!strcmp(cmd, "cd"))
 		return (1);
-	if (!ft_strcmp(cmd, "echo"))
+	if (!strcmp(cmd, "echo"))
 		return (1);
-	if (!ft_strcmp(cmd, "pwd"))
+	if (!strcmp(cmd, "pwd"))
 		return (1);
-	if (!ft_strcmp(cmd, "export"))
+	if (!strcmp(cmd, "export"))
 		return (1);
-	if (!ft_strcmp(cmd, "unset"))
+	if (!strcmp(cmd, "unset"))
 		return (1);
-	if (!ft_strcmp(cmd, "env"))
+	if (!strcmp(cmd, "env"))
 		return (1);
-	if (!ft_strcmp(cmd, "exit"))
+	if (!strcmp(cmd, "exit"))
 		return (1);
 	return (0);
 }
@@ -25,27 +25,27 @@ int	is_builtin(char *cmd)
 
 int	exec_builtin(t_shell *shell, char **args)
 {
-	if (strcmp(args[0], "cd") == 0)
-		return ft_cd(args);
+	// if (strcmp(args[0], "cd") == 0)
+	// 	return ft_cd(args);
 
-	if (strcmp(args[0], "echo") == 0)
-		return ft_echo(args);
+	// if (strcmp(args[0], "echo") == 0)
+	// 	return ft_echo(args);
 
 	if (strcmp(args[0], "pwd") == 0)
 		return ft_pwd();
 
-	if (strcmp(args[0], "export") == 0)
-		return ft_export(shell);
+	// if (strcmp(args[0], "export") == 0)
+	// 	return ft_export(shell, args);
 
-	if (strcmp(args[0], "unset") == 0)
-		return ft_unset(shell, args);
+	// if (strcmp(args[0], "unset") == 0)
+	// 	return ft_unset(shell, args);
 
 	if (strcmp(args[0], "env") == 0)
 		return ft_env(shell);
 
-	if (strcmp(args[0], "exit") == 0)
-		return ft_exit(args);
+	// if (strcmp(args[0], "exit") == 0)
+	// 	return ft_exit(args);
 
-	// If not a built-in, return 0
-	return (0);
+	// If not a built-in, return -1
+	return (-1);
 }
