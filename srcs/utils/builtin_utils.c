@@ -43,8 +43,8 @@ int	exec_builtin(t_shell *shell, char **args)
 	if (strcmp(args[0], "env") == 0)
 		return ft_env(shell);
 
-	// if (strcmp(args[0], "exit") == 0)
-	// 	return ft_exit(args);
+	if (strcmp(args[0], "exit") == 0)
+		return ft_exit(args);
 
 	// If not a built-in, return -1
 	return (-1);

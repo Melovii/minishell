@@ -68,7 +68,7 @@ typedef struct s_shell
 int     	ft_cd(char **args);
 // int     	ft_echo(char **args);
 int     	ft_env(t_shell *shell);
-// int     	ft_exit(char **args);
+int     	ft_exit(char **args);
 // int     	ft_export(t_shell *shell, char **args);
 int     	ft_pwd(void);
 // int     	ft_unset(t_shell *shell, char **args);
@@ -111,6 +111,7 @@ void		init_env(t_shell *shell, char **envp);
 bool		ft_isspace(char c);
 bool		are_strs_equal(char *s1, char *s2);
 void		skip_spaces(char *input, int *i);
+int			is_numeric(const char *str);
 
 void		init_env(t_shell *shell, char **envp);
 
