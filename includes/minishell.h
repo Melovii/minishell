@@ -87,17 +87,18 @@ typedef struct s_shell
 }               t_shell;
 
 // * ==========================================================>		Built-ins
-// int     	ft_cd(char **args);
-// int     	ft_echo(char **args);
-// int     	ft_env(t_shell *shell);
-// int     	ft_exit(char **args);
-// int     	ft_export(t_shell *shell, char **args);
-// int     	ft_pwd(void);
-// int     	ft_unset(t_shell *shell, char **args);
+int     	ft_cd(char **args);
+int     	ft_echo(char **args);
+int     	ft_env(t_shell *shell);
+int     	ft_exit(char **args);
+int			ft_export(t_shell *shell, char **args);
+int     	ft_pwd(void);
+int     	ft_unset(t_shell *shell, char **args);
 
 // * ==========================================================>		Execution
 int			exec_cmd(t_shell *shell, t_cmd *cmd);
 int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
+
 // int     is_builtin(char *cmd);
 // void    run_builtin(t_cmd *cmd);
 
@@ -133,8 +134,12 @@ bool		ft_isspace(char c);
 bool		are_strs_equal(char *s1, char *s2);
 void		skip_spaces(char *input, int *i);
 bool	    is_operator(char c);
+int			is_numeric(const char *str);
 
 void		init_env(t_shell *shell, char **envp);
+t_env		*find_env_node(t_env *list, char *key);
+void		free_env(t_env *env);
+void	add_env_node(t_env **env_list, t_env *new_node);
 
 void		handle_error(const char *message, int exit_status);
 
@@ -143,9 +148,10 @@ void		init_cmd(t_cmd *cmd);
 void		add_token(t_token **tokens, char *value);
 
 int			count_pipes(t_cmd *cmd);
-int			is_builtin(char *cmd);
 int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
 void        close_pipes(int **pipe_fd, int num_pipes);
+int			exec_builtin(t_shell *shell, char **args);
+int			is_builtin(char *cmd);
 
 int			ft_open_file(char *file_name, int flow);
 char		*ft_find_envp(char **envp);

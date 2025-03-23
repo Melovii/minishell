@@ -76,13 +76,25 @@ int exec_cmd(t_shell *shell, t_cmd *cmd)
     pid_t pid;
     int **pipe_fd;
     int i = 0;
+	int	builtin_status;
 
     shell->num_pipes = count_pipes(cmd);
     pipe_fd = handle_pipe(shell, cmd, shell->num_pipes);
 
     while (cmd)
     {
-        // printf("Forking process %d for command: %s\n", i, cmd->args[0]);
+		// TODO: Consider removing the builtin status or the is_builtin function
+		if (is_builtin(cmd->args[0]))
+		{
+			builtin_status = exec_builtin(shell, cmd->args);
+			if (builtin_status != -1)
+			{
+				cmd = cmd->next;
+				i++;
+				continue;
+			}
+		}
+		
         pid = fork();
         if (pid < 0)
             handle_error("Error forking", EXIT_FAILURE);
