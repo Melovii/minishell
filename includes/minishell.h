@@ -103,6 +103,7 @@ int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
 // void    run_builtin(t_cmd *cmd);
 
 // * ==========================================================>		Parsing
+
 void 		print_tokens(t_token *tokens);		// ! (DEBUG)
 void 		print_cmd_list(t_cmd *cmd);			// ! (DEBUG)
 
@@ -130,11 +131,14 @@ void		init_env(t_shell *shell, char **envp);
 // void    sigquit_handler(int signo);
 
 // * ==========================================================>		Utilities
+
 bool		ft_isspace(char c);
 bool		are_strs_equal(char *s1, char *s2);
 void		skip_spaces(char *input, int *i);
 bool	    is_operator(char c);
 int			is_numeric(const char *str);
+bool		is_quote(char c);
+char		*ultimate_join(char *s1, char *s2);
 
 void		init_env(t_shell *shell, char **envp);
 t_env		*find_env_node(t_env *list, char *key);
