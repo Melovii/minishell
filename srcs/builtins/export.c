@@ -109,8 +109,11 @@ static bool	is_valid_identifier(char *arg)
 // * purpose: execute commands after the invalid key syntax
 static void	invalid_env(int *status, t_env *node)
 {
+	if (*status == 0)
+	{
+		ft_putstr_fd("export: ", 2);
+		ft_putstr_fd("not an identifier: ", 2);
+		ft_putendl_fd(node->key, 2);
+	}
 	*status = 1;
-	ft_putstr_fd("export: ", 2);
-	ft_putstr_fd("not an identifier: ", 2);
-	ft_putendl_fd(node->key, 2);
 }
