@@ -147,6 +147,8 @@ void	add_env_node(t_env **env_list, t_env *new_node);
 
 void		handle_error(const char *message, int exit_status);
 
+void	expander(t_shell *shell);
+
 char 		**refill_cmd_args(char **old, int len, char *value);
 void		init_cmd(t_cmd *cmd);
 void		add_token(t_token **tokens, char *value);

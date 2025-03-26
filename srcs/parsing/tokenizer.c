@@ -25,7 +25,7 @@ static char	*get_quote_part(char *input, int *i, char **combined)
 	start = *i - 1;
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
-	if (!input[*i])
+	if (!input[*i])  // ! This code logic is wrong
 	{
 		free(*combined);
 		handle_error(NULL, 1); // * If this block executed that means Some quotes are open

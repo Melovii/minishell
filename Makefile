@@ -18,6 +18,7 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(EXEC_DIR)/execute.c			\
 					$(EXEC_DIR)/pipe.c				\
 					$(PARSING_DIR)/tokenizer.c		\
+					$(PARSING_DIR)/expander.c		\
 					$(PARSING_DIR)/parser.c			\
 					$(UTILS_DIR)/cmd_utils.c		\
 					$(UTILS_DIR)/parsing_utils.c	\
