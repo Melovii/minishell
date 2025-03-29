@@ -30,6 +30,7 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(UTILS_DIR)/path_utils.c		\
 					$(UTILS_DIR)/builtin_utils.c	\
 					$(UTILS_DIR)/checker_utils.c	\
+					$(UTILS_DIR)/expander_utils.c	\
 					$(BUILTINS_DIR)/env.c			\
 					$(BUILTINS_DIR)/pwd.c			\
 					$(BUILTINS_DIR)/cd.c			\

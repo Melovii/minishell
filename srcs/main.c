@@ -12,11 +12,9 @@ static void make_ready_for_next_prompt(t_shell *shell)
 		return ;
 	
 	// TODO: Implement these function
-	free_env(shell->env);
 	free_tokens(shell->token);
 	free_cmd(shell->cmd);
 	free(shell->input);
-	shell->env = NULL;
 	shell->cmd = NULL;
 	shell->token = NULL;
 	shell->input = NULL;
@@ -69,7 +67,7 @@ static void	shell_loop(t_shell *shell)
 			free(input);
 			continue ;
 		}
-		//expander(shell);  // TODO:  Implement expander function
+		expander(shell);  // TODO:  Implement expander function
 		print_tokens(shell->token);	// ! DEBUGGING ONLY
 		shell->cmd = parse_input(shell);
 		// print_cmd_list(shell->cmd);	// ! DEBUGGING ONLY

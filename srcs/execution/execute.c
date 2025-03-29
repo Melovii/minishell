@@ -75,12 +75,12 @@ int exec_cmd(t_shell *shell, t_cmd *cmd)
 {
     pid_t pid;
     int **pipe_fd;
-    int i = 0;
+    int i;
 	int	builtin_status;
 
     shell->num_pipes = count_pipes(cmd);
     pipe_fd = handle_pipe(shell, cmd, shell->num_pipes);
-
+	i = 0;
     while (cmd)
     {
 		// TODO: Consider removing the builtin status or the is_builtin function
@@ -94,7 +94,6 @@ int exec_cmd(t_shell *shell, t_cmd *cmd)
 				continue;
 			}
 		}
-		
         pid = fork();
         if (pid < 0)
             handle_error("Error forking", EXIT_FAILURE);

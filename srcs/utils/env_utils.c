@@ -70,3 +70,15 @@ void	init_env(t_shell *shell, char **envp)
 		i++;
 	}
 }
+
+char	*get_env_value(t_env *env, char *key)
+{
+	t_env	*node;
+
+	if (!env || !key)
+		return (NULL);
+	node = find_env_node(env, key);
+	if (node)
+		return (node->value);
+	return (NULL);
+}

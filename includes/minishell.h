@@ -124,7 +124,6 @@ void		init_env(t_shell *shell, char **envp);
 // void    set_env_value(char *key, char *value);
 // void    add_env_var(char *key, char *value);
 // void    remove_env_var(char *key);
-// void    free_env(void);
 
 // * ==========================================================>		Signals
 // void    handle_signals(void);
@@ -143,6 +142,7 @@ char		*ultimate_join(char *s1, char *s2);
 
 void		init_env(t_shell *shell, char **envp);
 t_env		*find_env_node(t_env *list, char *key);
+char		*get_env_value(t_env *env, char *key);
 void		free_env(t_env *env);
 void	add_env_node(t_env **env_list, t_env *new_node);
 
@@ -165,6 +165,14 @@ char		*ft_find_envp(char **envp);
 char		*ft_find_cmd(char *cmd, char **envp);
 
 bool		is_quote_open(char input[]);
+
+
+int		measure_expanded_length(const char *s, t_shell *shell);
+void	extract_braced_var_name(const char *s, int *i, char *var_name);
+void	extract_var_name(const char *s, int *i, char *var_name);
+int	is_var_char(int c);
+
+int	measure_expanded_length(const char *s, t_shell *shell);
 
 // * ==========================================================>		Freeing functions
 
