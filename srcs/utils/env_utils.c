@@ -53,15 +53,6 @@ t_env	*find_env_node(t_env *list, char *key)
 	return (NULL);
 }
 
-void	free_env(t_env *env)
-{
-	if (!env)
-		return ;
-	free(env->key);
-	free(env->value);
-	free(env);
-}
-
 // * Initialize environment variables from envp
 void	init_env(t_shell *shell, char **envp)
 {

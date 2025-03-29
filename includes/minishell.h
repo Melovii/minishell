@@ -78,6 +78,7 @@ typedef struct s_token
 // * Struct for shell state
 typedef struct s_shell
 {
+	char			*input;
 	char			**og_env;
 	int				exit_flag;
 	int				num_pipes;
@@ -164,8 +165,12 @@ char		*ft_find_envp(char **envp);
 char		*ft_find_cmd(char *cmd, char **envp);
 
 void		ft_free_tab(char **tab);
-// void    free_cmd(t_cmd *cmd);
-// void    free_tokens(t_token *token);
-// void    free_shell(t_shell *shell);
+
+// * ==========================================================>		Freeing functions
+
+void    free_env(t_env *env);
+void    free_cmd(t_cmd *cmd);
+void    free_tokens(t_token *token);
+void    free_shell(t_shell *shell);
 
 #endif
