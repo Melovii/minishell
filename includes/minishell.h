@@ -164,10 +164,11 @@ int			ft_open_file(char *file_name, int flow);
 char		*ft_find_envp(char **envp);
 char		*ft_find_cmd(char *cmd, char **envp);
 
-void		ft_free_tab(char **tab);
+bool		is_quote_open(char input[]);
 
 // * ==========================================================>		Freeing functions
 
+void	ft_free_tab(char **tab);
 void    free_env(t_env *env);
 void    free_cmd(t_cmd *cmd);
 void    free_tokens(t_token *token);

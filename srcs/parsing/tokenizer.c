@@ -93,7 +93,7 @@ t_token	*tokenizer(char *input)
 		skip_spaces(input, &i);
 		if (!input[i])
 			break ;
-		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
+		if (is_operator(input[i]))
 			get_special_token(input, &i, &tokens);
 		else
 			get_combined_token(input, &i, &tokens);

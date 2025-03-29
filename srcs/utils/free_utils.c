@@ -58,10 +58,10 @@ void	free_shell(t_shell *shell)
 {
 	if (!shell)
 		return ;
-	free(shell->input);
+	if (shell->input)
+		free(shell->input);
 	free_env(shell->env);
 	free_cmd(shell->cmd);
 	free_tokens(shell->token);
-	ft_free_tab(shell->og_env);
 	free(shell);
 }

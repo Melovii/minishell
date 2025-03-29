@@ -57,6 +57,12 @@ static void	shell_loop(t_shell *shell)
 		if (*input)
 			add_history(input);
 		shell->input = input;
+		if (is_quote_open(input))
+		{
+			free(input);
+			ft_putendl_fd("minishell: syntax error: unclosed quotes", 2);
+			continue ;
+		}
 		shell->token = tokenizer(input);
 		if (!shell->token)   // * In order to prevent SEGFAULT
 		{
