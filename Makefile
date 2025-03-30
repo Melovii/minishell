@@ -13,13 +13,16 @@ BUILTINS_DIR	= 	$(SRC_DIR)/builtins
 EXEC_DIR		= 	$(SRC_DIR)/execution
 PARSING_DIR		= 	$(SRC_DIR)/parsing
 SIG_DIR			= 	$(SRC_DIR)/signals
+EXP_DIR			= 	$(PARSING_DIR)/expansion
 
 SRCS			=	$(SRC_DIR)/main.c				\
 					$(EXEC_DIR)/execute.c			\
 					$(EXEC_DIR)/pipe.c				\
 					$(PARSING_DIR)/tokenizer.c		\
-					$(PARSING_DIR)/expander.c		\
 					$(PARSING_DIR)/parser.c			\
+					$(EXP_DIR)/expander.c			\
+					$(EXP_DIR)/expander_utils.c		\
+					$(EXP_DIR)/expander_utils2.c	\
 					$(UTILS_DIR)/cmd_utils.c		\
 					$(UTILS_DIR)/parsing_utils.c	\
 					$(UTILS_DIR)/string_utils.c		\
@@ -30,7 +33,6 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(UTILS_DIR)/path_utils.c		\
 					$(UTILS_DIR)/builtin_utils.c	\
 					$(UTILS_DIR)/checker_utils.c	\
-					$(UTILS_DIR)/expander_utils.c	\
 					$(BUILTINS_DIR)/env.c			\
 					$(BUILTINS_DIR)/pwd.c			\
 					$(BUILTINS_DIR)/cd.c			\
@@ -38,6 +40,7 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(BUILTINS_DIR)/echo.c			\
 					$(BUILTINS_DIR)/unset.c			\
 					$(BUILTINS_DIR)/export.c		\
+
 
 OBJS			=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

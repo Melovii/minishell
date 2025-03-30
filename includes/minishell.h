@@ -50,6 +50,15 @@ typedef enum	e_token_type
 
 // * ==========================================================>		Structures
 
+// * Struct for buffer in order to prevent norm forbids
+typedef struct s_buffer
+{
+	int		i;
+	int		j;
+	int		k;
+}	t_buffer;
+
+
 // * Struct for environment variables
 typedef struct s_env
 {
@@ -167,12 +176,6 @@ char		*ft_find_cmd(char *cmd, char **envp);
 bool		is_quote_open(char input[]);
 
 
-int		measure_expanded_length(const char *s, t_shell *shell);
-void	extract_braced_var_name(const char *s, int *i, char *var_name);
-void	extract_var_name(const char *s, int *i, char *var_name);
-int	is_var_char(int c);
-
-int	measure_expanded_length(const char *s, t_shell *shell);
 
 // * ==========================================================>		Freeing functions
 
@@ -181,5 +184,16 @@ void    free_env(t_env *env);
 void    free_cmd(t_cmd *cmd);
 void    free_tokens(t_token *token);
 void    free_shell(t_shell *shell);
+
+
+// * ==========================================================>	 Expander Utils
+
+void	fill_new_value(char *src, char *dst, int *j);
+void	extract_braced_var_name(const char *s, int *i, char *var_name);
+void	extract_var_name(const char *s, int *i, char *var_name);
+int		measure_expanded_length(const char *s, t_shell *shell);
+bool	is_var_char(char c);
+void fill_expanded_string_helper_two(t_shell *shell, char *src, char *dst, t_buffer *buf);
+void fill_expanded_string_helper_one(t_shell *shell, char *src, char *dst, t_buffer *buf);
 
 #endif

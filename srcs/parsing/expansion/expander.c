@@ -28,56 +28,39 @@ static char	*expand_value(char *old, t_shell *shell)
 	char	*new_str;
 
 	final_length = measure_expanded_length(old, shell);
-	new_str = malloc(final_length + 1);
+	new_str = ft_calloc(final_length + 1, sizeof(char));
 	if (!new_str)
-		return (NULL);
+		return (NULL);  // ! Handle memory allocation error
 	fill_expanded_string(old, new_str, shell);
 	return (new_str);
 }
 
 static void	fill_expanded_string(char *src, char *dst, t_shell *shell)
 {
-	int	i;
-	int	j;
-	char	var_name[256];
-	char	*value;
+	t_buffer buf;
 
-	i = 0;
-	j = 0;
-	while (src[i])
+	buf.i = 0;
+	buf.j = 0;
+	while (src[buf.i])
 	{
-		if (src[i] == '$')
+		if (src[buf.i] == '$')
 		{
-			i++;
-			if (src[i] && src[i] == '{')
+			(buf.i)++;
+			if (src[buf.i] && src[buf.i] == '{')
 			{
-				extract_braced_var_name(src, &i, var_name);
-				value = get_env_value(shell->env, var_name);
-				if (value)
-				{
-					size_t k = 0;
-					while (value[k])
-						dst[j++] = value[k++];
-				}
+				fill_expanded_string_helper_two(shell, src, dst, &buf);
 			}
-			else if (src[i] && is_var_char(src[i]))
+			else if (src[buf.i] && is_var_char(src[buf.i]))
 			{
-				extract_var_name(src, &i, var_name);
-				value = get_env_value(shell->env, var_name);
-				if (value)
-				{
-					size_t k = 0;
-					while (value[k])
-						dst[j++] = value[k++];
-				}
+				fill_expanded_string_helper_one(shell, src, dst, &buf);
 			}
 			else
-				dst[j++] = '$';
+				dst[(buf.j)++] = '$';
 		}
 		else
-			dst[j++] = src[i++];
+			dst[(buf.j)++] = src[(buf.i)++];
 	}
-	dst[j] = '\0';
+	dst[buf.j] = '\0';
 }
 
 static bool	does_have_vars(char *value)
