@@ -24,7 +24,7 @@ int	measure_expanded_length(const char *str, t_shell *shell)
 	len = 0;
 	while (str[i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && !is_in_single_quotes(str, str[i]))
 		{
 			i++;
 			if (str[i] && str[i] == '{')
@@ -40,6 +40,7 @@ int	measure_expanded_length(const char *str, t_shell *shell)
 			i++;
 		}
 	}
+	printf("it works len: %d\n", len);
 	return (len);
 }
 
@@ -60,6 +61,7 @@ static int	calc_extended_len(t_shell *shell, int *i, int mode)
 	else if (mode == 2)
 	{
 		extract_braced_var_name(shell->token->value, i, var_name);
+		printf("var name: %s\n", var_name);
 		value = get_env_value(shell->env, var_name);
 		if (value)
 			len += ft_strlen(value);

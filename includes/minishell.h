@@ -193,7 +193,7 @@ void	extract_braced_var_name(const char *s, int *i, char *var_name);
 void	extract_var_name(const char *s, int *i, char *var_name);
 int		measure_expanded_length(const char *s, t_shell *shell);
 bool	is_var_char(char c);
-void fill_expanded_string_helper_two(t_shell *shell, char *src, char *dst, t_buffer *buf);
-void fill_expanded_string_helper_one(t_shell *shell, char *src, char *dst, t_buffer *buf);
+void 	fill_expanded_string_helper(t_shell *shell, char *src, char *dst, t_buffer *buf);
+bool is_in_single_quotes(const char *str, int pos);
 
 #endif

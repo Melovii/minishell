@@ -1,25 +1,24 @@
 #include "minishell.h"
 
-void fill_expanded_string_helper_one(t_shell *shell, char *src, char *dst, t_buffer *buf)
+void fill_expanded_string_helper(t_shell *shell, char *src, char *dst, t_buffer *buf)
 {
 	char var_name[256];
 	char *value;
-
-	extract_var_name(src, &(buf->i), var_name);
-	value = get_env_value(shell->env, var_name);
-	if (value)
-		fill_new_value(value, dst, &(buf->j));
-}
-
-void fill_expanded_string_helper_two(t_shell *shell, char *src, char *dst, t_buffer *buf)
-{
-	char var_name[256];
-	char *value;
-
-	extract_braced_var_name(src, &(buf->i), var_name);
-	value = get_env_value(shell->env, var_name);
-	if (value)
-		fill_new_value(value, dst, &(buf->j));
+	if (buf->k == 1)
+	{
+		extract_var_name(src, &(buf->i), var_name);
+		value = get_env_value(shell->env, var_name);
+		if (value)
+			fill_new_value(value, dst, &(buf->j));
+	}
+	else if (buf->k == 2)
+	{
+		extract_braced_var_name(src, &(buf->i), var_name);
+		value = get_env_value(shell->env, var_name);
+		if (value)
+			fill_new_value(value, dst, &(buf->j));
+	}
+	buf->k = 1;
 }
 
 void extract_braced_var_name(const char *s, int *i, char *var_name)
