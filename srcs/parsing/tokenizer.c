@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-//* Function to parse special tokens ('<' and '>') and add them to the token list
+// * Function to parse special tokens ('<' and '>') and add them to the token list
 static int	get_special_token(char *input, int *i, t_token **tokens)
 {
 	char	symbol[3];
@@ -15,68 +15,68 @@ static int	get_special_token(char *input, int *i, t_token **tokens)
 	return (1);
 }
 
-// * Function to parse quoted tokens and add them to the token list
-static int	get_quoted_token(char *input, int *i, t_token **tokens)
+static char	*get_quote_part(char *input, int *i, char **combined)
 {
-	char	quote;
 	int		start;
-	int		len;
-	char	*substr;
-	char	*combined;
-	int		j;
+	char	*new;
+	char	quote;
 
 	quote = input[(*i)++];
-	start = *i;
-
-	// Find the closing quote
+	start = *i - 1;
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
-
-	if (!input[*i]) // If no closing quote is found, return error
-		return (0);
-
-	len = (*i) - start;
-	substr = ft_substr(input, start, len);
-	if (!substr)
-		return (0);
-	(*i)++; // Move past the closing quote
-
-	// Concatenate the next characters if they're not space or operator
-	start = *i;
-	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
-		(*i)++;
-
-	if (*i > start) // If there is an additional part after the quote
+	if (!input[*i]) // ? Can be deleted?
 	{
-		combined = malloc(len + (*i - start) + 1);
-		if (!combined)
-			return (0);
-		strcpy(combined, substr);
-		j = 0;
-		while (start < *i)
-			combined[len++] = input[start++];
-		combined[len] = '\0';
-		add_token(tokens, combined);
-		free(combined);
+		free(*combined);
+		handle_error(NULL, 1); // * If this block executed that means Some quotes are open
 	}
-	else
-		add_token(tokens, substr); // Otherwise, just add the quoted part
-
-	free(substr);
-	return (1);
+	(*i)++;
+	new = ft_substr(input, start, (*i) - start);
+	if (!new)
+	{
+		free(*combined);
+		handle_error(NULL, 1); // * If this block executed that means Some quotes are open
+	}
+	return (new);
 }
 
-
-
-// * Function to parse and add word tokens (non-whitespace, non-special characters) to the token list
-static int	get_word_token(char *input, int *i, t_token **tokens)
+static char	*get_default_part(char *input, int *i, char **combined)
 {
-	int	start;
+	int		start;
+	char	*new;
 
 	start = *i;
 	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
 		(*i)++;
-	add_token(tokens, ft_substr(input, start, (*i) - start));
+	new = ft_substr(input, start, (*i) - start);
+	if (!new)
+	{
+		free(*combined);
+		handle_error(NULL, 1); // * If this block executed that means Some quotes are open
+	}
+	return (new);
+}
+
+static int	get_combined_token(char *input, int *i, t_token **tokens)
+{
+	char	*combined;
+	char	*part;
+
+	combined = ft_strdup("");
+	if (!combined)
+		handle_error(NULL, 1); // ! Check Later
+	while (input[*i] && !ft_isspace(input[*i]) && !is_operator(input[*i]))
+	{
+		if (is_quote(input[*i]))
+			part = get_quote_part(input, i, &combined);
+		else
+			part = get_default_part(input, i, &combined);
+		combined = ultimate_join(combined, part);
+		if (!combined)
+			handle_error(NULL, 1); // * If this block executed that means Some quotes are open
+	}
+	add_token(tokens, combined);
+	free(combined);
 	return (1);
 }
 
@@ -95,11 +95,8 @@ t_token	*tokenizer(char *input)
 			break ;
 		if (is_operator(input[i]))
 			get_special_token(input, &i, &tokens);
-		else if (input[i] == '"' || input[i] == '\'')
-			get_quoted_token(input, &i, &tokens);
 		else
-			get_word_token(input, &i, &tokens);
-		skip_spaces(input, &i);
+			get_combined_token(input, &i, &tokens);
 	}
 	return (tokens);
 }
@@ -110,7 +107,7 @@ void	print_tokens(t_token *tokens)
 	printf("Tokens:\n");
 	while (tokens)
 	{
-		printf("  - %s\n", tokens->value);
+		printf("  - \"%s\"\n", tokens->value);
 		tokens = tokens->next;
 	}
 }

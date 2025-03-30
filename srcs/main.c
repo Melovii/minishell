@@ -2,19 +2,29 @@
 
 volatile sig_atomic_t	g_signal = 0;
 
-// * Function to clean up the shell (free_utils.c)
-static void clean(t_shell *shell)
+/**
+ **	Purpose: Clear and reset shell data for next command
+ * 	@shell: Pointer to the shell structure
+ */
+static void make_ready_for_next_prompt(t_shell *shell)
 {
 	if (!shell)
 		return ;
 	
 	// TODO: Implement these function
-	// free_env(shell);
-	// free_tokens(shell->token);
-	// free_cmd(shell->cmd);
+	free_tokens(shell->token);
+	free_cmd(shell->cmd);
+	free(shell->input);
+	shell->cmd = NULL;
+	shell->token = NULL;
+	shell->input = NULL;
 }
 
-// * Function to initialize the shell
+/**
+ ** Purpose: Initialize shell structure and environment
+ * 	@shell: Pointer to the shell structure to be initialized
+ * 	@envp: Array of environment variables passed to the program
+ */
 static void	init_shell(t_shell *shell, char **envp)
 {
 	shell->exit_flag = 0;
@@ -26,7 +36,10 @@ static void	init_shell(t_shell *shell, char **envp)
 	// handle_signals();
 }
 
-// * Function to handle the shell loop
+/** 
+**	shell_loop - Main loop to handle user input and execute commands
+* 	@shell: Pointer to the shell structure
+*/
 static void	shell_loop(t_shell *shell)
 {
 	char	*input;
@@ -41,15 +54,26 @@ static void	shell_loop(t_shell *shell)
 		}
 		if (*input)
 			add_history(input);
+		shell->input = input;
+		if (is_quote_open(input))
+		{
+			free(input);
+			ft_putendl_fd("minishell: syntax error: unclosed quotes", 2);
+			continue ;
+		}
 		shell->token = tokenizer(input);
-		// print_tokens(shell->token);	// ! DEBUGGING ONLY
+		if (!shell->token)   // * In order to prevent SEGFAULT
+		{
+			free(input);
+			continue ;
+		}
+		expander(shell);  // TODO:  Implement expander function
+		print_tokens(shell->token);	// ! DEBUGGING ONLY
 		shell->cmd = parse_input(shell);
 		// print_cmd_list(shell->cmd);	// ! DEBUGGING ONLY
-		free(input);
 		if (shell->cmd)
 			exec_cmd(shell, shell->cmd);
-		// free_tokens(shell->token);
-		// free_cmd(shell->cmd);
+		make_ready_for_next_prompt(shell);
 	}
 }
 
@@ -66,7 +90,6 @@ int	main(int argc, char **argv, char **envp)
 		return (EXIT_FAILURE);
 	init_shell(shell, envp);
 	shell_loop(shell);
-	// free_env();
-	clean(shell);
+	free_shell(shell);
 	return (0);
 }

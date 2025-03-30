@@ -50,6 +50,15 @@ typedef enum	e_token_type
 
 // * ==========================================================>		Structures
 
+// * Struct for buffer in order to prevent norm forbids
+typedef struct s_buffer
+{
+	int		i;
+	int		j;
+	int		k;
+}	t_buffer;
+
+
 // * Struct for environment variables
 typedef struct s_env
 {
@@ -78,6 +87,7 @@ typedef struct s_token
 // * Struct for shell state
 typedef struct s_shell
 {
+	char			*input;
 	char			**og_env;
 	int				exit_flag;
 	int				num_pipes;
@@ -103,6 +113,7 @@ int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
 // void    run_builtin(t_cmd *cmd);
 
 // * ==========================================================>		Parsing
+
 void 		print_tokens(t_token *tokens);		// ! (DEBUG)
 void 		print_cmd_list(t_cmd *cmd);			// ! (DEBUG)
 
@@ -122,7 +133,6 @@ void		init_env(t_shell *shell, char **envp);
 // void    set_env_value(char *key, char *value);
 // void    add_env_var(char *key, char *value);
 // void    remove_env_var(char *key);
-// void    free_env(void);
 
 // * ==========================================================>		Signals
 // void    handle_signals(void);
@@ -130,18 +140,24 @@ void		init_env(t_shell *shell, char **envp);
 // void    sigquit_handler(int signo);
 
 // * ==========================================================>		Utilities
+
 bool		ft_isspace(char c);
 bool		are_strs_equal(char *s1, char *s2);
 void		skip_spaces(char *input, int *i);
 bool	    is_operator(char c);
 int			is_numeric(const char *str);
+bool		is_quote(char c);
+char		*ultimate_join(char *s1, char *s2);
 
 void		init_env(t_shell *shell, char **envp);
 t_env		*find_env_node(t_env *list, char *key);
+char		*get_env_value(t_env *env, char *key);
 void		free_env(t_env *env);
 void	add_env_node(t_env **env_list, t_env *new_node);
 
 void		handle_error(const char *message, int exit_status);
+
+void	expander(t_shell *shell);
 
 char 		**refill_cmd_args(char **old, int len, char *value);
 void		init_cmd(t_cmd *cmd);
@@ -157,9 +173,27 @@ int			ft_open_file(char *file_name, int flow);
 char		*ft_find_envp(char **envp);
 char		*ft_find_cmd(char *cmd, char **envp);
 
-void		ft_free_tab(char **tab);
-// void    free_cmd(t_cmd *cmd);
-// void    free_tokens(t_token *token);
-// void    free_shell(t_shell *shell);
+bool		is_quote_open(char input[]);
+
+
+
+// * ==========================================================>		Freeing functions
+
+void	ft_free_tab(char **tab);
+void    free_env(t_env *env);
+void    free_cmd(t_cmd *cmd);
+void    free_tokens(t_token *token);
+void    free_shell(t_shell *shell);
+
+
+// * ==========================================================>	 Expander Utils
+
+void	fill_new_value(char *src, char *dst, int *j);
+void	extract_braced_var_name(const char *s, int *i, char *var_name);
+void	extract_var_name(const char *s, int *i, char *var_name);
+int		measure_expanded_length(const char *s, t_shell *shell);
+bool	is_var_char(char c);
+void 	fill_expanded_string_helper(t_shell *shell, char *src, char *dst, t_buffer *buf);
+bool is_in_single_quotes(const char *str, int pos);
 
 #endif

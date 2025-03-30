@@ -45,3 +45,21 @@ int	is_numeric(const char *str)
 	}
 	return (1);
 }
+
+char	*ultimate_join(char *s1, char *s2)
+{
+	char	*ultimate;
+
+	if (!s1 | !s2)
+	{
+		free(s1);
+		free(s2);
+		return (NULL);
+	}
+	ultimate = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	if (!ultimate)
+		return (NULL);
+	return (ultimate);
+}
