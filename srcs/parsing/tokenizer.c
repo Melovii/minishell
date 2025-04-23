@@ -107,7 +107,8 @@ void	print_tokens(t_token *tokens)
 	printf("Tokens:\n");
 	while (tokens)
 	{
-		printf("  - \"%s\"\n", tokens->value);
+		printf("  - \"%s\"\t", tokens->value);
+		printf("  - \"%d\"\n", tokens->type);
 		tokens = tokens->next;
 	}
 }
