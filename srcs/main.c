@@ -70,7 +70,7 @@ static void	shell_loop(t_shell *shell)
 		expander(shell);  // TODO:  Implement expander function
 		print_tokens(shell->token);	// ! DEBUGGING ONLY
 		shell->cmd = parse_input(shell);
-		// print_cmd_list(shell->cmd);	// ! DEBUGGING ONLY
+		print_cmd_list(shell->cmd);	// ! DEBUGGING ONLY
 		if (shell->cmd)
 			exec_cmd(shell, shell->cmd);
 		make_ready_for_next_prompt(shell);

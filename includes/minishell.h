@@ -156,11 +156,11 @@ void		init_env(t_shell *shell, char **envp);
 t_env		*find_env_node(t_env *list, char *key);
 char		*get_env_value(t_env *env, char *key);
 void		free_env(t_env *env);
-void	add_env_node(t_env **env_list, t_env *new_node);
+void		add_env_node(t_env **env_list, t_env *new_node);
 
 void		handle_error(const char *message, int exit_status);
 
-void	expander(t_shell *shell);
+void		expander(t_shell *shell);
 
 char 		**refill_cmd_args(char **old, int len, char *value);
 void		init_cmd(t_cmd *cmd);
@@ -197,6 +197,14 @@ void	extract_var_name(const char *s, int *i, char *var_name);
 int		measure_expanded_length(const char *s, t_shell *shell);
 bool	is_var_char(char c);
 void 	fill_expanded_string_helper(t_shell *shell, char *src, char *dst, t_buffer *buf);
+
+
+
 bool is_in_single_quotes(const char *str, int pos);
+
+// * ==========================================================>	 Token Utils
+
+void    update_token_type(t_token *token);
+int		parse_heredoc_delim(t_token **token, t_cmd *cur_cmd);
 
 #endif

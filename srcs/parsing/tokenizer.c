@@ -98,6 +98,7 @@ t_token	*tokenizer(char *input)
 		else
 			get_combined_token(input, &i, &tokens);
 	}
+	update_token_type(tokens);
 	return (tokens);
 }
 
