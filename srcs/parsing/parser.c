@@ -51,6 +51,10 @@ t_cmd	*parse_input(t_shell *shell)
 	{
 		if (!token->value)
 			printf("TOKEN VALUE: NULL\n");
+
+		if (!parse_heredoc_delim(&token, current_cmd))
+			return (NULL);
+
 		if (token->value && are_strs_equal(token->value, "|") == true)
 		{
 			current_cmd->next = ft_calloc(1, sizeof(t_cmd));
@@ -140,6 +144,7 @@ void	print_cmd_list(t_cmd *cmd)
 				printf("  Arg %d: %s\n", i + 1, cmd->args[i]);
 				i++;
 			}
+			printf(cmd->heredoc_delim ? "  Heredoc delim: %s\n" : "  No heredoc delim.\n", cmd->heredoc_delim);
 		}
 		else
 		{

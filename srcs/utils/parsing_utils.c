@@ -48,3 +48,28 @@ bool	is_quote(char c)
 		return (true);
 	return (false);
 }
+
+int	parse_heredoc_delim(t_token **token, t_cmd *cur_cmd)
+{
+	if (!token || !*token || !cur_cmd)
+		return (0);
+	
+	if (are_strs_equal((*token)->value, "<<") == true)
+	{
+		*token = (*token)->next;
+		if (!*token || !(*token)->value)
+		{
+			perror("Missing heredoc delimiter?");
+			return (0);
+		}
+		cur_cmd->heredoc_delim = ft_strdup((*token)->value);
+		if (!cur_cmd->heredoc_delim)
+		{
+			perror("Failed to allocate memory for heredoc delimiter");
+			return (0);
+		}
+		cur_cmd->has_heredoc = true;
+		return (1);
+	}
+	return (1);
+}

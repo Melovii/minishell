@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	calc_extended_len(t_shell *shell, int *i, int mode);
+static int	calc_extended_len(t_shell *shell, const char *str, int *i, int mode);
 
 void	fill_new_value(char *src, char *dst, int *j)
 {
@@ -24,13 +24,13 @@ int	measure_expanded_length(const char *str, t_shell *shell)
 	len = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && !is_in_single_quotes(str, str[i]))
+		if (str[i] == '$' && !is_in_single_quotes(str, i))
 		{
 			i++;
 			if (str[i] && str[i] == '{')
-				len += calc_extended_len(shell, &i, 2);
+				len += calc_extended_len(shell, str, &i, 2);
 			else if (str[i] && is_var_char(str[i]))
-				len += calc_extended_len(shell, &i, 1);
+				len += calc_extended_len(shell, str, &i, 1);
 			else
 				len++;
 		}
@@ -40,11 +40,10 @@ int	measure_expanded_length(const char *str, t_shell *shell)
 			i++;
 		}
 	}
-	printf("it works len: %d\n", len);
 	return (len);
 }
 
-static int	calc_extended_len(t_shell *shell, int *i, int mode)
+static int	calc_extended_len(t_shell *shell, const char *str, int *i, int mode)
 {
 	int		len;
 	char	var_name[256];
@@ -53,18 +52,19 @@ static int	calc_extended_len(t_shell *shell, int *i, int mode)
 	len = 0;
 	if (mode == 1)
 	{
-		extract_var_name(shell->token->value, i, var_name);
+		extract_var_name(str, i, var_name);
 		value = get_env_value(shell->env, var_name);
 		if (value)
 			len += ft_strlen(value);
 	}
 	else if (mode == 2)
 	{
-		extract_braced_var_name(shell->token->value, i, var_name);
+		extract_braced_var_name(str, i, var_name);
 		printf("var name: %s\n", var_name);
 		value = get_env_value(shell->env, var_name);
 		if (value)
 			len += ft_strlen(value);
 	}
+	printf("Extended Length: %d\n", len);
 	return (len);
 }

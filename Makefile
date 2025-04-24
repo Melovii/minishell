@@ -18,6 +18,7 @@ EXP_DIR			= 	$(PARSING_DIR)/expansion
 SRCS			=	$(SRC_DIR)/main.c				\
 					$(EXEC_DIR)/execute.c			\
 					$(EXEC_DIR)/pipe.c				\
+					$(EXEC_DIR)/heredoc.c		\
 					$(PARSING_DIR)/tokenizer.c		\
 					$(PARSING_DIR)/parser.c			\
 					$(EXP_DIR)/expander.c			\
@@ -33,6 +34,7 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(UTILS_DIR)/path_utils.c		\
 					$(UTILS_DIR)/builtin_utils.c	\
 					$(UTILS_DIR)/checker_utils.c	\
+					$(UTILS_DIR)/token_utils.c	\
 					$(BUILTINS_DIR)/env.c			\
 					$(BUILTINS_DIR)/pwd.c			\
 					$(BUILTINS_DIR)/cd.c			\

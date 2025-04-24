@@ -98,6 +98,7 @@ t_token	*tokenizer(char *input)
 		else
 			get_combined_token(input, &i, &tokens);
 	}
+	update_token_type(tokens);
 	return (tokens);
 }
 
@@ -107,7 +108,8 @@ void	print_tokens(t_token *tokens)
 	printf("Tokens:\n");
 	while (tokens)
 	{
-		printf("  - \"%s\"\n", tokens->value);
+		printf("  - \"%s\"\t", tokens->value);
+		printf("  - \"%d\"\n", tokens->type);
 		tokens = tokens->next;
 	}
 }
