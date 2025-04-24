@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+static void	print_exec_errors(char *cmd, bool is_command, bool does_exist);
+static char	*find_relative_helper(char *exec, char **path_dirs);
+static char	*find_relative(t_shell *shell, char *cmd);
+static char	*find_absolute(char *cmd);
+
 // * Function to open a file for reading or writing
 int	ft_open_file(char *file_name, int flow)
 {
@@ -18,54 +23,93 @@ int	ft_open_file(char *file_name, int flow)
 	return (fd);
 }
 
-// * Function to find the PATH in the environment variables
-char	*ft_find_envp(char **envp)
+char	*ft_find_cmd(t_shell *shell, char *cmd)
 {
-	int		i;
-	char	*envp_path;
-
-	i = 0;
-	envp_path = NULL; // Initialize to NULL
-	while (envp[i])
+	if (ft_strchr(cmd, '/'))
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			envp_path = envp[i] + 5;
-			break ;
-		}
-		i++;
+		return (find_absolute(cmd));
 	}
-	if (!envp_path) // If PATH is not found
-		exit(EXIT_FAILURE);
-	return (envp_path);
+	return (find_relative(shell, cmd));
 }
 
-
-// * Function to find the command in the PATH
-char	*ft_find_cmd(char *cmd, char **envp)
+static char	*find_relative(t_shell *shell, char *cmd)
 {
-	char	**cmd_options;
-	char	**path;
-	char	*path_part;
+	char	**path_dirs;
+	char	*temp;
 	char	*exec;
-	int		index;
+	char	*path_value;
+	int		i;
 
-	index = -1;
-	path = ft_split(ft_find_envp(envp), ':');
-	cmd_options = ft_split(cmd, ' ');
-	while (path[++index])
+	path_value = get_env_value(shell->env, "PATH");
+	if (!path_value)
 	{
-		path_part = ft_strjoin(path[index], "/");
-		exec = ft_strjoin(path_part, cmd_options[0]);
-		free(path_part);
-		if (access(exec, F_OK | X_OK) == 0)
-		{
-			ft_free_tab(cmd_options);
-			return (exec);
-		}
+		print_exec_errors(cmd, true, false);
+		return (NULL);
+	}
+	path_dirs = ft_split(get_env_value(shell->env, "PATH"), ':');
+	if (!path_dirs)
+		handle_error("Alloc Error on ft_find_relative()", EX_KO);
+	i = -1;
+	while (path_dirs[++i])
+	{
+		temp = ft_strjoin(path_dirs[i], "/");
+		exec = ft_strjoin(temp, cmd);
+		free(temp);
+		if (access(exec, F_OK) == 0)
+			return (find_relative_helper(exec, path_dirs));
 		free(exec);
 	}
-	ft_free_tab(path);
-	ft_free_tab(cmd_options);
-	return (cmd);
+	ft_free_tab(path_dirs);
+	print_exec_errors(cmd, true, false); // command not found
+	return (NULL);
+}
+
+static char	*find_relative_helper(char *exec, char **path_dirs)
+{
+	ft_free_tab(path_dirs);
+	if (access(exec, X_OK) == 0)
+	{
+		return (exec);
+	}
+	else
+	{
+		print_exec_errors(exec, true, true);
+		free(exec);
+		return (NULL);
+	}
+}
+
+static char	*find_absolute(char *cmd)
+{
+	printf("it works\n");
+	if (access(cmd, F_OK) != 0)
+	{
+		print_exec_errors(cmd, false, false);
+		return (NULL);
+	}
+	if (access(cmd, X_OK) != 0)
+	{
+		print_exec_errors(cmd, false, true);
+		return (NULL);
+	}
+	return (ft_strdup(cmd));
+}
+
+static void	print_exec_errors(char *cmd, bool is_command, bool does_exist)
+{
+	if (does_exist)
+	{
+		ft_putstr_fd("minishell: permission denied: ", 2);
+		ft_putendl_fd(cmd, 2);
+	}
+	else if (!(is_command))
+	{
+		ft_putstr_fd("minishell: no such file or directory: ", 2);
+		ft_putendl_fd(cmd, 2);
+	}
+	else if (is_command)
+	{
+		ft_putstr_fd("minishell: command not found: ", 2);
+		ft_putendl_fd(cmd, 2);
+	}
 }

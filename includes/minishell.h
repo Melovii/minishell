@@ -173,8 +173,7 @@ int			exec_builtin(t_shell *shell, char **args);
 int			is_builtin(char *cmd);
 
 int			ft_open_file(char *file_name, int flow);
-char		*ft_find_envp(char **envp);
-char		*ft_find_cmd(char *cmd, char **envp);
+char	*ft_find_cmd(t_shell *shell, char *cmd);
 
 bool		is_quote_open(char input[]);
 

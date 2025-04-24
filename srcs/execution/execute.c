@@ -52,8 +52,9 @@ static void child_prc(t_shell *shell, t_cmd *cmd, int **pipe_fd, int i)
         dup2(pipe_fd[i][1], STDOUT_FILENO);
 
     close_unused_pipes(pipe_fd, shell->num_pipes, i, 1);
-    
-	path = ft_find_cmd(cmd->args[0], shell->og_env);
+	path = ft_find_cmd(shell, cmd->args[0]);
+	if (!path)
+		exit (127); // ! CHECK LATER POTENTIAL LEAK
 	if (execve(path, &cmd->args[0], shell->og_env) == -1) // Execute command
 		handle_error("Execve failed", EX_KO);
 }
@@ -64,7 +65,6 @@ static void parent_prc(pid_t pid)
 
     if (waitpid(pid, &status, 0) == -1)
         perror("Error waiting for child");
-
     if (WIFEXITED(status))
         printf("Child exited with status %d\n", WEXITSTATUS(status));
     else if (WIFSIGNALED(status))
