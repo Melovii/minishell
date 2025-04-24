@@ -28,5 +28,6 @@ void	init_cmd(t_cmd *cmd)
 	cmd->args = NULL;
 	cmd->in_fd = 0; // ? IS THIS CORRECT?
 	cmd->out_fd = 1; // ? IS THIS CORRECT?
+	cmd->append = false;
 	cmd->next = NULL;
 }
