@@ -2,6 +2,7 @@
 
 static void	print_exec_errors(char *cmd, bool is_command, bool does_exist);
 static char	*find_relative_helper(char *exec, char **path_dirs);
+static char *get_path_if_exist(char **path_dirs, char *cmd, int i);
 static char	*find_relative(t_shell *shell, char *cmd);
 static char	*find_absolute(char *cmd);
 
@@ -35,8 +36,7 @@ char	*ft_find_cmd(t_shell *shell, char *cmd)
 static char	*find_relative(t_shell *shell, char *cmd)
 {
 	char	**path_dirs;
-	char	*temp;
-	char	*exec;
+	char	*cmd_path;
 	char	*path_value;
 	int		i;
 
@@ -52,15 +52,36 @@ static char	*find_relative(t_shell *shell, char *cmd)
 	i = -1;
 	while (path_dirs[++i])
 	{
-		temp = ft_strjoin(path_dirs[i], "/");
-		exec = ft_strjoin(temp, cmd);
-		free(temp);
-		if (access(exec, F_OK) == 0)
-			return (find_relative_helper(exec, path_dirs));
-		free(exec);
+		cmd_path = get_path_if_exist(path_dirs, cmd, i);
+		if (cmd_path)
+			return (cmd_path);
 	}
 	ft_free_tab(path_dirs);
 	print_exec_errors(cmd, true, false); // command not found
+	return (NULL);
+}
+
+static char *get_path_if_exist(char **path_dirs, char *cmd, int i)
+{
+	char *temp;
+	char *exec;
+
+	temp = ft_strjoin(path_dirs[i], "/");
+	if (!temp)
+	{
+		ft_free_tab(path_dirs);
+		handle_error("Alloc Error on get_path_if_exist()", EX_KO);
+	}
+	exec = ft_strjoin(temp, cmd);
+	free(temp);
+	if (!exec)
+	{
+		ft_free_tab(path_dirs);
+		handle_error("Alloc Error on get_path_if_exist()", EX_KO);
+	}
+	if (access(exec, F_OK) == 0)
+		return (find_relative_helper(exec, path_dirs));
+	free(exec);
 	return (NULL);
 }
 
