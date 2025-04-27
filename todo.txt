@@ -1,0 +1,4 @@
+- signals
+- should display "bash: dir_name/: Is a directory" instead of "minishell: Permission denied"
+- handle $?
+- update shut_program()
