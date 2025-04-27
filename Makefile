@@ -8,40 +8,46 @@ LIBFT			= 	libft/libft.a
 SRC_DIR			= 	srcs
 OBJ_DIR			= 	objs
 
-UTILS_DIR		= 	$(SRC_DIR)/utils
-BUILTINS_DIR	= 	$(SRC_DIR)/builtins
-EXEC_DIR		= 	$(SRC_DIR)/execution
-PARSING_DIR		= 	$(SRC_DIR)/parsing
-SIG_DIR			= 	$(SRC_DIR)/signals
-EXP_DIR			= 	$(PARSING_DIR)/expansion
+UTILS_DIR	= 	$(SRC_DIR)/utils
+BUILTIN_DIR	= 	$(SRC_DIR)/builtins
+ENV_DIR		= 	$(SRC_DIR)/env
+EXEC_DIR	= 	$(SRC_DIR)/execution
+PARSING_DIR	= 	$(SRC_DIR)/parsing
+TOKENS_DIR	= 	$(PARSING_DIR)/tokenization
+PARSE_DIR	= 	$(PARSING_DIR)/parse
+
 
 SRCS			=	$(SRC_DIR)/main.c				\
-					$(EXEC_DIR)/execute.c			\
+					$(SRC_DIR)/free.c				\
+					$(SRC_DIR)/errors.c				\
+					$(TOKENS_DIR)/tokenizer.c		\
+					$(TOKENS_DIR)/token_lst.c		\
+					$(PARSE_DIR)/parser.c			\
+					$(PARSE_DIR)/cmd_lst.c			\
+					$(PARSE_DIR)/redirection.c		\
+					$(EXEC_DIR)/execution.c			\
+					$(EXEC_DIR)/exec_builtin.c		\
+					$(EXEC_DIR)/child.c				\
+					$(EXEC_DIR)/heredoc.c			\
+					$(EXEC_DIR)/path.c				\
 					$(EXEC_DIR)/pipe.c				\
-					$(EXEC_DIR)/heredoc.c		\
-					$(PARSING_DIR)/tokenizer.c		\
-					$(PARSING_DIR)/parser.c			\
-					$(EXP_DIR)/expander.c			\
-					$(EXP_DIR)/expander_utils.c		\
-					$(EXP_DIR)/expander_utils2.c	\
-					$(UTILS_DIR)/cmd_utils.c		\
-					$(UTILS_DIR)/parsing_utils.c	\
-					$(UTILS_DIR)/string_utils.c		\
+					$(EXEC_DIR)/setup_redirection.c	\
+					$(BUILTIN_DIR)/cd.c				\
+					$(BUILTIN_DIR)/pwd.c			\
+					$(BUILTIN_DIR)/env.c			\
+					$(BUILTIN_DIR)/echo.c			\
+					$(BUILTIN_DIR)/exit.c			\
+					$(BUILTIN_DIR)/unset.c			\
+					$(BUILTIN_DIR)/export.c			\
+					$(PARSE_DIR)/env.c				\
 					$(UTILS_DIR)/env_utils.c		\
-					$(UTILS_DIR)/error_utils.c		\
-					$(UTILS_DIR)/exec_utils.c		\
-					$(UTILS_DIR)/free_utils.c		\
+					$(UTILS_DIR)/token_utils.c		\
+					$(UTILS_DIR)/export_utils.c		\
+					$(UTILS_DIR)/string_utils.c		\
 					$(UTILS_DIR)/path_utils.c		\
-					$(UTILS_DIR)/builtin_utils.c	\
-					$(UTILS_DIR)/checker_utils.c	\
-					$(UTILS_DIR)/token_utils.c	\
-					$(BUILTINS_DIR)/env.c			\
-					$(BUILTINS_DIR)/pwd.c			\
-					$(BUILTINS_DIR)/cd.c			\
-					$(BUILTINS_DIR)/exit.c			\
-					$(BUILTINS_DIR)/echo.c			\
-					$(BUILTINS_DIR)/unset.c			\
-					$(BUILTINS_DIR)/export.c		\
+					$(UTILS_DIR)/syntax_utils.c		\
+					$(UTILS_DIR)/quote_utils.c		\
+
 
 
 OBJS			=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

@@ -1,30 +1,10 @@
 #include "minishell.h"
+#include "../libft/libft.h"
 
-// * Create a new environment variable node
-static t_env	*create_env_node(char *env_var)
-{
-	t_env	*new_node;
-	char	*equal_sign;
+static void	set_env_key_value(t_shell *shell, t_env *node, char *env_var);
+static void	set_key_no_value(t_shell *shell, t_env *node, char *env_var);
+static void	set_key_value_pair(t_shell *shell, t_env *node, char *env_var, char *equal_sign);
 
-	new_node = malloc(sizeof(t_env));
-	if (!new_node)
-		return (NULL);
-	equal_sign = ft_strchr(env_var, '=');
-	if (!equal_sign)
-	{
-		new_node->key = ft_strdup(env_var);
-		new_node->value = NULL;
-	}
-	else
-	{
-		new_node->key = ft_substr(env_var, 0, equal_sign - env_var);
-		new_node->value = ft_strdup(equal_sign + 1);
-	}
-	new_node->next = NULL;
-	return (new_node);
-}
-
-// * Add node to the environment linked list
 void	add_env_node(t_env **env_list, t_env *new_node)
 {
 	t_env	*current;
@@ -42,43 +22,55 @@ void	add_env_node(t_env **env_list, t_env *new_node)
 	current->next = new_node;
 }
 
-t_env	*find_env_node(t_env *list, char *key)
+t_env	*create_env_node(t_shell *shell, char *env_var)
 {
-	while (list)
-	{
-		if (are_strs_equal(list -> key, key))
-			return (list);
-		list = list -> next;
-	}
-	return (NULL);
-}
-
-// * Initialize environment variables from envp
-void	init_env(t_shell *shell, char **envp)
-{
-	int		i;
 	t_env	*new_node;
 
-	if (!shell || !envp)
-		return ;
-	shell->env = NULL;
-	i = 0;
-	while (envp[i])
+	new_node = ft_calloc(1, sizeof(t_env));
+    if (!new_node)
+    {
+        shut_program(shell, true, EX_KO);
+    }
+	set_env_key_value(shell, new_node, env_var);
+	return (new_node);
+}
+
+static void	set_env_key_value(t_shell *shell, t_env *node, char *env_var)
+{
+	char	*equal_sign;
+
+	equal_sign = ft_strchr(env_var, '=');
+	if (!equal_sign)
+		set_key_no_value(shell, node, env_var);
+	else
+		set_key_value_pair(shell, node, env_var, equal_sign);
+}
+
+static void	set_key_no_value(t_shell *shell, t_env *node, char *env_var)
+{
+	node->key = ft_strdup(env_var);
+	if (!node->key)
 	{
-		new_node = create_env_node(envp[i]);
-		add_env_node(&shell->env, new_node);
-		i++;
+		free_env(node);
+		shut_program(shell, true, EX_KO);
+	}
+	node->value = NULL;
+}
+
+
+static void	set_key_value_pair(t_shell *shell, t_env *node, char *env_var, char *equal_sign)
+{
+	node->key = ft_substr(env_var, 0, equal_sign - env_var);
+	if (!node->key)
+	{
+		free_env(node);
+		shut_program(shell, true, EX_KO);
+	}
+	node->value = ft_strdup(equal_sign + 1);
+	if (!node->value)
+	{
+		free_env(node);
+		shut_program(shell, true, EX_KO);
 	}
 }
 
-char	*get_env_value(t_env *env, char *key)
-{
-	t_env	*node;
-
-	if (!env || !key)
-		return (NULL);
-	node = find_env_node(env, key);
-	if (node)
-		return (node->value);
-	return (NULL);
-}

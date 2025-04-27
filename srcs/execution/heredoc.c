@@ -1,102 +1,112 @@
 #include "minishell.h"
+#include "../libft/libft.h"
 
-// ? assume that you have already parsed heredoc content
-// ? this will store it in the cmd->heredoc_delim and set an "is_heredoc" flag
+static void	eof_msg(t_shell *shell, char *delimiter);
+static int setup_heredoc(t_shell *shell, t_dir *redir);
+static void handle_heredoc_child(t_shell *shell, t_dir *redir);
+static int wait_for_heredoc_child(pid_t pid);
 
-// * FLOW:
-// parse tokens -> set heredoc_delim and has_heredoc
-// before execution, call init_heredoc() if needed
-// during execution, call redirect_heredoc() before exec()
-// clean up file descriptors after command runs
-
-// 1. parse_heredoc() will set the delim and has_heredoc flag
-// 2. init_heredoc() will create a pipe and fork (by calling fork_heredoc())
-// 3. handle_heredoc_input() will read input until EOF or delim
-// 4. write valid lines to the pipe (until EOF or delim)
-// 5. close the pipe in the parent process
-// 6. redirect_heredoc() will redirect the command's stdin to the pipe
-// 7. clean up the file descriptors after command runs
-// 8. free the heredoc delim and has_heredoc flag in the cmd struct
-// 9. handle Ctrl+C and Ctrl+D signals in the child process (set_heredoc_signals() and sigint_heredoc_handler())
-// 10. handle EOF and delim in the parent process
-
-// Parser 	->  sets `heredoc_delim`, `has_heredoc`
-
-// Init   	->  call `init_heredoc()` before exec
-//         	->  creates pipe
-//         	->  forks child to collect input via `readline`
-//         	->  stores read-end of pipe in `cmd->heredoc_fd`
-
-// Exec   	->  before execve, call `redirect_heredoc()`
-//         	->  dup2(heredoc_fd, STDIN_FILENO)
-
-// Signals	->  child process uses custom SIGINT handler
-//         	->  Ctrl+C aborts heredoc input cleanly
-
-
-// // 1. During parsing:
-// if (token_is("<<"))
-// 	parse_heredoc(cmd, next_token());
-
-// // 2. Before execution:
-// if (cmd->has_heredoc)
-// 	init_heredoc(cmd);
-
-// // 3. Right before exec:
-// redirect_heredoc(cmd);
-// execve(cmd->args[0], cmd->args, env);
-
-// // 4. After execution:
-// close_fds(cmd);
-
-// ok let's start working:
-// parse_heredoc function
-int	parse_heredoc(t_cmd *cmd, t_token *token)
+int process_heredocs(t_shell *shell)
 {
-	if (token->type == HEREDOC)
-	{
-		cmd->heredoc_delim = ft_strdup(token->value);
-		if (!cmd->heredoc_delim)
-			return (1);
-	}
-	cmd->has_heredoc = true;
-	return (0);
+    t_cmd   *cmd;
+    t_dir   *redir;
+    int     result;
+
+    cmd = shell->cmd;
+    while (cmd)
+    {
+        redir = cmd->redir_list;
+        while (redir)
+        {
+            if (redir->type == DIR_HEREDOC)
+            {
+                result = setup_heredoc(shell, redir);
+                if (result != EX_OK)
+                    return (result); // error or interrupt
+            }
+            redir = redir->next;
+        }
+        cmd = cmd->next;
+    }
+    return (EX_OK);
+}
+
+static int setup_heredoc(t_shell *shell, t_dir *redir)
+{
+    pid_t pid;
+
+    if (pipe(redir->heredoc_fd) == -1)
+    {
+        shut_program(shell, true, EXIT_FAILURE);
+        return (HEREDOC_PIPE_ERROR); // * Cannot be reached
+    }
+    pid = fork();
+    if (pid < 0)
+    {
+        shut_program(shell, true, HEREDOC_FORK_ERROR);
+        return (HEREDOC_FORK_ERROR); // * Cannot be reached
+    }
+    else if (pid == 0)
+        handle_heredoc_child(shell, redir);
+    close(redir->heredoc_fd[1]);
+    return (wait_for_heredoc_child(pid)); // exit code or (128+sig)
+}
+
+static void handle_heredoc_child(t_shell *shell, t_dir *redir)
+{
+    char    *line;
+
+    // TODO: Handle signals (Ctrl+C, Ctrl+D, Ctrl+\)
+
+    while (1)
+    {
+        line = readline(HEREDOC_PROMPT);
+        if (!line)
+            break;
+        if (are_strs_equal(line, redir->filename))
+        {
+            free(line);
+            break;
+        }
+        ft_putendl_fd(line, redir->heredoc_fd[1]);
+        free(line);
+    }
+    close(redir->heredoc_fd[1]);
+    if (!line)
+    {
+        eof_msg(NULL, redir->filename);
+    }
+    shut_program(shell, false, EX_OK);    // Delimiter matched, also Ctrl+D treated as success
+}
+
+static int wait_for_heredoc_child(pid_t pid)
+{
+    int status;
+    int signal_num;
+    int exit_code;
+
+    exit_code = 1;
+    waitpid(pid, &status, 0);
+    if (WIFEXITED(status))
+    {
+        exit_code = WEXITSTATUS(status);
+        return (exit_code);
+    }
+    else if (WIFSIGNALED(status))
+    {
+        signal_num = WTERMSIG(status);
+        return (128 + signal_num);
+    }
+    return (exit_code); // Undefined behavior, should not happen!
+}
+
+static void	eof_msg(t_shell *shell, char *delimiter)
+{
+	ft_putstr_fd("warning: here-document at line ", 2);
+	ft_putnbr_fd((int)shell->number_of_prompts, 2);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd(delimiter, 2);
+	ft_putstr_fd("')\n", 2);
 }
 
 
-// ! FORK for heredoc to handle signals
-int	fork_heredoc(const char *delim, int write_fd)
-{
-	// ? check the COPILOT code
-	// int		status;
-
-	// pid_t pid = fork();
-	// if (pid == 0)
-	// {
-		// set_heredoc_signals();
-		// handle_heredoc_input(...);
-	// 	exit(0);
-	// }
-	// waitpid(pid, &status, 0);
-}
-
-// called before command exection
-int	init_heredoc(t_cmd *cmd)
-{
-	// if (cmd->heredoc_delim) is set {
-	// create a pipe
-	// read input until EOF/delim
-	// writes to pipe (which will write to the cmd->in_fd or somewhere later on)
-	// sets cmd->heredoc_fd (for later redirection)
-	return (0); // error
-}
-
-int	handle_heredoc_input(const char *delim, int write_fd)
-{
-	// loop with readline
-	readline(HEREDOC_PROMPT);
-	// compare each line to delim
-	// write valid lines to write_fd
-	// ! DO NOT FORGET TO: handle Ctrl+C
-	// exit on EOF or delim
-}

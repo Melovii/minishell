@@ -1,62 +1,97 @@
 #include "minishell.h"
+#include "../libft/libft.h"
 
-static int **allocate_pipes(int num_pipes)
+static int	**allocate_pipe_fd(t_shell *shell, int num_pipes);
+static int	open_pipes(int **pipe_fd, int num_pipes);
+
+int     count_pipes(t_cmd *cmd)
+{
+    int count;
+
+    count = 0;
+    while (cmd)
+    {
+        if (cmd->next)
+            count++;
+        cmd = cmd->next;
+    }
+    printf("Number of pipes: %d\n", count); // ! Debugging line
+    return (count);
+}
+
+void	free_pipe_fd(int **pipe_fd, int num)
 {
 	int	i;
-	int	**pipe_fd;
 
-	pipe_fd = malloc(sizeof(int *) * (num_pipes + 1));
 	if (!pipe_fd)
-		handle_error("Memory allocation failed for pipes", EX_KO);
-
-    i = 0;
-    while (i <= num_pipes)
-    {
-        pipe_fd[i] = malloc(sizeof(int) * 2);
-        if (!pipe_fd[i])
-            handle_error("Memory allocation failed for pipe pair", EX_KO);
-        i++;
-    }
-    return (pipe_fd);
+		return ;
+	i = 0;
+	while (i < num)
+	{
+		if (pipe_fd[i])
+		{
+			if (pipe_fd[i][0] != -1)
+				close(pipe_fd[i][0]);
+			if (pipe_fd[i][1] != -1)
+				close(pipe_fd[i][1]);
+			free(pipe_fd[i]);
+		}
+		i++;
+	}
+	free(pipe_fd);
 }
 
-static void create_pipes(t_shell *shell, t_cmd *cmd, int **pipe_fd, int num_pipes)
+int	**setup_pipes(t_shell *shell, int num_pipes)
 {
-    (void)shell; // For future error handling
-    int i;
+	int	**pipe_fd;
+
+	pipe_fd = allocate_pipe_fd(shell, num_pipes);
+	if (!pipe_fd)
+		shut_program(shell, true, EX_KO);
+	if (open_pipes(pipe_fd, num_pipes) == -1)
+	{
+		shut_program(shell, true, EX_KO);
+	}
+	return (pipe_fd);
+}
+
+static int	**allocate_pipe_fd(t_shell *shell, int num_pipes)
+{
+	int	**pipe_fd;
+	int	i;
+
+	pipe_fd = ft_calloc(num_pipes, sizeof(int *));
+	if (!pipe_fd)
+		return (NULL);
+	i = 0;
+	while (i < num_pipes)
+	{
+		pipe_fd[i] = ft_calloc(PIPE_PAIR, sizeof(int));
+		if (!pipe_fd[i])
+		{
+			free_pipe_fd(pipe_fd, i);
+			shut_program(shell, true, EX_KO);
+		}
+        pipe_fd[i][0] = -1;
+        pipe_fd[i][1] = -1;
+		i++;
+	}
+	return (pipe_fd);
+}
+
+static int	open_pipes(int **pipe_fd, int num_pipes)
+{
+	int	i;
 
 	i = 0;
-    while (i < num_pipes && cmd -> next)
-    {
-        // Create a pipe between the current command and the next command
-        if (pipe(pipe_fd[i]) == -1)
-            handle_error("pipe() function error", EX_KO); // ! check later
-        
-        // Assign the current command's output file descriptor to the write end of the pipe
-        cmd->out_fd = pipe_fd[i][1];
-
-        // If there is a next command, assign its input file descriptor to the read end of the pipe
-        if (cmd->next)
-        {
-            cmd->next->in_fd = pipe_fd[i][0];
-            cmd = cmd->next; // Move to the next command in the linked list
-			i++;
-        }
-    }
-}
-
-
-int	**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes)
-{
-	int	**pipe_fd;
-
-	// Allocate memory for the pipes
-	pipe_fd = allocate_pipes(num_pipes);
-	
-	// Create the pipes and set the file descriptors
-	create_pipes(shell, cmd, pipe_fd, num_pipes);
-
-	// // Close and clean up the pipes
-    // close_pipes(pipe_fd, num_pipes); // Should we do this in the parent process instead?
-	return (pipe_fd);
+	while (i < num_pipes)
+	{
+		if (pipe(pipe_fd[i]) == -1)
+		{
+			free_pipe_fd(pipe_fd, i);
+			return (-1);
+		}
+		i++;
+	}
+	return (0);
 }

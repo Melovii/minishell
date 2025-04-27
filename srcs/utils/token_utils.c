@@ -1,33 +1,69 @@
+#include "stdbool.h"
 #include "minishell.h"
+#include "stdio.h" // ! For testing purposes
 
-static void	check_token_type(t_token *token);
-
-void    update_token_type(t_token *token)
+bool    is_operator(char c)
 {
-    t_token *token_lst;
+    if (c == '|' || c == '<' || c == '>')
+        return (true);
+    return (false);
+}
 
-    token_lst = token;
-    while (token_lst)
+static bool	is_invalid_operator(char *value)
+{
+	return (are_strs_equal(value, "||")
+		|| are_strs_equal(value, "&&")
+		|| are_strs_equal(value, "&"));
+}
+
+void	update_token_type(t_token *tokens)
+{
+	while (tokens)
+	{
+		if (tokens->type == NIL)
+		{
+			if (are_strs_equal(tokens->value, "|"))
+				tokens->type = PIPE;
+			else if (are_strs_equal(tokens->value, "<"))
+				tokens->type = REDIRECT_IN;
+			else if (are_strs_equal(tokens->value, ">"))
+				tokens->type = REDIRECT_OUT;
+			else if (are_strs_equal(tokens->value, "<<"))
+				tokens->type = HEREDOC;
+			else if (are_strs_equal(tokens->value, ">>"))
+				tokens->type = APPEND;
+			else if (is_invalid_operator(tokens->value))
+				tokens->type = INV_OPERATOR;
+			else
+				tokens->type = WORD;
+		}
+		tokens = tokens->next;
+	}
+}
+
+bool	is_operator_type(t_token_type type)
+{
+	return (type == PIPE || type == REDIRECT_IN || type == REDIRECT_OUT
+		|| type == HEREDOC || type == APPEND);
+}
+
+bool	is_redirection_type(t_token_type type)
+{
+	return (type == REDIRECT_IN || type == REDIRECT_OUT
+		|| type == HEREDOC || type == APPEND);
+}
+
+
+void	print_tokens(t_token *tokens) // ! For testing purposes
+{
+    if (!tokens)
     {
-        check_token_type(token_lst);
-        token_lst = token_lst->next;
+        printf("No tokens to print.\n");
+        return ;
     }
+	while (tokens)
+	{
+		printf("Token Value: \"%s\", Type: %d\n", tokens->value, tokens->type);
+		tokens = tokens->next;
+	}
 }
-
-static void	check_token_type(t_token *token)
-{
-	if (are_strs_equal(token->value, "<<"))
-		token->type = HEREDOC;
-	else if (are_strs_equal(token->value, ">>"))
-		token->type = APPEND;
-	else if (are_strs_equal(token->value, "|"))
-		token->type = PIPE;
-	else if (are_strs_equal(token->value, "<"))
-		token->type = REDIRECT_IN;
-	else if (are_strs_equal(token->value, ">"))
-		token->type = REDIRECT_OUT;
-	else
-		token->type = WORD;
-}
-
-// TODO: Handle Invalid Operators such as '>>>' '<<<' '&&' '||'

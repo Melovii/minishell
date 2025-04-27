@@ -1,21 +1,28 @@
 #include "minishell.h"
+#include "../libft/libft.h"
 
 // * Function to change directory
-int	ft_cd(char **args)
+int	ft_cd(char **args, t_env *env)
 {
-	char	cwd[1024];
+	char	*target;
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("Current directory: %s\n", cwd);
-	
-	if (chdir(args[1]) == -1)
+	if (!args[1])
 	{
-		perror("chdir");
-		return (-1);
+		target = get_env_value(env, "HOME");
+		if (!target)
+		{
+			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+			return (1);
+		}
 	}
+	else
+		target = args[1];
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("Directory after chdir: %s\n", cwd);
-	
+	if (chdir(target) == -1)
+	{
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		perror(target);
+		return (1);
+	}
 	return (0);
 }

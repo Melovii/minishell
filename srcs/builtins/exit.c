@@ -1,24 +1,60 @@
 #include "minishell.h"
+#include "../libft/libft.h"
 
-// * Function to exit the shell
-// TODO: Check if I even need to handle string exit codes
-// ! IMPORRTANT:
-// TODO: MAKE SURE SHELL EXITS CLEANLY, FREEING ALL ALLOCATED MEMORY
-int	ft_exit(char **args)
+static bool	is_numeric(const char *str);
+static void custom_exit_msg(char *flag);
+
+int	ft_exit(t_shell *shell, char **args)
 {
-	printf("exit\n");
+	int	exit_code;
 
-	if (!args[1]) // No arguments: exit with success
-		exit(0);
-	if (!is_numeric(args[1])) // Check if the argument is a valid number
+	if (!args[1])
 	{
-		printf("minishell: exit: %s: numeric argument required\n", args[1]);
-		exit(255);
+        shut_program(shell, NULL, shell->exit_flag);
 	}
-	if (args[2]) // More than one argument
+	if (!is_numeric(args[1]))
 	{
-		printf("minishell: exit: too many arguments\n");
-		return (1); // Do not exit
+		custom_exit_msg(args[1]);
+        shut_program(shell, NULL, 2); // ? Maybe instead of 2, macro for exit code
 	}
-	exit(ft_atoi(args[1])); // Convert string to int and exit
+	if (args[2])
+	{
+		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+		shell->exit_flag = 1;
+		return (1);
+	}
+    // ? Is necessary?
+	exit_code = atoi(args[1]) % 256;
+	if (exit_code < 0)
+		exit_code += 256;
+    shut_program(shell, NULL, exit_code);
+	return (0);
+}
+
+static void custom_exit_msg(char *flag)
+{
+    if (!flag)
+        return;
+    ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+    ft_putstr_fd(flag, STDERR_FILENO);
+    ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+}
+
+
+static bool	is_numeric(const char *str)
+{
+	int	i;
+
+	if (!str || !*str)
+		return (false);
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (false);
+		i++;
+	}
+	return (true);
 }

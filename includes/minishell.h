@@ -1,5 +1,5 @@
 #ifndef MINISHELL_H
-# define MINISHELL_H
+#define MINISHELL_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -18,197 +18,143 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# include "../libft/libft.h"
+# include "structs.h"
 
-# define SHELL_NAME "minishell> "
-# define HEREDOC_PROMPT "heredoc> "
-# define QUOTE_PROMPT "quote> "
-# define DQUOTE_PROMPT "dquote> "
-
-// TODO: Check if we should use specific exit codes
 # define EX_OK EXIT_SUCCESS
 # define EX_KO EXIT_FAILURE
 
+# define INV_ARGC 2
+
+# define HEREDOC_PIPE_ERROR 1
+# define HEREDOC_FORK_ERROR 2
+# define HEREDOC_EXIT_INTERRUPTED 130
+
+# define PROMPT "minishell> "
+# define HEREDOC_PROMPT "heredoc> "
+
+# define PIPE_PAIR 2
+
+
 extern volatile sig_atomic_t	g_signal;
 
-// * ==========================================================>		Enums
 
-// * Enum for token types 
-typedef enum	e_token_type
-{
-    WORD,			// Command or argument
-    PIPE,			// '|'
-    REDIRECT_IN,	// '<'
-    REDIRECT_OUT,	// '>'
-    HEREDOC,		// '<<'
-    APPEND,			// '>>'
-    DQUOTE,			// Double quote
-	SQUOTE,			// Single quote
-	NIL				// NULL (default)
-}				t_token_type;
+// * =======================================================>>>>> Shuting down
+
+void	shut_program(t_shell *shell, bool need_msg, int exit_code);
+void	free_shell(t_shell *shell);
+
+void	ft_free_tab(char **arr);
 
 
-// * ==========================================================>		Structures
+// * =======================================================>>>>> String utils
 
-// * Struct for buffer in order to prevent norm forbids
-typedef struct s_buffer
-{
-	int		i;
-	int		j;
-	int		k;
-}	t_buffer;
+void 	skip_spaces(char *input, int *i);
+bool 	ft_isspace(char c);
+bool	is_quote(char c);
+char	*ultimate_join(char *s1, char *s2);
+bool	are_strs_equal(char *s1, char *s2);
 
-
-// * Struct for environment variables
-typedef struct s_env
-{
-    char            *key;
-    char            *value;
-    struct s_env    *next;
-}               t_env;
-
-// * Struct for command arguments
-typedef struct s_cmd
-{
-    char            **args;
-    int             in_fd;
-    int             out_fd;
-
-	char    *infile;
-    char    *outfile;
-    bool     append;
-
-	char			*heredoc_delim; // !
-	// int			heredoc_fd;
-	bool			has_heredoc; // !
-    struct s_cmd   *next;
-}               t_cmd;
-
-// * Struct for tokens
-typedef struct s_token
-{
-	char            *value;
-    t_token_type    type;
-	struct s_token  *next;
-}               t_token;
-
-// * Struct for shell state
-typedef struct s_shell
-{
-	char			*input;
-	char			**og_env;
-	int				exit_flag;
-	int				num_pipes;
-	t_env           *env;
-	t_cmd           *cmd;
-	t_token			*token;
-}               t_shell;
-
-// * ==========================================================>		Built-ins
-int     	ft_cd(char **args);
-int     	ft_echo(char **args);
-int     	ft_env(t_shell *shell);
-int     	ft_exit(char **args);
-int			ft_export(t_shell *shell, char **args);
-int     	ft_pwd(void);
-int     	ft_unset(t_shell *shell, char **args);
-
-// * ==========================================================>		Execution
-int			exec_cmd(t_shell *shell, t_cmd *cmd);
-int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
-
-// int     is_builtin(char *cmd);
-// void    run_builtin(t_cmd *cmd);
-
-// * ==========================================================>		Parsing
-
-void 		print_tokens(t_token *tokens);		// ! (DEBUG)
-void 		print_cmd_list(t_cmd *cmd);			// ! (DEBUG)
-
-t_token 	*tokenizer(char *input);
-t_cmd   	*parse_input(t_shell *shell);
-// char    **lexer(char *input);
-// int     syntax_checker(char **tokens);
-// t_cmd   *build_ast(t_token *tokens);
-
-// * Redirections & Pipes
-// int     handle_redirections(t_cmd *cmd);
-// int     setup_pipes(t_cmd *cmd);
-
-// * ==========================================================>		Environment management
-void		init_env(t_shell *shell, char **envp);
-// char    *get_env_value(char *key);
-// void    set_env_value(char *key, char *value);
-// void    add_env_var(char *key, char *value);
-// void    remove_env_var(char *key);
-
-// * ==========================================================>		Signals
-// void    handle_signals(void);
-// void    sigint_handler(int signo);
-// void    sigquit_handler(int signo);
-
-// * ==========================================================>		Utilities
-
-bool		ft_isspace(char c);
-bool		are_strs_equal(char *s1, char *s2);
-void		skip_spaces(char *input, int *i);
-bool	    is_operator(char c);
-int			is_numeric(const char *str);
-bool		is_quote(char c);
-char		*ultimate_join(char *s1, char *s2);
-
-void		init_env(t_shell *shell, char **envp);
-t_env		*find_env_node(t_env *list, char *key);
-char		*get_env_value(t_env *env, char *key);
-void		free_env(t_env *env);
-void		add_env_node(t_env **env_list, t_env *new_node);
-
-void		handle_error(const char *message, int exit_status);
-
-void		expander(t_shell *shell);
-
-char 		**refill_cmd_args(char **old, int len, char *value);
-void		init_cmd(t_cmd *cmd);
-void		add_token(t_token **tokens, char *value);
-
-int			count_pipes(t_cmd *cmd);
-int			**handle_pipe(t_shell *shell, t_cmd *cmd, int num_pipes);
-void        close_pipes(int **pipe_fd, int num_pipes);
-int			exec_builtin(t_shell *shell, char **args);
-int			is_builtin(char *cmd);
-
-int			ft_open_file(char *file_name, int flow);
-char	*ft_find_cmd(t_shell *shell, char *cmd);
-
-bool		is_quote_open(char input[]);
+char	*ft_strjoin_path(char *dir, char *cmd);
 
 
+// * =======================================================>>>>> Token utils
 
-// * ==========================================================>		Freeing functions
+void	print_tokens(t_token *tokens); // ! Will be removed later
+bool	is_operator(char c);
+void	update_token_type(t_token *tokens);
+bool	is_operator_type(t_token_type type);
+bool	is_redirection_type(t_token_type type);
 
-void	ft_free_tab(char **tab);
-void    free_env(t_env *env);
-void    free_cmd(t_cmd *cmd);
-void    free_tokens(t_token *token);
-void    free_shell(t_shell *shell);
+void	free_tokens(t_token *tokens);
+void	add_token(t_shell *shell, t_token **tokens, char *value);
+void	advance_token(t_shell *shell);
 
-
-// * ==========================================================>	 Expander Utils
-
-void	fill_new_value(char *src, char *dst, int *j);
-void	extract_braced_var_name(const char *s, int *i, char *var_name);
-void	extract_var_name(const char *s, int *i, char *var_name);
-int		measure_expanded_length(const char *s, t_shell *shell);
-bool	is_var_char(char c);
-void 	fill_expanded_string_helper(t_shell *shell, char *src, char *dst, t_buffer *buf);
+void	tokenizer(t_shell *shell, char *input);
 
 
+// * =======================================================>>>>> Syntax checker
 
-bool is_in_single_quotes(const char *str, int pos);
+bool	check_syntax(t_token *tokens);
+bool	are_quotes_closed(t_token *tokens);
 
-// * ==========================================================>	 Token Utils
 
-void    update_token_type(t_token *token);
-int		parse_heredoc_delim(t_token **token, t_cmd *cur_cmd);
+// * =======================================================>>>>> Parser utils
+
+void	parser(t_shell *shell);
+
+t_cmd	*new_cmd_node(t_shell *shell);
+int		get_len_cmd_args(t_cmd *cmd);
+void	free_cmd_list(t_cmd *head);
+void	print_cmd_list(t_cmd *head); // ! Will be removed later
+
+t_dir *create_redir_node(t_shell *shell, t_redir_type type, char *filename);
+void add_redir_node(t_dir **redir_list, t_dir *new_node);
+
+
+// * =======================================================>>>>> Environment utils
+
+void	init_env(t_shell *shell, char **envp);
+void	free_env(t_env *node);
+void	free_env_list(t_env *env);
+t_env	*create_env_node(t_shell *shell, char *env_var);
+void	add_env_node(t_env **env_list, t_env *new_node);
+t_env	*find_env_node(t_env *env, char *key);
+char	*get_env_value(t_env *env, char *key);
+
+
+// * =======================================================>>>>> Expansion utils
+
+char	*load_var_value(t_shell *shell, char *name);
+int		measure_len(t_shell *shell, char *s);
+char	*parse_var_name(t_shell *shell, char *s, int *i);
+
+
+// * =======================================================>>>>> Execution utils
+
+void	execution(t_shell *shell);
+
+void	child_process(t_shell *shell, t_cmd *cmd, int i);
+
+int		process_heredocs(t_shell *shell);
+
+int		**setup_pipes(t_shell *shell, int num_pipes);
+void	free_pipe_fd(int **pipe_fd, int num);
+int		count_pipes(t_cmd *cmd);
+void	close_unused_pipes(t_shell *shell, int current);
+
+void	print_open_error(char *filename);
+
+char	**modify_args(t_cmd *cmd);
+
+
+// * =======================================================>>>>> Redirection utils
+
+void	parse_redirection(t_shell *shell, t_cmd *cmd);
+bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i);
+bool	has_input_redirection_via_list(t_cmd *cmd);
+bool	has_output_redirection_via_list(t_cmd *cmd);
+
+
+// * =======================================================>>>>> Builtin utils
+
+bool	is_builtin(char *cmd);
+int		execute_builtin(t_shell *shell, t_cmd *cmd);
+
+int		ft_cd(char **args, t_env *env);
+int		ft_echo(char **args);
+int		ft_env(t_shell *shell, bool is_export);
+int		ft_exit(t_shell *shell, char **args);
+int		ft_export(t_shell *shell, char **args);
+int		ft_pwd(t_shell *shell);
+int		ft_unset(t_shell *shell, char **args);
+
+t_env	*parse_export_argument(t_shell *shell, char *arg);
+void	add_or_update_env(t_shell *shell, char *key, char *value);
+
+
+// * =======================================================>>>>> Path utils
+
+void	path_error_msg(char *cmd, int exit_code, bool is_direct);
+char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code);
 
 #endif
