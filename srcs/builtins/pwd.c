@@ -1,23 +1,22 @@
 #include "minishell.h"
 
-// * Function to print the current working directory
-int	ft_pwd()
+int	ft_pwd(t_shell *shell)
 {
-	size_t	size;
 	char	*buf;
 
-	size = 256;
-	// Get CWD buffer with getcwd and malloc buffer size of 256 bytes (size)
-	while (!(buf = getcwd(malloc(size), size))) // Try getting CWD, expand buffer if needed
+	buf = getcwd(NULL, 0);
+	if (!buf)
 	{
-		free(buf); 
-		if (size > 4096) // Prevent infinite loop
-			handle_error("getcwd: path too long", EX_KO);
-		size *= 2;
-    }
-
-	// Print CWD buffer
+		if (errno == ENOMEM)
+			shut_program(shell, "minishell: malloc failed in pwd", 1);
+		else
+		{
+			perror("minishell: pwd");
+			return (1);
+		}
+	}
 	printf("%s\n", buf);
 	free(buf);
-	return (EX_OK);
+	return (0);
 }
+

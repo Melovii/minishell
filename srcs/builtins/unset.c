@@ -1,63 +1,62 @@
 #include "minishell.h"
+#include "../libft/libft.h"
 
-static t_env	*find_removed_node(char *delimeter, t_env *env_list);
-static void		remove_env_node(t_env *removed_env, t_env **env_list);
+static void	remove_env_node(t_env **env_list, char *key);
+static bool	is_valid_identifier(char *str);
 
-// * Function to unset environment variables
 int	ft_unset(t_shell *shell, char **args)
 {
 	int		i;
-	t_env	removed_env;
-	t_env	*env_list;
-	char	*delimiter;
 
 	if (!args[1])
 		return (EX_OK);
-	env_list = shell->env;
 	i = 1;
 	while (args[i])
 	{
-		delimiter = args[i];
-		remove_env_node(find_removed_node(delimiter, env_list), &env_list);
+		if (is_valid_identifier(args[i]))
+			remove_env_node(&shell->env, args[i]);
 		i++;
 	}
 	return (EX_OK);
 }
 
-static void	remove_env_node(t_env *removed_env, t_env **env_list)
+static void	remove_env_node(t_env **env_list, char *key)
 {
-	t_env	*tmp_list;
+	t_env	*tmp;
 	t_env	*prev;
 
-	if (!removed_env || !env_list || !*env_list)
-		return ;
-	tmp_list = *env_list;
+	tmp = *env_list;
 	prev = NULL;
-	while (tmp_list)
+	while (tmp)
 	{
-		if (are_strs_equal(tmp_list->key, removed_env->key))
+		if (are_strs_equal(tmp->key, key))
 		{
 			if (prev == NULL)
-				*env_list = tmp_list->next;
+				*env_list = tmp->next;
 			else
-				prev->next = tmp_list->next;
-			free(tmp_list->key);
-			free(tmp_list->value);
-			free(tmp_list);
+				prev->next = tmp->next;
+			free(tmp->key);
+			free(tmp->value);
+			free(tmp);
 			return ;
 		}
-		prev = tmp_list;
-		tmp_list = tmp_list->next;
+		prev = tmp;
+		tmp = tmp->next;
 	}
 }
 
-static t_env	*find_removed_node(char *delimeter, t_env *env_list)
+static bool	is_valid_identifier(char *str)
 {
-	while (env_list)
+	int	i;
+
+	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (false);
+	i = 1;
+	while (str[i])
 	{
-		if (are_strs_equal(env_list->key, delimeter))
-			return (env_list);
-		env_list = env_list->next;
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (false);
+		i++;
 	}
-	return (NULL);
+	return (true);
 }
