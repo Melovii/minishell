@@ -10,6 +10,12 @@ void	child_process(t_shell *shell, t_cmd *cmd, int i)
 
 	setup_child(cmd, shell, i);
 	resolve_cmd_and_args(shell, cmd, &path, &args);
+	if (cmd_is_dir(path))
+	{
+		print_dir_error(path);
+		free(path);
+		shut_program(shell, false, 126);
+	}
 	execve(path, args, shell->og_env); // ? Does this need if condition?
 	shut_program(shell, true , 127); // ? Check if exit code is correct?
 }

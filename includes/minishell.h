@@ -123,8 +123,12 @@ int		count_pipes(t_cmd *cmd);
 void	close_unused_pipes(t_shell *shell, int current);
 
 void	print_open_error(char *filename);
+void	print_dir_error(char *cmd);
+
 
 char	**modify_args(t_cmd *cmd);
+
+bool	cmd_is_dir(char *cmd);
 
 
 // * =======================================================>>>>> Redirection utils

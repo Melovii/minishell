@@ -1,6 +1,14 @@
 #include "../libft/libft.h"
 #include "minishell.h"
 
+// * Function to print error message for if command is a directory
+void	print_dir_error(char *cmd)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+}
+
 void	path_error_msg(char *cmd, int exit_code, bool is_direct)
 {
 	if (exit_code == 127)

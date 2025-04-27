@@ -1,4 +1,5 @@
 #include "../libft/libft.h"
+#include "minishell.h"
 
 char	*ft_strjoin_path(char *dir, char *cmd)
 {
@@ -15,4 +16,14 @@ char	*ft_strjoin_path(char *dir, char *cmd)
 	joined = ft_strjoin(temp, cmd);
 	free(temp);
 	return (joined);
+}
+
+// * Checks if the command is a directory rather than an executable.
+bool	cmd_is_dir(char *cmd)
+{
+	struct stat	cmd_stat;
+
+	ft_memset(&cmd_stat, 0, sizeof(cmd_stat));
+	stat(cmd, &cmd_stat);
+	return (S_ISDIR(cmd_stat.st_mode)); // * True if the command is a directory
 }
