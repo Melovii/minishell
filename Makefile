@@ -25,6 +25,7 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(PARSE_DIR)/parser.c			\
 					$(PARSE_DIR)/cmd_lst.c			\
 					$(PARSE_DIR)/redirection.c		\
+					$(PARSE_DIR)/env.c				\
 					$(EXEC_DIR)/execution.c			\
 					$(EXEC_DIR)/exec_builtin.c		\
 					$(EXEC_DIR)/child.c				\
@@ -32,14 +33,13 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(EXEC_DIR)/path.c				\
 					$(EXEC_DIR)/pipe.c				\
 					$(EXEC_DIR)/setup_redirection.c	\
-					$(BUILTIN_DIR)/cd.c				\
-					$(BUILTIN_DIR)/pwd.c			\
-					$(BUILTIN_DIR)/env.c			\
-					$(BUILTIN_DIR)/echo.c			\
-					$(BUILTIN_DIR)/exit.c			\
-					$(BUILTIN_DIR)/unset.c			\
-					$(BUILTIN_DIR)/export.c			\
-					$(PARSE_DIR)/env.c				\
+					$(BUILTIN_DIR)/ft_cd.c			\
+					$(BUILTIN_DIR)/ft_pwd.c			\
+					$(BUILTIN_DIR)/ft_env.c			\
+					$(BUILTIN_DIR)/ft_echo.c		\
+					$(BUILTIN_DIR)/ft_exit.c		\
+					$(BUILTIN_DIR)/ft_unset.c		\
+					$(BUILTIN_DIR)/ft_export.c		\
 					$(UTILS_DIR)/env_utils.c		\
 					$(UTILS_DIR)/token_utils.c		\
 					$(UTILS_DIR)/export_utils.c		\
