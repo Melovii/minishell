@@ -73,6 +73,11 @@ typedef struct s_cmd
     char            **args;
     int             in_fd;
     int             out_fd;
+
+	char    *infile;
+    char    *outfile;
+    bool     append;
+
 	char			*heredoc_delim; // !
 	// int			heredoc_fd;
 	bool			has_heredoc; // !
