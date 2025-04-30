@@ -22,8 +22,6 @@ void	tokenizer(t_shell *shell, char *input)
 			get_combined_token(shell, input, &i, &(shell->token));
 	}
     update_token_type(shell->token);
-    // print_tokens(tokens); // ! Will be removed later
-    // printf("==========================\n");
 }
 
 static void	get_combined_token(t_shell *shell, char *input, int *i, t_token **tokens)
@@ -110,7 +108,9 @@ static void	get_special_token(t_shell *shell, t_token **tokens, char *input, int
 		(*i) += 2;
 	}
 	else
+	{
 		(*i)++;
+	}
 	add_token(shell, tokens, ft_strdup(operator));
 }
 

@@ -3,6 +3,7 @@
 
 static void init_shell(t_shell *shell, char **envp);
 static void make_ready_for_next_prompt(t_shell *shell);
+static void general_process(t_shell *shell, char *prompt);
 static void shell_loop(t_shell *shell);
 
 // * Main function
@@ -14,7 +15,10 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argv;
 	if (argc != 1) // TODO: Add invalid number of arguments error code (2)
-		shut_program(NULL, "Invalid number of arguments", INV_ARGC);
+	{
+		ft_putendl_fd("Error: Invalid number of arguments", STDERR_FILENO);
+		return (INV_ARGC);
+	}
 	shell = ft_calloc(1, sizeof(t_shell));
 	if (!shell)
 	{
@@ -22,7 +26,9 @@ int	main(int argc, char **argv, char **envp)
 		return (EX_KO);
 	}
 	init_shell(shell, envp);
+	setup_termios(shell, SAVE);
 	shell_loop(shell);
+	setup_termios(shell, LOAD);
 	free_shell(shell);
 	return (0);
 }
@@ -33,26 +39,40 @@ static void shell_loop(t_shell *shell)
 
 	while (1)
 	{
-        make_ready_for_next_prompt(shell); // ? Is double checking needed? ->> Probably
+		handle_signals(STANDBY);
+        make_ready_for_next_prompt(shell);
 		prompt = readline(PROMPT);
 		if (!prompt)
 		{
 			ft_putendl_fd("exit", STDOUT_FILENO);
 			break ;
 		}
-		if (prompt[0] != '\0')
-			add_history(prompt);
-        shell->input = prompt;
-        (shell->number_of_prompts)++;
-		tokenizer(shell, prompt);
-        if (!(check_syntax(shell->token) && are_quotes_closed(shell->token)))
-            continue;
-        parser(shell);
-        shell->num_pipes = count_pipes(shell->cmd);
-        print_cmd_list(shell->cmd); // ! Will be removed later
-        execution(shell);
+		handle_signals(NEUTRAL);
+		if (prompt[0] == '\0')
+		{
+			continue ;
+		}
+		general_process(shell, prompt);
         make_ready_for_next_prompt(shell);
 	}
+}
+
+static void general_process(t_shell *shell, char *prompt)
+{
+	add_history(prompt);
+	shell->input = prompt;
+    (shell->number_of_prompts)++;
+	tokenizer(shell, prompt);
+    if (!(check_syntax(shell->token) && are_quotes_closed(shell->token)))
+        return ;
+    parser(shell);
+	shell->num_pipes = count_pipes(shell->cmd);
+	shell->num_pipes_fd = setup_pipes(shell, shell->num_pipes);
+	shell->cur_exit_flag = process_heredocs(shell); // ! Check (exit code + signal handling) out
+    if (shell->cur_exit_flag != EX_OK)
+        return ;
+	expand_and_unquote_cmd_list(shell);
+    execution(shell);
 }
 
 static void make_ready_for_next_prompt(t_shell *shell)
@@ -67,12 +87,14 @@ static void make_ready_for_next_prompt(t_shell *shell)
     free_pipe_fd(shell->num_pipes_fd, shell->num_pipes);
     shell->num_pipes_fd = NULL;
     shell->num_pipes = 0;
+	shell->exit_flag = shell->cur_exit_flag;
     // TODO: Update later
 }
 
 static void init_shell(t_shell *shell, char **envp) // ? Check if this is needed
 {
 	shell->input = NULL;
+	shell->cur_exit_flag = 0;
 	shell->exit_flag = 0;
     shell->number_of_prompts = 0;
 	shell->num_pipes = 0;

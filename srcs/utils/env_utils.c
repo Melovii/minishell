@@ -1,7 +1,6 @@
 #include "minishell.h"
 #include "../libft/libft.h"
 
-static void	set_env_key_value(t_shell *shell, t_env *node, char *env_var);
 static void	set_key_no_value(t_shell *shell, t_env *node, char *env_var);
 static void	set_key_value_pair(t_shell *shell, t_env *node, char *env_var, char *equal_sign);
 
@@ -35,7 +34,7 @@ t_env	*create_env_node(t_shell *shell, char *env_var)
 	return (new_node);
 }
 
-static void	set_env_key_value(t_shell *shell, t_env *node, char *env_var)
+void	set_env_key_value(t_shell *shell, t_env *node, char *env_var)
 {
 	char	*equal_sign;
 

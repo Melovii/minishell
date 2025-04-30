@@ -47,3 +47,12 @@ void print_open_error(char *filename)
         ft_putendl_fd(strerror(errno), 2);
     }
 }
+
+void	eof_msg(t_shell *shell, char *delimiter)
+{
+	ft_putstr_fd("warning: here-document at line ", 2);
+	ft_putnbr_fd((int)shell->number_of_prompts, 2);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd(delimiter, 2);
+	ft_putstr_fd("')\n", 2);
+}

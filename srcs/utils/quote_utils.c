@@ -1,5 +1,4 @@
-#include "stdbool.h"
-#include "structs.h"
+#include "minishell.h"
 #include "../libft/libft.h"
 
 static bool	is_token_quote_balanced(char *str);
@@ -17,6 +16,19 @@ bool	are_quotes_closed(t_token *tokens)
 	}
 	return (true);
 }
+
+bool does_included_quote(char *str)
+{
+    size_t i = 0;
+    while (str[i])
+    {
+        if (str[i] == '\'' || str[i] == '"')
+            return (true);
+        i++;
+    }
+    return (false);
+}
+
 
 static bool	is_token_quote_balanced(char *str)
 {

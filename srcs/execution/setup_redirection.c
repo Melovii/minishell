@@ -5,14 +5,22 @@ static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir);
 static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir);
 static void	handle_heredoc_redir(t_cmd *cmd, t_dir *redir);
 
+// ! Check Error handling
+
 bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 {
 	if (!handle_redirections(shell, cmd)) // ? Perhaps addition exit_flag(exit code)
+	{
 		return (false);
+	}
 	if (cmd->in_fd == STDIN_FILENO && i > 0)
+	{
 		cmd->in_fd = shell->num_pipes_fd[i - 1][0];
+	}
 	if (cmd->out_fd == STDOUT_FILENO && i < shell->num_pipes)
+	{
 		cmd->out_fd = shell->num_pipes_fd[i][1];
+	}
 	return (true);
 }
 
@@ -45,10 +53,11 @@ static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 	if (cmd->in_fd != STDIN_FILENO)
 		close(cmd->in_fd);
 	cmd->in_fd = open(redir->filename, O_RDONLY);
+	// ! Check Errno Codes 
 	if (cmd->in_fd == -1)
 	{
 		print_open_error(redir->filename);
-		shell->exit_flag = 1;
+		shell->cur_exit_flag = 1;
 		return (false);
 	}
 	return (true);
@@ -65,7 +74,7 @@ static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 	if (cmd->out_fd == -1)
 	{
 		print_open_error(redir->filename);
-		shell->exit_flag = 1;
+		shell->cur_exit_flag = 1;
 		return (false);
 	}
 	return (true);

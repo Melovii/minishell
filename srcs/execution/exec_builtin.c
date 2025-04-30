@@ -53,7 +53,7 @@ static int	run_builtin(t_shell *shell, t_cmd *cmd)
 	if (are_strs_equal(cmd->args->value, "echo"))
 		status = ft_echo(args);
 	else if (are_strs_equal(cmd->args->value, "cd"))
-		status = ft_cd(args, shell->env);
+		status = ft_cd(shell, args);
 	else if (are_strs_equal(cmd->args->value, "pwd"))
 		status = ft_pwd(shell);
 	else if (are_strs_equal(cmd->args->value, "export"))

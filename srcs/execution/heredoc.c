@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "../libft/libft.h"
 
-static void	eof_msg(t_shell *shell, char *delimiter);
+static char *update_heredoc_prompt(t_shell *shell, bool is_quoted, char *line);
 static int	setup_heredoc(t_shell *shell, t_dir *redir);
 static void	handle_heredoc_child(t_shell *shell, t_dir *redir);
 static int	wait_for_heredoc_child(pid_t pid);
@@ -47,7 +47,10 @@ static int	setup_heredoc(t_shell *shell, t_dir *redir)
 		return (HEREDOC_FORK_ERROR); // * Cannot be reached
 	}
 	else if (pid == 0)
+	{
+		handle_signals(EXEC_HRDC);
 		handle_heredoc_child(shell, redir);
+	}
 	close(redir->heredoc_fd[1]);
 	return (wait_for_heredoc_child(pid)); // exit code or (128+sig)
 }
@@ -55,8 +58,9 @@ static int	setup_heredoc(t_shell *shell, t_dir *redir)
 static void	handle_heredoc_child(t_shell *shell, t_dir *redir)
 {
 	char	*line;
+	bool	is_quoted;
 
-	// TODO: Handle signals (Ctrl+C, Ctrl+D, Ctrl+\)
+	is_quoted = does_included_quote(redir->filename);
 	while (1)
 	{
 		line = readline(HEREDOC_PROMPT);
@@ -67,14 +71,13 @@ static void	handle_heredoc_child(t_shell *shell, t_dir *redir)
 			free(line);
 			break;
 		}
+		line = update_heredoc_prompt(shell, is_quoted, line);
 		ft_putendl_fd(line, redir->heredoc_fd[1]);
 		free(line);
 	}
 	close(redir->heredoc_fd[1]);
 	if (!line)
-	{
-		eof_msg(NULL, redir->filename);
-	}
+		eof_msg(shell, redir->filename);
 	shut_program(shell, false, EX_OK);    // Delimiter matched, also Ctrl+D treated as success
 }
 
@@ -99,11 +102,11 @@ static int wait_for_heredoc_child(pid_t pid)
 	return (exit_code); // Undefined behavior, should not happen!
 }
 
-static void	eof_msg(t_shell *shell, char *delimiter)
+static char *update_heredoc_prompt(t_shell *shell, bool is_quoted, char *line)
 {
-	ft_putstr_fd("warning: here-document at line ", 2);
-	ft_putnbr_fd((int)shell->number_of_prompts, 2);
-	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
-	ft_putstr_fd(delimiter, 2);
-	ft_putstr_fd("')\n", 2);
+	if (is_quoted)
+	{
+		return (line);
+	}
+	return (expand_vars(shell, line));
 }

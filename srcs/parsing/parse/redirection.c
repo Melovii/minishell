@@ -13,8 +13,13 @@ void    parse_redirection(t_shell *shell, t_cmd *cmd)
 
     token = shell->token;
     advance_token(shell);
-    file = get_filename(shell);
     dir_type = get_redir_type(shell, token);
+    file = get_filename(shell);
+	if (dir_type != DIR_HEREDOC)
+	{
+		file = expand_vars(shell, file);
+	}
+	file = remove_quotes_update_str(shell, file);
     redir = create_redir_node(shell, dir_type, file);
     if (!redir)
     {
