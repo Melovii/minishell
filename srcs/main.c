@@ -64,8 +64,12 @@ static void general_process(t_shell *shell, char *prompt)
     (shell->number_of_prompts)++;
 	tokenizer(shell, prompt);
     if (!(check_syntax(shell->token) && are_quotes_closed(shell->token)))
+	{
+		shell->cur_exit_flag = 2;
         return ;
+	}
     parser(shell);
+	//print_cmd_list(shell->cmd);
 	shell->num_pipes = count_pipes(shell->cmd);
 	shell->num_pipes_fd = setup_pipes(shell, shell->num_pipes);
 	shell->cur_exit_flag = process_heredocs(shell); // ! Check (exit code + signal handling) out

@@ -57,7 +57,7 @@ static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char *
 	*path = get_cmd_path(shell, cmd->args->value, &(shell->cur_exit_flag));
 	if (!(*path))
 	{
-		shut_program(shell, false, 1);
+		shut_program(shell, false, shell->cur_exit_flag);
 	}
 	*args = modify_args(cmd);
 	if (!*args)
