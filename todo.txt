@@ -1,4 +1,11 @@
-- signals
-- should display "bash: dir_name/: Is a directory" instead of "minishell: Permission denied"
+- cat and CTRL+C don't return a newline before SIGINT, fix it
 - handle $?
-- update shut_program()
+- set exit code after the syntax faults
+- fix leaks from tokenizer
+- expansions
+- add number of terminals the variable??? : env | grep SHLVL
+
+// - should display "bash: dir_name/: Is a directory" instead of "minishell: Permission denied"
+// - fix bug for CTRL+C not working during cat/cmds and heredoc
+// - move the status and istty somewhere functional
+// - number of prompts not displaying with SIGINT in heredoc

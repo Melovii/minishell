@@ -1,5 +1,0 @@
-Check that when the PATH are removed, are builtins suppose to be executed or not?
-
-Handle HEREDOC and redirection operators ->> '< > >>'
-
-Handle Syntax Errors

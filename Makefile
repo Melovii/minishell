@@ -15,23 +15,30 @@ EXEC_DIR	= 	$(SRC_DIR)/execution
 PARSING_DIR	= 	$(SRC_DIR)/parsing
 TOKENS_DIR	= 	$(PARSING_DIR)/tokenization
 PARSE_DIR	= 	$(PARSING_DIR)/parse
+EXP_DIR		= 	$(PARSING_DIR)/expansion
 
 
 SRCS			=	$(SRC_DIR)/main.c				\
 					$(SRC_DIR)/free.c				\
 					$(SRC_DIR)/errors.c				\
+					$(SRC_DIR)/signals.c			\
 					$(TOKENS_DIR)/tokenizer.c		\
 					$(TOKENS_DIR)/token_lst.c		\
 					$(PARSE_DIR)/parser.c			\
 					$(PARSE_DIR)/cmd_lst.c			\
 					$(PARSE_DIR)/redirection.c		\
 					$(PARSE_DIR)/env.c				\
+					$(EXP_DIR)/expansion.c			\
+					$(EXP_DIR)/expand_cmds.c		\
+					$(EXP_DIR)/expansion_utils.c	\
+					$(EXP_DIR)/measure_length.c		\
 					$(EXEC_DIR)/execution.c			\
 					$(EXEC_DIR)/exec_builtin.c		\
 					$(EXEC_DIR)/child.c				\
 					$(EXEC_DIR)/heredoc.c			\
 					$(EXEC_DIR)/path.c				\
 					$(EXEC_DIR)/pipe.c				\
+					$(EXEC_DIR)/termios.c			\
 					$(EXEC_DIR)/setup_redirection.c	\
 					$(BUILTIN_DIR)/ft_cd.c			\
 					$(BUILTIN_DIR)/ft_pwd.c			\
@@ -47,6 +54,8 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(UTILS_DIR)/path_utils.c		\
 					$(UTILS_DIR)/syntax_utils.c		\
 					$(UTILS_DIR)/quote_utils.c		\
+					$(UTILS_DIR)/unquote_utils.c	\
+
 
 
 

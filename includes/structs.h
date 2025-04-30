@@ -2,6 +2,7 @@
 #define STRUCTURES_H
 
 #include <stdbool.h>
+#include <termios.h>
 
 // * ==========================================================>		Enums
 
@@ -27,17 +28,27 @@ typedef enum e_redir_type
     DIR_APPEND, // '>>'
     DIR_HEREDOC // '<<'
 
-}   t_redir_type;
+}   			t_redir_type;
+
+// * Struct for holding signal status
+typedef enum	e_status
+{
+	NEUTRAL,
+	STANDBY,
+	EXEC_CMD,
+	EXEC_HRDC
+}				t_status;
+
+// * Enum for holding termios action
+typedef enum e_termios_action
+{
+	SAVE,
+	LOAD
+}		t_termios_action;
 
 // * ==========================================================>		Structures
 
-// * Struct for buffer in order to prevent norm forbids
-typedef struct s_buffer
-{
-	int		i;
-	int		j;
-	int		k;
-}	t_buffer;
+typedef struct termios		t_termios; // ? test without this
 
 // * Struct for redirection
 typedef struct s_dir
@@ -83,12 +94,16 @@ typedef struct s_shell
 	char			*input;
 	char			**og_env;
 	int				exit_flag;
+	int				cur_exit_flag;
     int             number_of_prompts;
 	int				num_pipes;
     int             **num_pipes_fd;
 	t_env           *env;
 	t_cmd           *cmd;
 	t_token			*token;
+	t_status		status;
+	t_termios		termios;
+
 }               t_shell;
 
 #endif

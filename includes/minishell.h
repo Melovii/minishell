@@ -13,7 +13,7 @@
 # include <string.h>
 # include <dirent.h>
 # include <stdbool.h>
-# include <termios.h>
+// # include <termios.h> // TODO: do we keep this?
 # include <ctype.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -35,7 +35,7 @@
 # define PIPE_PAIR 2
 
 
-extern volatile sig_atomic_t	g_signal;
+extern volatile sig_atomic_t	g_signal; // TODO: remove lmfao
 
 
 // * =======================================================>>>>> Shuting down
@@ -45,6 +45,10 @@ void	free_shell(t_shell *shell);
 
 void	ft_free_tab(char **arr);
 
+// * =======================================================>>>>> Signals
+
+int		setup_termios(t_shell *shell, t_termios_action action);
+void	handle_signals(t_status status);
 
 // * =======================================================>>>>> String utils
 
@@ -76,6 +80,7 @@ void	tokenizer(t_shell *shell, char *input);
 
 bool	check_syntax(t_token *tokens);
 bool	are_quotes_closed(t_token *tokens);
+bool 	does_included_quote(char *str);
 
 
 // * =======================================================>>>>> Parser utils
@@ -99,14 +104,21 @@ void	free_env_list(t_env *env);
 t_env	*create_env_node(t_shell *shell, char *env_var);
 void	add_env_node(t_env **env_list, t_env *new_node);
 t_env	*find_env_node(t_env *env, char *key);
+void	set_env_key_value(t_shell *shell, t_env *node, char *env_var);
 char	*get_env_value(t_env *env, char *key);
 
 
 // * =======================================================>>>>> Expansion utils
 
+char	*expand_vars( t_shell *shell, char *input);
+
+char *remove_quotes_update_str(t_shell *shell, char *str);
+
+void	expand_and_unquote_cmd_list(t_shell *shell);
+
 char	*load_var_value(t_shell *shell, char *name);
-int		measure_len(t_shell *shell, char *s);
-char	*parse_var_name(t_shell *shell, char *s, int *i);
+int		measure_len(t_shell *shell, char *input);
+char	*parse_var_name(t_shell *shell, char *input, int *i);
 
 
 // * =======================================================>>>>> Execution utils
@@ -124,9 +136,11 @@ void	close_unused_pipes(t_shell *shell, int current);
 
 void	print_open_error(char *filename);
 void	print_dir_error(char *cmd);
+void	eof_msg(t_shell *shell, char *delimiter);
 
 
 char	**modify_args(t_cmd *cmd);
+
 
 bool	cmd_is_dir(char *cmd);
 
@@ -144,7 +158,7 @@ bool	has_output_redirection_via_list(t_cmd *cmd);
 bool	is_builtin(char *cmd);
 int		execute_builtin(t_shell *shell, t_cmd *cmd);
 
-int		ft_cd(char **args, t_env *env);
+int		ft_cd(t_shell *shell, char **args);
 int		ft_echo(char **args);
 int		ft_env(t_shell *shell, bool is_export);
 int		ft_exit(t_shell *shell, char **args);
@@ -160,5 +174,6 @@ void	add_or_update_env(t_shell *shell, char *key, char *value);
 
 void	path_error_msg(char *cmd, int exit_code, bool is_direct);
 char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code);
+
 
 #endif
