@@ -57,6 +57,13 @@ static void	setup_child(t_cmd *cmd, t_shell *shell, int i)
 
 static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char ***args)
 {
+	int	status;
+
+	if (is_builtin(cmd->args))
+	{
+		status = execute_builtin(shell, cmd);
+		shut_program(shell, false, status);
+	}
 	*path = get_cmd_path(shell, cmd->args->value, &(shell->cur_exit_flag));
 	if (!(*path))
 	{

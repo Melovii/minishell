@@ -17,7 +17,9 @@ bool	is_builtin(t_token *token_lst)
 		|| are_strs_equal(cmd, "unset")
 		|| are_strs_equal(cmd, "env")
 		|| are_strs_equal(cmd, "exit"))
-		return (true);
+		{
+			return (true);
+		}
 	return (false);
 }
 
@@ -94,7 +96,7 @@ char	**modify_args(t_cmd *cmd)
 		args[i] = ft_strdup(tmp->value);
 		if (!args[i])
 		{
-			ft_free_tab(args); // helper to free allocated strings
+			ft_free_tab(args);
 			return (NULL);
 		}
 		tmp = tmp->next;

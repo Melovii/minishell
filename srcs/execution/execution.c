@@ -30,7 +30,7 @@ void execution(t_shell *shell)
 
 static pid_t execute_cmd(t_shell *shell, t_cmd *cmd, int index)
 {
-    if (is_builtin(cmd->args) && shell->num_pipes == 0)
+    if ((is_builtin(cmd->args) && shell->num_pipes == 0))
     {
         shell->cur_exit_flag = execute_builtin(shell, cmd);
         return (-1);
@@ -67,23 +67,25 @@ static pid_t fork_and_execute(t_shell *shell, t_cmd *cmd, int index)
     return (pid);
 }
 
-static void	parent_wait(t_shell *shell, pid_t last_pid)
+static void parent_wait(t_shell *shell, pid_t last_pid)
 {
-	pid_t	pid;
-	int		status;
+	pid_t pid;
+	int status;
 
-	close_all_pipes(shell);
-	pid = wait(&status);
-	while (pid > 0)
+	while ((pid = waitpid(-1, &status, 0)) > 0)
 	{
 		if (pid == last_pid)
 		{
 			if (WIFEXITED(status))
 				shell->cur_exit_flag = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				shell->cur_exit_flag = 128 + WTERMSIG(status);
+			{
+				int sig = WTERMSIG(status);
+				if (sig == SIGPIPE)
+					shell->cur_exit_flag = 1;
+				else
+					shell->cur_exit_flag = 128 + sig;
+			}
 		}
-		pid = wait(&status);
 	}
-	close_redirections(shell->cmd);
 }
