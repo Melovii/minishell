@@ -18,6 +18,11 @@ char	*expand_vars( t_shell *shell, char *input)
     }
 	fill_expanded_string(shell, input, expanded);
 	free(input);
+	if (expanded[0] == '\0')
+	{
+		free(expanded);
+		return (NULL);
+	}
 	return (expanded);
 }
 

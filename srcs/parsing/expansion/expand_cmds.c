@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-static void	expand_token_values(t_shell *shell, t_token *token_lst);
+static void	expand_and_unquote(t_shell *shell, t_token *token_lst);
+static void	remove_null_value_tokens(t_token **head);
 
 void	expand_and_unquote_cmd_list(t_shell *shell)
 {
@@ -11,12 +12,13 @@ void	expand_and_unquote_cmd_list(t_shell *shell)
 	cmd = shell->cmd;
 	while (cmd)
 	{
-		expand_token_values(shell, cmd->args);
+		expand_and_unquote(shell, cmd->args);
+		remove_null_value_tokens(&(cmd->args));
 		cmd = cmd->next;
 	}
 }
 
-static void	expand_token_values(t_shell *shell, t_token *token_lst)
+static void	expand_and_unquote(t_shell *shell, t_token *token_lst)
 {
 	while (token_lst)
 	{
@@ -25,3 +27,32 @@ static void	expand_token_values(t_shell *shell, t_token *token_lst)
 		token_lst = token_lst->next;
 	}
 }
+
+static void	remove_null_value_tokens(t_token **head)
+{
+	t_token	*curr;
+	t_token	*prev;
+	t_token	*to_delete;
+
+	prev = NULL;
+	curr = *head;
+	while (curr)
+	{
+		if (!curr->value)
+		{
+			to_delete = curr;
+			if (prev)
+				prev->next = curr->next;
+			else
+				*head = curr->next;
+			curr = curr->next;
+			free(to_delete);
+		}
+		else
+		{
+			prev = curr;
+			curr = curr->next;
+		}
+	}
+}
+

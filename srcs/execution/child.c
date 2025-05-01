@@ -3,16 +3,20 @@
 
 static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char ***args);
 static void	setup_child(t_cmd *cmd, t_shell *shell, int i);
+static void	child_cleanup_and_exit(t_shell *shell, t_cmd *cmd, int i, int code);
+static void	execute_resolved_cmd(t_shell *shell, char *path, char **args);
 
 void	child_process(t_shell *shell, t_cmd *cmd, int i)
 {
 	char	*path;
 	char	**args;
 
-	if (are_strs_equal("", cmd->args->value))
+	if (cmd->args == NULL)
+		child_cleanup_and_exit(shell, cmd, i, 0);
+	if (are_strs_equal(cmd->args->value, ""))
 	{
 		ft_putendl_fd("minishell: command not found: ''", STDERR_FILENO);
-		shut_program(shell, false, 127);
+		child_cleanup_and_exit(shell, cmd, i, 127);
 	}
 	setup_child(cmd, shell, i);
 	resolve_cmd_and_args(shell, cmd, &path, &args);
@@ -22,8 +26,7 @@ void	child_process(t_shell *shell, t_cmd *cmd, int i)
 		free(path);
 		shut_program(shell, false, 126);
 	}
-	execve(path, args, shell->og_env); // ? Does this need if condition?
-	shut_program(shell, true , 127); // ? Check if exit code is correct?
+	execute_resolved_cmd(shell, path, args);
 }
 
 static void	setup_child(t_cmd *cmd, t_shell *shell, int i)
@@ -57,7 +60,7 @@ static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char *
 	*path = get_cmd_path(shell, cmd->args->value, &(shell->cur_exit_flag));
 	if (!(*path))
 	{
-		shut_program(shell, false, 1);
+		shut_program(shell, false, shell->cur_exit_flag);
 	}
 	*args = modify_args(cmd);
 	if (!*args)
@@ -67,26 +70,17 @@ static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char *
 	}
 }
 
-void	close_unused_pipes(t_shell *shell, int current)
+static void	child_cleanup_and_exit(t_shell *shell, t_cmd *cmd, int i, int code)
 {
-	int	i;
-
-	i = 0;
-    if (!shell->num_pipes_fd)
-        return ;
-	while (i < shell->num_pipes)
-	{
-		if (i != current && shell->num_pipes_fd[i][1] != -1)
-        {
-			close(shell->num_pipes_fd[i][1]);
-            shell->num_pipes_fd[i][1] = -1;
-        }
-		if (i != current - 1 && shell->num_pipes_fd[i][0] != -1)
-        {
-			close(shell->num_pipes_fd[i][0]);
-            shell->num_pipes_fd[i][0] = -1;
-        }
-		i++;
-	}
+	close_unused_pipes(shell, i);
+	close_redirections(cmd);
+	shut_program(shell, false, code);
 }
 
+static void	execute_resolved_cmd(t_shell *shell, char *path, char **args)
+{
+	execve(path, args, shell->og_env);
+	free(path);
+	ft_free_tab(args);
+	shut_program(shell, true, 127);
+}

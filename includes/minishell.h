@@ -19,6 +19,7 @@
 # include <readline/history.h>
 
 # include "structs.h"
+#include "../libft/libft.h"
 
 # define EX_OK EXIT_SUCCESS
 # define EX_KO EXIT_FAILURE
@@ -149,13 +150,19 @@ bool	cmd_is_dir(char *cmd);
 
 void	parse_redirection(t_shell *shell, t_cmd *cmd);
 bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i);
+
+bool    file_path_name_expansion(t_shell *shell, t_dir *dir);
+
+void    close_redirections(t_cmd *cmd_list);
+void close_all_pipes(t_shell *shell);
+
 bool	has_input_redirection_via_list(t_cmd *cmd);
 bool	has_output_redirection_via_list(t_cmd *cmd);
 
 
 // * =======================================================>>>>> Builtin utils
 
-bool	is_builtin(char *cmd);
+bool	is_builtin(t_token *token_lst);
 int		execute_builtin(t_shell *shell, t_cmd *cmd);
 
 int		ft_cd(t_shell *shell, char **args);

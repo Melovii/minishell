@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-static t_token  *collect_args_list(t_shell *shell);
+static void	append_arg_node(t_token **args, t_token *new_node);
+static void	parse_command(t_shell *shell, t_cmd *cmd);
 
 int get_len_cmd_args(t_cmd *cmd)
 {
@@ -17,47 +18,56 @@ int get_len_cmd_args(t_cmd *cmd)
 
 void	parser(t_shell *shell)
 {
-    t_cmd *tail;
+	t_cmd	*tail;
 
-    shell->cmd = new_cmd_node(shell);
-    tail = shell->cmd;
-    while (shell->token)
-    {
-        while (shell->token && shell->token->type != PIPE)
-        {
-            if (is_redirection_type(shell->token->type))
-                parse_redirection(shell, tail);
-            else if (shell->token->type == WORD)
-                tail->args = collect_args_list(shell);
-            else
-                break ;
-        }
-        if (shell->token && shell->token->type == PIPE)
-        {
-            advance_token(shell);
-            tail->next = new_cmd_node(shell);
-            tail = tail->next;
-        }
-        else
-            break ;
-    }
+	shell->cmd = new_cmd_node(shell);
+	tail = shell->cmd;
+	while (shell->token)
+	{
+		parse_command(shell, tail);
+		if (shell->token && shell->token->type == PIPE)
+		{
+			shell->token = shell->token->next;
+			tail->next = new_cmd_node(shell);
+			tail = tail->next;
+		}
+		else
+			break ;
+	}
 }
 
-static t_token  *collect_args_list(t_shell *shell)
+static void	parse_command(t_shell *shell, t_cmd *cmd)
 {
-    t_token *start;
-    t_token *end;
-
-    start = NULL;
-    end = NULL;
-    while (shell->token && shell->token->type == WORD)
-    {
-        if (!start)
-            start = shell->token;
-        end = shell->token;
-        shell->token = shell->token->next;
-    }
-    if (end)
-        end->next = NULL;
-    return (start);
+	while (shell->token && shell->token->type != PIPE)
+	{
+		if (is_redirection_type(shell->token->type))
+			parse_redirection(shell, cmd);
+		else if (shell->token->type == WORD)
+		{
+			t_token *cur = shell->token;
+			shell->token = shell->token->next;
+			cur->next = NULL;
+			append_arg_node(&cmd->args, cur);
+		}
+		else
+			shell->token = shell->token->next;
+	}
 }
+
+
+static void	append_arg_node(t_token **args, t_token *new_node)
+{
+	t_token	*cur;
+
+	new_node->next = NULL;
+	if (!*args)
+	{
+		*args = new_node;
+		return ;
+	}
+	cur = *args;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = new_node;
+}
+

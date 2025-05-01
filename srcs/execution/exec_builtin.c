@@ -3,8 +3,13 @@
 
 static int run_builtin(t_shell *shell, t_cmd *cmd);
 
-bool	is_builtin(char *cmd)
+bool	is_builtin(t_token *token_lst)
 {
+	char *cmd;
+
+	if (!token_lst)
+		return (false);
+	cmd = token_lst->value;
 	if (are_strs_equal(cmd, "echo")
 		|| are_strs_equal(cmd, "cd")
 		|| are_strs_equal(cmd, "pwd")

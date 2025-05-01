@@ -26,8 +26,10 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(TOKENS_DIR)/token_lst.c		\
 					$(PARSE_DIR)/parser.c			\
 					$(PARSE_DIR)/cmd_lst.c			\
-					$(PARSE_DIR)/redirection.c		\
 					$(PARSE_DIR)/env.c				\
+					$(PARSE_DIR)/redirection.c		\
+					$(PARSE_DIR)/redirection_utils.c \
+					$(PARSE_DIR)/setup_redirection.c \
 					$(EXP_DIR)/expansion.c			\
 					$(EXP_DIR)/expand_cmds.c		\
 					$(EXP_DIR)/expansion_utils.c	\
@@ -38,8 +40,8 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(EXEC_DIR)/heredoc.c			\
 					$(EXEC_DIR)/path.c				\
 					$(EXEC_DIR)/pipe.c				\
+					$(EXEC_DIR)/pipe_utils.c		\
 					$(EXEC_DIR)/termios.c			\
-					$(EXEC_DIR)/setup_redirection.c	\
 					$(BUILTIN_DIR)/ft_cd.c			\
 					$(BUILTIN_DIR)/ft_pwd.c			\
 					$(BUILTIN_DIR)/ft_env.c			\
@@ -55,7 +57,6 @@ SRCS			=	$(SRC_DIR)/main.c				\
 					$(UTILS_DIR)/syntax_utils.c		\
 					$(UTILS_DIR)/quote_utils.c		\
 					$(UTILS_DIR)/unquote_utils.c	\
-
 
 
 

@@ -27,10 +27,13 @@ bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 static bool	handle_redirections(t_shell *shell, t_cmd *cmd)
 {
 	t_dir	*redir;
+	char	*before_expand;
 
 	redir = cmd->redir_list;
 	while (redir)
 	{
+		if (!file_path_name_expansion(shell, redir))
+			return (false);
 		if (redir->type == DIR_IN)
 		{
 			if (!handle_in_redir(shell, cmd, redir))
