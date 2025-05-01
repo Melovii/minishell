@@ -34,8 +34,10 @@ static void shell_loop(t_shell *shell)
 
 	while (1)
 	{
+		handle_signals(STANDBY);
         make_ready_for_next_prompt(shell);
 		prompt = readline(PROMPT);
+		handle_signals(NEUTRAL);
 		if (!prompt)
 		{
 			ft_putendl_fd("exit", STDOUT_FILENO);

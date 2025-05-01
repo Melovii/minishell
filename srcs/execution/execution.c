@@ -47,7 +47,10 @@ static pid_t fork_and_execute(t_shell *shell, t_cmd *cmd, int index)
     if (pid < 0)
         shut_program(shell, true, EX_KO);
     if (pid == 0)
+	{
+		handle_signals(EXEC_CMD);
         child_process(shell, cmd, index);
+	}
     else
     {
         if (index > 0 && pipes[index - 1][0] >= 0)
@@ -84,4 +87,3 @@ static void	parent_wait(t_shell *shell, pid_t last_pid)
 	}
 	close_redirections(shell->cmd);
 }
-
