@@ -14,7 +14,7 @@ int	ft_export(t_shell *shell, char **args)
 	status = 0;
 	if (!args[1])
 	{
-		ft_env(shell, true);
+		ft_env(shell, args, true);
 		return (0);
 	}
 	while (args[i])
