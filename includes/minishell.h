@@ -117,9 +117,7 @@ char *remove_quotes_update_str(t_shell *shell, char *str);
 
 void	expand_and_unquote_cmd_list(t_shell *shell);
 
-char	*load_var_value(t_shell *shell, char *name);
 int		measure_len(t_shell *shell, char *input);
-char	*parse_var_name(t_shell *shell, char *input, int *i);
 
 
 // * =======================================================>>>>> Execution utils

@@ -67,8 +67,8 @@ static void general_process(t_shell *shell, char *prompt)
     if (shell->cur_exit_flag != EX_OK)
         return ;
 	expand_and_unquote_cmd_list(shell);
-	//print_cmd_list(shell->cmd);
-    execution(shell);
+	print_cmd_list(shell->cmd);
+    //execution(shell);
 }
 
 static void init_shell(t_shell *shell, char **envp) // ? Check if this is needed
