@@ -40,6 +40,14 @@ void	add_token(t_shell *shell, t_token **tokens, char *value)
 	}
 }
 
+void	free_token_node(t_token *node)
+{
+	if (!node)
+		return ;
+	free(node->value);
+	free(node);
+}
+
 void	advance_token(t_shell *shell)
 {
 	if (shell->token)

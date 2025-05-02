@@ -19,6 +19,7 @@ int get_len_cmd_args(t_cmd *cmd)
 void	parser(t_shell *shell)
 {
 	t_cmd	*tail;
+	t_token	*temp;
 
 	shell->cmd = new_cmd_node(shell);
 	tail = shell->cmd;
@@ -27,7 +28,9 @@ void	parser(t_shell *shell)
 		parse_command(shell, tail);
 		if (shell->token && shell->token->type == PIPE)
 		{
-			shell->token = shell->token->next;
+			temp = shell->token;
+			advance_token(shell);
+			free_token_node(temp);
 			tail->next = new_cmd_node(shell);
 			tail = tail->next;
 		}
@@ -38,6 +41,8 @@ void	parser(t_shell *shell)
 
 static void	parse_command(t_shell *shell, t_cmd *cmd)
 {
+	t_token *temp;
+
 	while (shell->token && shell->token->type != PIPE)
 	{
 		if (is_redirection_type(shell->token->type))
@@ -50,7 +55,11 @@ static void	parse_command(t_shell *shell, t_cmd *cmd)
 			append_arg_node(&cmd->args, cur);
 		}
 		else
-			shell->token = shell->token->next;
+		{
+			temp = shell->token;
+			advance_token(shell);
+			free_token_node(temp);
+		}
 	}
 }
 

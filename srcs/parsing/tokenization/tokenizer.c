@@ -98,6 +98,7 @@ static char	*get_default_part(t_shell *shell, char *input, int *i, char **combin
 static void	get_special_token(t_shell *shell, t_token **tokens, char *input, int *i)
 {
 	char	operator[3];
+	char	*opt_value;
 
 	ft_bzero(operator, 3);
 	operator[0] = input[*i];
@@ -111,7 +112,11 @@ static void	get_special_token(t_shell *shell, t_token **tokens, char *input, int
 	{
 		(*i)++;
 	}
-	add_token(shell, tokens, ft_strdup(operator));
+	opt_value = ft_strdup(operator);
+	if (!opt_value)
+		shut_program(shell, true, EX_KO);
+	add_token(shell, tokens, opt_value);
+	free(opt_value);
 }
 
 
