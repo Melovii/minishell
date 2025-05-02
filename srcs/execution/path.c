@@ -1,21 +1,23 @@
 #include "minishell.h"
 #include "../libft/libft.h"
 
-static bool unset_path_case(char **paths, int *exit_code);
+static bool unset_path_case(char **paths, int *exit_code, int *flag);
 static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_code);
 static char	*check_direct_path(char *cmd, int *exit_code);
-static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code);
+static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, int *flag);
 
 char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code)
 {
 	char *path;
+	int	flag;
 
+	flag = 0;
 	if (ft_strchr(cmd, '/'))
 		return (check_direct_path(cmd, exit_code));
 	else
 	{
-		path = search_command_in_path(shell, cmd, exit_code);
-		if (!path)
+		path = search_command_in_path(shell, cmd, exit_code, &flag);
+		if (!path && flag)
 		{
 			path_error_msg(cmd, 127, false);
 			return (NULL);
@@ -41,7 +43,7 @@ static char	*check_direct_path(char *cmd, int *exit_code)
 	return (ft_strdup(cmd));
 }
 
-static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code)
+static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, int *flag)
 {
 	char	**paths;
 	char	*result;
@@ -49,7 +51,7 @@ static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code)
 	int		final_exit;
 
 	paths = get_paths_array(shell);
-	if (unset_path_case(paths, exit_code))
+	if (unset_path_case(paths, exit_code, flag))
 		return (NULL);
 	i = -1;
 	final_exit = 127;
@@ -70,10 +72,11 @@ static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code)
 	return (NULL);
 }
 
-static bool unset_path_case(char **paths, int *exit_code)
+static bool unset_path_case(char **paths, int *exit_code, int *flag)
 {
 	if (!paths)
 	{
+		*flag = 1;
 		*exit_code = 127;
 		return (true);
 	}

@@ -94,7 +94,7 @@ static void make_ready_for_next_prompt(t_shell *shell)
     shell->token = NULL;
     free_cmd_list(shell->cmd);
     shell->cmd = NULL;
-    //free_pipe_fd(shell->num_pipes_fd, shell->num_pipes);
+    free_pipe_fd(shell->num_pipes_fd, shell->num_pipes);
     shell->num_pipes_fd = NULL;
     shell->num_pipes = 0;
 	shell->exit_flag = shell->cur_exit_flag;
