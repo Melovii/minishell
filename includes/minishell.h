@@ -171,7 +171,7 @@ int		execute_builtin(t_shell *shell, t_cmd *cmd);
 
 int		ft_cd(t_shell *shell, char **args);
 int		ft_echo(char **args);
-int		ft_env(t_shell *shell, bool is_export);
+int	ft_env(t_shell *shell, char **args, bool is_export);
 int		ft_exit(t_shell *shell, char **args);
 int		ft_export(t_shell *shell, char **args);
 int		ft_pwd(t_shell *shell);
@@ -185,6 +185,6 @@ void	add_or_update_env(t_shell *shell, char *key, char *value);
 
 void	path_error_msg(char *cmd, int exit_code, bool is_direct);
 char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code);
-
+char	**get_paths_array(t_shell *shell);
 
 #endif

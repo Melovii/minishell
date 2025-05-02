@@ -68,7 +68,7 @@ static int	run_builtin(t_shell *shell, t_cmd *cmd)
 	else if (are_strs_equal(cmd->args->value, "unset"))
 		status = ft_unset(shell, args);
 	else if (are_strs_equal(cmd->args->value, "env"))
-		status = ft_env(shell, false);
+		status = ft_env(shell, args, false);
 	else if (are_strs_equal(cmd->args->value, "exit"))
 		status = ft_exit(shell, args);
 	else

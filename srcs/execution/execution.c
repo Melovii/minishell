@@ -74,18 +74,18 @@ static void	parent_wait(t_shell *shell, pid_t last_pid)
 	pid_t	pid;
 	int		status;
 
-	close_all_pipes(shell);
 	pid = wait(&status);
 	while (pid > 0)
 	{
-		if (pid == last_pid)
+        if (pid == last_pid)
 		{
-			if (WIFEXITED(status))
-				shell->cur_exit_flag = WEXITSTATUS(status);
+            if (WIFEXITED(status))
+            shell->cur_exit_flag = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				shell->cur_exit_flag = 128 + WTERMSIG(status);
+            shell->cur_exit_flag = 128 + WTERMSIG(status);
 		}
 		pid = wait(&status);
 	}
+    close_all_pipes(shell);
 	close_redirections(shell->cmd);
 }
