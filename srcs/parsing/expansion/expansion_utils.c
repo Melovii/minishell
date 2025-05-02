@@ -1,51 +1,72 @@
 #include "minishell.h"
 
-static int	get_special_case_len(t_shell *shell, char *s, int *i);
+static int	get_special_case_len(t_shell *shell, int *i);
 static int get_default_len(t_shell *shell, char *s, int *i);
 
-int handle_env_var_len(t_shell *shell, char *s, int *i)
+void	ft_strcpy_to(char *dst, char *src, int *j)
 {
-	int len;
+	int i = 0;
+	while (src[i])
+		dst[(*j)++] = src[i++];
+}
+
+
+int	handle_env_var_len(t_shell *shell, char *str, int *i, bool is_in_q)
+{
 	int j;
 
 	j = *i + 1;
-	if (s[j] == '?')
-		return (get_special_case_len(shell, s, i));
-	if (ft_isalpha(s[j]) || s[j] == '_')
-		return (get_default_len(shell, s, i));
-	while (s[j] && is_quote(s[j]) == false)
+
+	if (str[j] == '?')
+		return (get_special_case_len(shell, i));
+	if (ft_isalpha(str[j]) || str[j] == '_')
+		return (get_default_len(shell, str, i));
+	if (ft_isdigit(str[j]))
 	{
-		if (s[j] == '$')
-			break ;
-		j++;
+		*i += 2;
+		return (0);
 	}
-	len = j - (*i) + 1;
-	*i = j;
-	return (len);
+	if (is_quote(str[j]) && !is_in_q)
+	{
+		*i += 1;
+		return (0);
+	}
+	if (str[j])
+	{
+		*i += 2;
+		return (2);
+	}
+	*i += 1;
+	return (1);
 }
 
-static int get_default_len(t_shell *shell, char *s, int *i)
-{
-	int len;
-	char *var;
 
-	len = 0;
-	var = s + *i + 1;
-	while (s[*i] && (ft_isalnum(s[*i]) || s[*i] == '_'))
-	{
-		len++;
-		(*i)++;
-	}
-	var = ft_substr(var, 0, len);
+static int	get_default_len(t_shell *shell, char *str, int *i)
+{
+	int		start;
+	int		end;
+	char	*var;
+	char	*val;
+	int		len;
+
+	start = *i + 1;
+	end = start;
+	while (str[end] && (ft_isalnum(str[end]) || str[end] == '_'))
+		end++;
+	var = ft_substr(str, start, end - start);
 	if (!var)
 		shut_program(shell, true, EX_KO);
-	len = ft_strlen(get_env_value(shell->env, var));
+	val = get_env_value(shell->env, var);
+	if (val)
+		len = ft_strlen(val);
+	else
+		len = 0;
 	free(var);
+	*i = end;
 	return (len);
 }
 
-
-static int	get_special_case_len(t_shell *shell, char *s, int *i)
+static int	get_special_case_len(t_shell *shell, int *i)
 {
 	int len;
 	char *var;

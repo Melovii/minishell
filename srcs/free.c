@@ -26,7 +26,7 @@ void    free_shell(t_shell *shell)
     free_tokens(shell->token);
     free_cmd_list(shell->cmd);
     free_env_list(shell->env);
-    // free_pipe_fd(shell->num_pipes_fd, shell->num_pipes);
+    free_pipe_fd(shell->num_pipes_fd, shell->num_pipes);
     free(shell);
 }
 

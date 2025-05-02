@@ -1,9 +1,8 @@
 #include "minishell.h"
 #include "../libft/libft.h"
 
-static void fill_vars(int *i, int *j, bool *in_double, bool *in_single);
+static void	init_buf(t_buffer *buf);
 static void	fill_expanded_string(t_shell *shell, char *input, char *expanded);
-static int	handle_variable(t_shell *shell, char *input, char *res, int *i, int j);
 
 char	*expand_vars( t_shell *shell, char *input)
 {
@@ -26,46 +25,41 @@ char	*expand_vars( t_shell *shell, char *input)
 	return (expanded);
 }
 
-static void fill_expanded_string(t_shell *shell, char *input, char *expanded)
+static void	fill_expanded_string(t_shell *shell, char *input, char *expanded)
 {
-	int		i;
-	int		j;
-	bool	in_double;
-	bool	in_single;
+	t_buffer	buf;
 
-	i = 0;
-	j = 0;
-	in_double = false;
-	in_single = false;
-	while (input[i])
+	init_buf(&buf);
+	while (input[buf.i])
 	{
-		if (input[i] == '"')
-			fill_dq_state(shell, input, expanded, &in_double, &i, &j);
-	}
-	expanded[j] = '\0';
-}
-
-static void fill_dq_state(t_shell *shell, char *input, char *expanded, bool *in_double, int *i, int *j)
-{
-	*in_double = !(*in_double);
-	while (input[*i] && input[*i] != '"')
-	{
-		if (input[*i] == '$')
+		if (input[buf.i] == '"' && !buf.in_sq)
 		{
-			fill_vars(shell, input, expanded, i, j, in_double);
+			buf.in_dq = !buf.in_dq;
+			expanded[buf.j++] = input[buf.i];
+		}
+		else if (input[buf.i] == '\'' && !buf.in_dq)
+		{
+			buf.in_sq = !buf.in_sq;
+			expanded[buf.j++] = input[buf.i];
+		}
+		else if (input[buf.i] == '$' && !buf.in_sq)
+		{
+			fill_vars(shell, input, expanded, &buf);
+			continue;
 		}
 		else
-		{
-			expanded[*j] = input[*i];
-			(*i)++;
-			(*j)++;
-		}
+			expanded[buf.j++] = input[buf.i];
+		buf.i++;
 	}
-
+	expanded[buf.j] = '\0';
 }
 
 
-// static void fill_vars(t_shell *shell, char *input, char *expanded, int *i, int *j, bool *in_double)
-// {
-// 	if ()
-// }
+static void	init_buf(t_buffer *buf)
+{
+	buf->i = 0;
+	buf->j = 0;
+	buf->k = 0;
+	buf->in_dq = false;
+	buf->in_sq = false;
+}

@@ -43,7 +43,7 @@ static int measure_sq(char *s, int *i)
 	}
 	if (s[*i] == '\'')
 		(*i)++;
-	return (len);
+	return (len + 2);
 }
 
 static int measure_without_q(t_shell *shell, char *s, int *i)
@@ -55,7 +55,7 @@ static int measure_without_q(t_shell *shell, char *s, int *i)
 	{
 		if (s[*i] == '$')
 		{
-			len += handle_env_var(shell, s, i);
+			len += handle_env_var_len(shell, s, i, false);
 			break ;
 		}
 		len++;
@@ -74,7 +74,7 @@ static int measure_dq(t_shell *shell, char *s, int *i)
 	{
 		if (s[*i] == '$')
 		{
-			len += handle_env_var(shell, s, i);
+			len += handle_env_var_len(shell, s, i, true);
 			break ;
 		}
 		len++;
@@ -82,5 +82,5 @@ static int measure_dq(t_shell *shell, char *s, int *i)
 	}
 	if (s[*i] == '"')
 		(*i)++;
-	return (len);
+	return (len + 2);
 }
