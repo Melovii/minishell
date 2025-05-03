@@ -50,6 +50,17 @@ typedef enum e_termios_action
 
 typedef struct termios		t_termios; // ? test without this
 
+
+typedef struct s_buffer
+{
+    int i;
+    int j;
+    int k;
+    bool in_sq;
+    bool in_dq;
+}   t_buffer;
+
+
 // * Struct for redirection
 typedef struct s_dir
 {

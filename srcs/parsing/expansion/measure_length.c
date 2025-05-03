@@ -1,7 +1,6 @@
 #include "minishell.h"
 #include "../libft/libft.h"
 
-static int	handle_env_var(t_shell *shell, char *s, int *i);
 static int	measure_without_q(t_shell *shell, char *s, int *i);
 static int	measure_sq(char *s, int *i);
 static int	measure_dq(t_shell *shell, char *s, int *i);
@@ -31,87 +30,57 @@ int measure_len(t_shell *shell, char *input)
     return (len);
 }
 
-static int	measure_sq(char *input, int *i)
+static int measure_sq(char *s, int *i)
 {
-	int	len;
+	int len;
 
 	len = 0;
 	(*i)++;
-	while (input[*i] && input[*i] != '\'')
+	while (s[*i] && s[*i] != '\'')
 	{
 		len++;
 		(*i)++;
 	}
-	if (input[*i] == '\'')
+	if (s[*i] == '\'')
 		(*i)++;
+	return (len + 2);
+}
+
+static int measure_without_q(t_shell *shell, char *s, int *i)
+{
+	int len;
+
+	len = 0;
+	while (s[*i] && s[*i] != '\'' && s[*i] != '"')
+	{
+		if (s[*i] == '$')
+		{
+			len += handle_env_var_len(shell, s, i, false);
+			break ;
+		}
+		len++;
+		(*i)++;
+	}
 	return (len);
 }
 
-
-static int	measure_dq(t_shell *shell, char *input, int *i)
+static int measure_dq(t_shell *shell, char *s, int *i)
 {
-	int	len;
+	int len;
 
 	len = 0;
 	(*i)++;
-	while (input[*i] && input[*i] != '"')
+	while (s[*i] && s[*i] != '"')
 	{
-		if (input[*i] == '$' && input[*i + 1] && input[*i + 1] != '"')
+		if (s[*i] == '$')
 		{
-			(*i)++;
-			len += handle_env_var(shell, input, i);
+			len += handle_env_var_len(shell, s, i, true);
+			break ;
 		}
-		else
-		{
-			len++;
-			(*i)++;
-		}
-	}
-	if (input[*i] == '"')
+		len++;
 		(*i)++;
-	return (len);
-}
-
-static int	measure_without_q(t_shell *shell, char *input, int *i)
-{
-	int	len;
-
-	len = 0;
-	while (input[*i] && input[*i] != '\'' && input[*i] != '"')
-	{
-		if (input[*i] == '$' && input[*i + 1])
-		{
-			(*i)++;
-			len += handle_env_var(shell, input, i);
-		}
-		else
-		{
-			len++;
-			(*i)++;
-		}
 	}
-	return (len);
+	if (s[*i] == '"')
+		(*i)++;
+	return (len + 2);
 }
-
-static int	handle_env_var(t_shell *shell, char *input, int *i)
-{
-	char	*name;
-	char	*value;
-	int		len;
-
-	name = parse_var_name(shell, input, i);
-	if (!name)
-    {
-		return (0);
-    }
-	value = load_var_value(shell, name);
-	len = 0;
-	if (value)
-	{
-		len = ft_strlen(value);
-	}
-	free(name); 
-	return (len);
-}
-
-

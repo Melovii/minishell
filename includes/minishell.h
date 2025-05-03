@@ -19,6 +19,7 @@
 # include <readline/history.h>
 
 # include "structs.h"
+#include "../libft/libft.h"
 
 # define EX_OK EXIT_SUCCESS
 # define EX_KO EXIT_FAILURE
@@ -69,6 +70,7 @@ void	update_token_type(t_token *tokens);
 bool	is_operator_type(t_token_type type);
 bool	is_redirection_type(t_token_type type);
 
+void	free_token_node(t_token *node);
 void	free_tokens(t_token *tokens);
 void	add_token(t_shell *shell, t_token **tokens, char *value);
 void	advance_token(t_shell *shell);
@@ -112,13 +114,17 @@ char	*get_env_value(t_env *env, char *key);
 
 char	*expand_vars( t_shell *shell, char *input);
 
+void	fill_vars(t_shell *shell, char *input, char *expanded, t_buffer *buf);
+
 char *remove_quotes_update_str(t_shell *shell, char *str);
 
 void	expand_and_unquote_cmd_list(t_shell *shell);
 
-char	*load_var_value(t_shell *shell, char *name);
+
+void	ft_strcpy_to(char *dst, char *src, int *j);
+
 int		measure_len(t_shell *shell, char *input);
-char	*parse_var_name(t_shell *shell, char *input, int *i);
+int	handle_env_var_len(t_shell *shell, char *str, int *i, bool is_in_q);
 
 
 // * =======================================================>>>>> Execution utils
@@ -149,18 +155,24 @@ bool	cmd_is_dir(char *cmd);
 
 void	parse_redirection(t_shell *shell, t_cmd *cmd);
 bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i);
+
+bool    file_path_name_expansion(t_shell *shell, t_dir *dir);
+
+void    close_redirections(t_cmd *cmd_list);
+void close_all_pipes(t_shell *shell);
+
 bool	has_input_redirection_via_list(t_cmd *cmd);
 bool	has_output_redirection_via_list(t_cmd *cmd);
 
 
 // * =======================================================>>>>> Builtin utils
 
-bool	is_builtin(char *cmd);
+bool	is_builtin(t_token *token_lst);
 int		execute_builtin(t_shell *shell, t_cmd *cmd);
 
 int		ft_cd(t_shell *shell, char **args);
 int		ft_echo(char **args);
-int		ft_env(t_shell *shell, bool is_export);
+int	ft_env(t_shell *shell, char **args, bool is_export);
 int		ft_exit(t_shell *shell, char **args);
 int		ft_export(t_shell *shell, char **args);
 int		ft_pwd(t_shell *shell);
@@ -174,6 +186,6 @@ void	add_or_update_env(t_shell *shell, char *key, char *value);
 
 void	path_error_msg(char *cmd, int exit_code, bool is_direct);
 char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code);
-
+char	**get_paths_array(t_shell *shell);
 
 #endif

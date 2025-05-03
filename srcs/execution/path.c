@@ -1,17 +1,28 @@
 #include "minishell.h"
 #include "../libft/libft.h"
 
+static bool unset_path_case(char **paths, int *exit_code, int *flag);
 static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_code);
-static char	**get_paths_array(t_shell *shell);
 static char	*check_direct_path(char *cmd, int *exit_code);
-static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code);
+static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, int *flag);
 
 char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code)
 {
+	char *path;
+	int	flag;
+
+	flag = 0;
 	if (ft_strchr(cmd, '/'))
 		return (check_direct_path(cmd, exit_code));
 	else
-		return (search_command_in_path(shell, cmd, exit_code));
+	{
+		path = search_command_in_path(shell, cmd, exit_code, &flag);
+		if (!path && flag)
+		{
+			path_error_msg(cmd, 127, false);
+			return (NULL);
+		}
+	}
 }
 
 static char	*check_direct_path(char *cmd, int *exit_code)
@@ -32,7 +43,7 @@ static char	*check_direct_path(char *cmd, int *exit_code)
 	return (ft_strdup(cmd));
 }
 
-char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code)
+static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, int *flag)
 {
 	char	**paths;
 	char	*result;
@@ -40,7 +51,7 @@ char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code)
 	int		final_exit;
 
 	paths = get_paths_array(shell);
-	if (!paths)
+	if (unset_path_case(paths, exit_code, flag))
 		return (NULL);
 	i = -1;
 	final_exit = 127;
@@ -61,14 +72,15 @@ char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code)
 	return (NULL);
 }
 
-static char	**get_paths_array(t_shell *shell)
+static bool unset_path_case(char **paths, int *exit_code, int *flag)
 {
-	char	*path_env;
-
-	path_env = get_env_value(shell->env, "PATH");
-	if (!path_env)
-		return (NULL);
-	return (ft_split(path_env, ':'));
+	if (!paths)
+	{
+		*flag = 1;
+		*exit_code = 127;
+		return (true);
+	}
+	return (false);
 }
 
 static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_code)
@@ -79,7 +91,7 @@ static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_c
 	if (!full_path)
 	{
 		*exit_code = 1;
-		shut_program(shell, "Memory allocation error on check_single_path()", *exit_code);
+		shut_program(shell, true, *exit_code);
 		return (NULL);
 	}
 	if (access(full_path, F_OK) == 0)

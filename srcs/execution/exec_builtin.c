@@ -3,8 +3,13 @@
 
 static int run_builtin(t_shell *shell, t_cmd *cmd);
 
-bool	is_builtin(char *cmd)
+bool	is_builtin(t_token *token_lst)
 {
+	char *cmd;
+
+	if (!token_lst)
+		return (false);
+	cmd = token_lst->value;
 	if (are_strs_equal(cmd, "echo")
 		|| are_strs_equal(cmd, "cd")
 		|| are_strs_equal(cmd, "pwd")
@@ -12,7 +17,9 @@ bool	is_builtin(char *cmd)
 		|| are_strs_equal(cmd, "unset")
 		|| are_strs_equal(cmd, "env")
 		|| are_strs_equal(cmd, "exit"))
-		return (true);
+		{
+			return (true);
+		}
 	return (false);
 }
 
@@ -61,7 +68,7 @@ static int	run_builtin(t_shell *shell, t_cmd *cmd)
 	else if (are_strs_equal(cmd->args->value, "unset"))
 		status = ft_unset(shell, args);
 	else if (are_strs_equal(cmd->args->value, "env"))
-		status = ft_env(shell, false);
+		status = ft_env(shell, args, false);
 	else if (are_strs_equal(cmd->args->value, "exit"))
 		status = ft_exit(shell, args);
 	else
@@ -89,7 +96,7 @@ char	**modify_args(t_cmd *cmd)
 		args[i] = ft_strdup(tmp->value);
 		if (!args[i])
 		{
-			ft_free_tab(args); // helper to free allocated strings
+			ft_free_tab(args);
 			return (NULL);
 		}
 		tmp = tmp->next;

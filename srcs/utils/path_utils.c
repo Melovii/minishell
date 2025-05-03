@@ -27,3 +27,13 @@ bool	cmd_is_dir(char *cmd)
 	stat(cmd, &cmd_stat);
 	return (S_ISDIR(cmd_stat.st_mode)); // * True if the command is a directory
 }
+
+char	**get_paths_array(t_shell *shell)
+{
+	char	*path_env;
+
+	path_env = get_env_value(shell->env, "PATH");
+	if (!path_env)
+		return (NULL);
+	return (ft_split(path_env, ':'));
+}

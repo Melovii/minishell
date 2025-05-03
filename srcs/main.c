@@ -1,20 +1,17 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static void init_shell(t_shell *shell, char **envp);
 static void make_ready_for_next_prompt(t_shell *shell);
 static void general_process(t_shell *shell, char *prompt);
 static void shell_loop(t_shell *shell);
 
-// * Main function
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
-    // TODO: Add signal handling
-
 	(void)argv;
-	if (argc != 1) // TODO: Add invalid number of arguments error code (2)
+	if (argc != 1)
 	{
 		ft_putendl_fd("Error: Invalid number of arguments", STDERR_FILENO);
 		return (INV_ARGC);
@@ -26,9 +23,7 @@ int	main(int argc, char **argv, char **envp)
 		return (EX_KO);
 	}
 	init_shell(shell, envp);
-	setup_termios(shell, SAVE);
 	shell_loop(shell);
-	setup_termios(shell, LOAD);
 	free_shell(shell);
 	return (0);
 }
@@ -42,12 +37,12 @@ static void shell_loop(t_shell *shell)
 		handle_signals(STANDBY);
         make_ready_for_next_prompt(shell);
 		prompt = readline(PROMPT);
+		handle_signals(NEUTRAL);
 		if (!prompt)
 		{
 			ft_putendl_fd("exit", STDOUT_FILENO);
 			break ;
 		}
-		handle_signals(NEUTRAL);
 		if (prompt[0] == '\0')
 		{
 			continue ;
@@ -64,19 +59,30 @@ static void general_process(t_shell *shell, char *prompt)
     (shell->number_of_prompts)++;
 	tokenizer(shell, prompt);
     if (!(check_syntax(shell->token) && are_quotes_closed(shell->token)))
-	{
-		shell->cur_exit_flag = 2;
         return ;
-	}
     parser(shell);
-	//print_cmd_list(shell->cmd);
 	shell->num_pipes = count_pipes(shell->cmd);
 	shell->num_pipes_fd = setup_pipes(shell, shell->num_pipes);
 	shell->cur_exit_flag = process_heredocs(shell); // ! Check (exit code + signal handling) out
     if (shell->cur_exit_flag != EX_OK)
         return ;
 	expand_and_unquote_cmd_list(shell);
+	//print_cmd_list(shell->cmd);
     execution(shell);
+}
+
+static void init_shell(t_shell *shell, char **envp) // ? Check if this is needed
+{
+	shell->input = NULL;
+	shell->cur_exit_flag = 0;
+	shell->exit_flag = 0;
+    shell->number_of_prompts = 0;
+	shell->num_pipes = 0;
+	shell->og_env = envp;
+	init_env(shell, envp);
+    shell->num_pipes_fd = NULL;
+	shell->cmd = NULL;
+	shell->token = NULL;
 }
 
 static void make_ready_for_next_prompt(t_shell *shell)
@@ -93,19 +99,4 @@ static void make_ready_for_next_prompt(t_shell *shell)
     shell->num_pipes = 0;
 	shell->exit_flag = shell->cur_exit_flag;
     // TODO: Update later
-}
-
-static void init_shell(t_shell *shell, char **envp) // ? Check if this is needed
-{
-	shell->input = NULL;
-	shell->cur_exit_flag = 0;
-	shell->exit_flag = 0;
-    shell->number_of_prompts = 0;
-	shell->num_pipes = 0;
-	shell->og_env = envp;
-	init_env(shell, envp);
-    shell->num_pipes_fd = NULL;
-	shell->cmd = NULL;
-	shell->token = NULL;
-	// g_signal = 0; // ?  Is this supposed to be here?
 }

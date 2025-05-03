@@ -9,8 +9,18 @@ static void	handle_heredoc_redir(t_cmd *cmd, t_dir *redir);
 
 bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 {
-	if (!handle_redirections(shell, cmd)) // ? Perhaps addition exit_flag(exit code)
+	if (!handle_redirections(shell, cmd))
 	{
+		if (i > 0 && shell->num_pipes_fd[i - 1][0] >= 0)
+		{
+			close(shell->num_pipes_fd[i - 1][0]);
+			shell->num_pipes_fd[i - 1][0] = -1;
+		}
+		if (i < shell->num_pipes && shell->num_pipes_fd[i][1] >= 0)
+		{
+			close(shell->num_pipes_fd[i][1]);
+			shell->num_pipes_fd[i][1] = -1;
+		}
 		return (false);
 	}
 	if (cmd->in_fd == STDIN_FILENO && i > 0)
@@ -27,10 +37,13 @@ bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 static bool	handle_redirections(t_shell *shell, t_cmd *cmd)
 {
 	t_dir	*redir;
+	char	*before_expand;
 
 	redir = cmd->redir_list;
 	while (redir)
 	{
+		if (!file_path_name_expansion(shell, redir))
+			return (false);
 		if (redir->type == DIR_IN)
 		{
 			if (!handle_in_redir(shell, cmd, redir))

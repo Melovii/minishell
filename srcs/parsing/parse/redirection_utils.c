@@ -1,0 +1,27 @@
+#include "minishell.h"
+
+void null_path_name_msg(char *before_expansion);
+
+bool    file_path_name_expansion(t_shell *shell, t_dir *dir)
+{
+    char    *before_expansion;
+
+    if (dir->type == DIR_HEREDOC)
+        return (true);
+    before_expansion = dir->filename;
+    dir->filename = expand_vars(shell, dir->filename);
+    if (dir->filename == NULL)
+    {
+        null_path_name_msg(before_expansion);
+        return (false);
+    }
+    dir->filename = remove_quotes_update_str(shell, dir->filename);
+    return (true);
+}
+
+void null_path_name_msg(char *before_expansion)
+{
+    ft_putstr_fd("bash: ", 2);
+    ft_putstr_fd(before_expansion, 2);
+    ft_putendl_fd(": ambiguous redirect", 2);
+}

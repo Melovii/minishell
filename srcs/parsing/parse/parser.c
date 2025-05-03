@@ -1,7 +1,7 @@
 #include "minishell.h"
 
-static void	parse_one_cmd(t_shell *shell, t_cmd *cmd);
-static void	append_token_last(t_token **list, t_token *new_node);
+static void	append_arg_node(t_token **args, t_token *new_node);
+static void	parse_command(t_shell *shell, t_cmd *cmd);
 
 int get_len_cmd_args(t_cmd *cmd)
 {
@@ -19,15 +19,18 @@ int get_len_cmd_args(t_cmd *cmd)
 void	parser(t_shell *shell)
 {
 	t_cmd	*tail;
+	t_token	*temp;
 
 	shell->cmd = new_cmd_node(shell);
 	tail = shell->cmd;
 	while (shell->token)
 	{
-		parse_one_cmd(shell, tail);
+		parse_command(shell, tail);
 		if (shell->token && shell->token->type == PIPE)
 		{
+			temp = shell->token;
 			advance_token(shell);
+			free_token_node(temp);
 			tail->next = new_cmd_node(shell);
 			tail = tail->next;
 		}
@@ -36,41 +39,44 @@ void	parser(t_shell *shell)
 	}
 }
 
-static void	parse_one_cmd(t_shell *shell, t_cmd *cmd)
+static void	parse_command(t_shell *shell, t_cmd *cmd)
 {
-	t_token	*arg;
+	t_token *temp;
 
 	while (shell->token && shell->token->type != PIPE)
 	{
 		if (is_redirection_type(shell->token->type))
-        {
 			parse_redirection(shell, cmd);
-        }
 		else if (shell->token->type == WORD)
 		{
-			arg = shell->token;
+			t_token *cur = shell->token;
 			shell->token = shell->token->next;
-			append_token_last(&cmd->args, arg);
+			cur->next = NULL;
+			append_arg_node(&cmd->args, cur);
 		}
 		else
-			break ;
+		{
+			temp = shell->token;
+			advance_token(shell);
+			free_token_node(temp);
+		}
 	}
 }
 
-static void	append_token_last(t_token **list, t_token *new_node)
+
+static void	append_arg_node(t_token **args, t_token *new_node)
 {
-	t_token	*tmp;
+	t_token	*cur;
 
-	if (!new_node)
-		return ;
 	new_node->next = NULL;
-	if (!*list)
-		*list = new_node;
-	else
+	if (!*args)
 	{
-		tmp = *list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_node;
+		*args = new_node;
+		return ;
 	}
+	cur = *args;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = new_node;
 }
+

@@ -14,12 +14,12 @@ void    parse_redirection(t_shell *shell, t_cmd *cmd)
     token = shell->token;
     advance_token(shell);
     dir_type = get_redir_type(shell, token);
+    free_token_node(token);
     file = get_filename(shell);
-	if (dir_type != DIR_HEREDOC)
+	if (dir_type == DIR_HEREDOC)
 	{
-		file = expand_vars(shell, file);
+		file = remove_quotes_update_str(shell, file);
 	}
-	file = remove_quotes_update_str(shell, file);
     redir = create_redir_node(shell, dir_type, file);
     if (!redir)
     {
@@ -44,10 +44,10 @@ static t_redir_type    get_redir_type(t_shell *shell, t_token *token)
     return (DIR_IN); // Unreachable, for norm compliance
 }
 
-
 static char    *get_filename(t_shell *shell)
 {
     char    *file;
+    t_token *temp;
 
     if (!shell->token || shell->token->type != WORD)
     {
@@ -57,7 +57,9 @@ static char    *get_filename(t_shell *shell)
     file = ft_strdup(shell->token->value);
     if (!file)
         shut_program(shell, true, EX_KO);
+    temp = shell->token;
     advance_token(shell);
+    free_token_node(temp);
     return (file);
 }
 
