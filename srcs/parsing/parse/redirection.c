@@ -16,10 +16,6 @@ void    parse_redirection(t_shell *shell, t_cmd *cmd)
     dir_type = get_redir_type(shell, token);
     free_token_node(token);
     file = get_filename(shell);
-	if (dir_type == DIR_HEREDOC)
-	{
-		file = remove_quotes_update_str(shell, file);
-	}
     redir = create_redir_node(shell, dir_type, file);
     if (!redir)
     {

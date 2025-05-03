@@ -63,6 +63,7 @@ static void	handle_heredoc_child(t_shell *shell, t_dir *redir)
 
 	close(redir->heredoc_fd[0]);
 	is_quoted = does_included_quote(redir->filename);
+	redir->filename = remove_quotes_update_str(shell, redir->filename);
 	while (1)
 	{
 		line = readline(HEREDOC_PROMPT);
