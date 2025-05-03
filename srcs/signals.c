@@ -30,8 +30,6 @@ static void	signal_heredoc(int sig)
 static void	signal_cmd(int sig)
 {
 	(void)sig;
-	// TODO: Fix SIGINT not starting a new line in command mode
-	// handle_sigint_output();
 	exit(130); // ? Shouldn't we free the main struct here?
 }
 

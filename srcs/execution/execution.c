@@ -83,6 +83,8 @@ static void	parent_wait(t_shell *shell, pid_t last_pid)
             shell->cur_exit_flag = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
             shell->cur_exit_flag = 128 + WTERMSIG(status);
+			if (shell->cur_exit_flag == 130)
+				handle_sigint_output();
 		}
 		pid = wait(&status);
 	}

@@ -23,7 +23,9 @@ int	main(int argc, char **argv, char **envp)
 		return (EX_KO);
 	}
 	init_shell(shell, envp);
+	setup_termios(shell, SAVE);
 	shell_loop(shell);
+	setup_termios(shell, LOAD);
 	free_shell(shell);
 	return (0);
 }
