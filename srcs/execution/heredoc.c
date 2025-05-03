@@ -52,6 +52,7 @@ static int	setup_heredoc(t_shell *shell, t_dir *redir)
 		handle_heredoc_child(shell, redir);
 	}
 	close(redir->heredoc_fd[1]);
+	redir->heredoc_fd[1] = -1;
 	return (wait_for_heredoc_child(pid)); // exit code or (128+sig)
 }
 
@@ -60,6 +61,7 @@ static void	handle_heredoc_child(t_shell *shell, t_dir *redir)
 	char	*line;
 	bool	is_quoted;
 
+	close(redir->heredoc_fd[0]);
 	is_quoted = does_included_quote(redir->filename);
 	while (1)
 	{

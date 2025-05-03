@@ -8,7 +8,6 @@ t_cmd	*new_cmd_node(t_shell *shell)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		shut_program(shell, true, EX_KO);
-    // ? Check is this necessary
 	cmd->in_fd = STDIN_FILENO;
 	cmd->out_fd = STDOUT_FILENO;
 	cmd->next = NULL;
@@ -44,6 +43,16 @@ void    free_cmd_list(t_cmd *head)
             free_tokens(curr->args);
         if (curr->redir_list)
             free_redir_list(curr->redir_list);
+        if (curr->in_fd > 2)
+        {
+            close(curr->in_fd);
+            curr->in_fd = -1;
+        }
+        if (curr->out_fd > 2)
+        {
+            close(curr->out_fd);
+            curr->out_fd = -1;
+        }
         free(curr);
         curr = next;
     }

@@ -67,7 +67,6 @@ static void general_process(t_shell *shell, char *prompt)
     if (shell->cur_exit_flag != EX_OK)
         return ;
 	expand_and_unquote_cmd_list(shell);
-	//print_cmd_list(shell->cmd);
     execution(shell);
 }
 
