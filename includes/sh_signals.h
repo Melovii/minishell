@@ -6,8 +6,10 @@
 # include "structs.h"
 
 // * =======================================================>>>>> Signal Handling
-int		setup_termios(t_shell *shell, t_termios_action action);
-void	handle_signals(t_status status);
+
 void	handle_sigint_output(void);
+void	handle_signals(t_status status);
+
+int		setup_termios(t_shell *shell, t_termios_action action);
 
 #endif
