@@ -67,7 +67,9 @@ static void general_process(t_shell *shell, char *prompt)
 	shell->num_pipes_fd = setup_pipes(shell, shell->num_pipes);
 	shell->cur_exit_flag = process_heredocs(shell); // ! Check (exit code + signal handling) out
     if (shell->cur_exit_flag != EX_OK)
+	{
         return ;
+	}
 	expand_and_unquote_cmd_list(shell);
     execution(shell);
 }

@@ -22,7 +22,9 @@ void	add_token(t_shell *shell, t_token **tokens, char *value)
 	t_token	*temp;
 
     if (!value)
+	{
         shut_program(shell, true, EX_KO);
+	}
 	new = new_token(value);
 	if (!new)
     {

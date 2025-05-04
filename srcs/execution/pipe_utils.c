@@ -6,7 +6,9 @@ void	close_unused_pipes(t_shell *shell, int current)
 
 	i = 0;
     if (!shell->num_pipes_fd)
+	{
         return ;
+	}
 	while (i < shell->num_pipes)
 	{
 		if (i != current && shell->num_pipes_fd[i][1] != -1)
