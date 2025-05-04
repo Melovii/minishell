@@ -111,7 +111,6 @@ leaks:
 			  --track-origins=yes						\
 			  --track-fds=yes							\
 			  --verbose									\
-			  --log-file=valgrind-out.txt 				\
 			  ./$(NAME)
 
 test:
