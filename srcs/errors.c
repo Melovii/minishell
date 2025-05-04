@@ -13,16 +13,22 @@ void	path_error_msg(char *cmd, int exit_code, bool is_direct)
 {
 	if (exit_code == 127)
 	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		if (is_direct)
-			ft_putstr_fd("minishell: no such file or directory: ", STDERR_FILENO);
+		{
+			ft_putstr_fd(cmd, STDERR_FILENO);
+			ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+		}
 		else
-			ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
+		{
+			ft_putstr_fd(cmd, STDERR_FILENO);
+			ft_putendl_fd(": command not found", STDERR_FILENO);
+		}
 	}
 	else if (exit_code == 126)
 	{
-		ft_putstr_fd("minishell: permission denied: ", STDERR_FILENO);
+		print_open_error(cmd);
 	}
-	ft_putendl_fd(cmd, STDERR_FILENO);
 }
 
 void print_open_error(char *filename)

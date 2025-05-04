@@ -38,6 +38,7 @@ static bool	handle_redirections(t_shell *shell, t_cmd *cmd)
 {
 	t_dir	*redir;
 	char	*before_expand;
+	(void)before_expand;
 
 	redir = cmd->redir_list;
 	while (redir)

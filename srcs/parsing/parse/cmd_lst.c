@@ -61,6 +61,7 @@ void    free_cmd_list(t_cmd *head)
 t_dir *create_redir_node(t_shell *shell, t_redir_type type, char *filename)
 {
     t_dir *new;
+	(void)shell;
 
     new = ft_calloc(1, sizeof(t_dir));
     if (!new)
