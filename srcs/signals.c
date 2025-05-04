@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 void	handle_sigint_output(void)
 {

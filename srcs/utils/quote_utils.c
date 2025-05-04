@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static bool	is_token_quote_balanced(char *str);
 

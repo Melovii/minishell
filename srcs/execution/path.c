@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static bool unset_path_case(char **paths, int *exit_code, int *flag);
 static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_code);

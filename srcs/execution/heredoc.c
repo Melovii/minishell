@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static char *update_heredoc_prompt(t_shell *shell, bool is_quoted, char *line);
 static int	setup_heredoc(t_shell *shell, t_dir *redir);

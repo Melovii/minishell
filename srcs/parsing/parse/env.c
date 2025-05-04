@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 #include "stdlib.h"
 
 void	init_env(t_shell *shell, char **envp)

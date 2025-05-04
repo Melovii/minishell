@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 // * Function to echo arguments (with -n flag)
 int	ft_echo(char **args)

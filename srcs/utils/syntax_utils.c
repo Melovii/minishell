@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static bool	check_invalid_operator(t_token *tokens);
 static bool	check_token_pair_syntax(t_token *prev, t_token *tokens);

@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static char	*get_quote_part(t_shell *shell, char *input, int *i, char **combined);
 static char	*get_default_part(t_shell *shell, char *input, int *i, char **combined);

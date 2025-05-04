@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static char    *get_filename(t_shell *shell);
 static t_redir_type    get_redir_type(t_shell *shell, t_token *token);

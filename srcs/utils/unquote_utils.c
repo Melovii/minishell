@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static  void init_vars(int *i, int *j, bool *in_sq, bool *in_dq);
 static int measure_unquoted_length(char *str);

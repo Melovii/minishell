@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static int run_builtin(t_shell *shell, t_cmd *cmd);
 

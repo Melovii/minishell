@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static void	add_env_node_with_data(t_shell *shell, char *key, char *value);
 

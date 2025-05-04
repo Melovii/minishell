@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 t_cmd	*new_cmd_node(t_shell *shell)
 {

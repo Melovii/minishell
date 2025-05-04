@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 void	shut_program(t_shell *shell, bool need_msg, int exit_code)
 {

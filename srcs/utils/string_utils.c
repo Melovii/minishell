@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 bool	are_strs_equal(char *s1, char *s2)
 {

@@ -1,4 +1,4 @@
-#include "../libft/libft.h"
+
 #include "minishell.h"
 
 // * Function to print error message for if command is a directory

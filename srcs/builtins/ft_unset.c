@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static void	remove_env_node(t_env **env_list, char *key);
 static bool	is_valid_identifier(char *str);

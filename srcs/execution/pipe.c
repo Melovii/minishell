@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static int	**allocate_pipe_fd(t_shell *shell, int num_pipes);
 static int	open_pipes(int **pipe_fd, int num_pipes);

@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static bool	process_export_argument(t_shell *shell, char *arg);
 static void	print_invalid_identifier(char *arg);

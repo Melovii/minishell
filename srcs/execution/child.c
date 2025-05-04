@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char ***args);
 static void	setup_child(t_cmd *cmd, t_shell *shell, int i);

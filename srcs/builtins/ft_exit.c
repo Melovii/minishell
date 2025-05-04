@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static bool	is_numeric(const char *str);
 static void custom_exit_msg(char *flag);

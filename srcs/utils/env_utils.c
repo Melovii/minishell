@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static void	set_key_no_value(t_shell *shell, t_env *node, char *env_var);
 static void	set_key_value_pair(t_shell *shell, t_env *node, char *env_var, char *equal_sign);

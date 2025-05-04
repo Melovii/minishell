@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "../libft/libft.h"
+
 
 static int	do_cd(t_shell *shell, char **args);
 static char	*get_oldpwd_or_error(void);

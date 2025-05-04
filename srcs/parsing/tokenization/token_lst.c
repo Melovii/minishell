@@ -1,4 +1,4 @@
-#include "../libft/libft.h"
+
 #include "minishell.h"
 
 static t_token	*new_token(char *value);

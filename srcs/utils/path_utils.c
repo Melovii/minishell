@@ -1,4 +1,4 @@
-#include "../libft/libft.h"
+
 #include "minishell.h"
 
 char	*ft_strjoin_path(char *dir, char *cmd)
