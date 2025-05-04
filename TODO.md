@@ -1,4 +1,3 @@
 - add comments to explain function and important parts
-- split libraries for modularity
 - ask someone about CTRL + \ (why does subject.pdf ask us to quit minishell?)
 - research cd ~ (do we need this?)
