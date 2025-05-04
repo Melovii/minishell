@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+// * Checks if the character is a shell operator (|, <, or >)
 bool    is_operator(char c)
 {
     if (c == '|' || c == '<' || c == '>')
@@ -7,6 +8,7 @@ bool    is_operator(char c)
     return (false);
 }
 
+// * Checks if the given string represents an invalid operator (e.g., "||", "&&", "&")
 static bool	is_invalid_operator(char *value)
 {
 	return (are_strs_equal(value, "||")
@@ -14,6 +16,7 @@ static bool	is_invalid_operator(char *value)
 		|| are_strs_equal(value, "&"));
 }
 
+// * Updates the token type based on its value (e.g., "|", "<", ">>", etc.)
 void	update_token_type(t_token *tokens)
 {
 	while (tokens)
@@ -39,12 +42,14 @@ void	update_token_type(t_token *tokens)
 	}
 }
 
+// * Checks if the token type is an operator (pipe or redirection)
 bool	is_operator_type(t_token_type type)
 {
 	return (type == PIPE || type == REDIRECT_IN || type == REDIRECT_OUT
 		|| type == HEREDOC || type == APPEND);
 }
 
+// * Checks if the token type is a redirection (input, output, heredoc, or append)
 bool	is_redirection_type(t_token_type type)
 {
 	return (type == REDIRECT_IN || type == REDIRECT_OUT

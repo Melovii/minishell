@@ -32,6 +32,7 @@ int	ft_env(t_shell *shell, char **args, bool is_export)
 	return (EX_OK);
 }
 
+// * Prints an error message when an invalid argument is provided to the env command
 static void	print_env_error(char *arg)
 {
 	ft_putstr_fd("minishell: env: ", STDERR_FILENO);

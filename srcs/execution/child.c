@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-
 static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char ***args);
 static void	setup_child(t_cmd *cmd, t_shell *shell, int i);
 static void	child_cleanup_and_exit(t_shell *shell, t_cmd *cmd, int i, int code);
 static void	execute_resolved_cmd(t_shell *shell, char *path, char **args);
 
+// * Handles the child process execution by resolving the command and arguments
 void	child_process(t_shell *shell, t_cmd *cmd, int i)
 {
 	char	*path;
@@ -29,6 +29,7 @@ void	child_process(t_shell *shell, t_cmd *cmd, int i)
 	execute_resolved_cmd(shell, path, args);
 }
 
+// * Sets up the child process by redirecting input/output and closing unused pipes
 static void	setup_child(t_cmd *cmd, t_shell *shell, int i)
 {
 	if (cmd->in_fd != STDIN_FILENO)
@@ -54,7 +55,7 @@ static void	setup_child(t_cmd *cmd, t_shell *shell, int i)
 	close_unused_pipes(shell, i);
 }
 
-
+// * Resolves the command and arguments for execution, including handling built-ins
 static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char ***args)
 {
 	int	status;
@@ -77,6 +78,7 @@ static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char *
 	}
 }
 
+// * Cleans up after child process execution and exits with the given exit code
 static void	child_cleanup_and_exit(t_shell *shell, t_cmd *cmd, int i, int code)
 {
 	close_unused_pipes(shell, i);
@@ -84,6 +86,7 @@ static void	child_cleanup_and_exit(t_shell *shell, t_cmd *cmd, int i, int code)
 	shut_program(shell, false, code);
 }
 
+// * Executes the resolved command using execve and handles cleanup afterward
 static void	execute_resolved_cmd(t_shell *shell, char *path, char **args)
 {
 	execve(path, args, shell->og_env);

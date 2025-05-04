@@ -3,6 +3,7 @@
 static void	init_buf(t_buffer *buf);
 static void	fill_expanded_string(t_shell *shell, char *input, char *expanded);
 
+// * Expands the variables in the input string and returns the new expanded string
 char	*expand_vars( t_shell *shell, char *input)
 {
 	int		len;
@@ -24,6 +25,7 @@ char	*expand_vars( t_shell *shell, char *input)
 	return (expanded);
 }
 
+// * Processes the input string to fill the expanded string with variable values and handles quotes
 static void	fill_expanded_string(t_shell *shell, char *input, char *expanded)
 {
 	t_buffer	buf;
@@ -54,6 +56,7 @@ static void	fill_expanded_string(t_shell *shell, char *input, char *expanded)
 }
 
 
+// * Initializes the buffer structure for tracking the input processing
 static void	init_buf(t_buffer *buf)
 {
 	buf->i = 0;

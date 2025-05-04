@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-
 static bool unset_path_case(char **paths, int *exit_code, int *flag);
 static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_code);
 static char	*check_direct_path(char *cmd, int *exit_code);
 static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, int *flag);
 
+// * Main function to get the full path of a command
 char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code)
 {
 	char *path;
@@ -26,6 +26,7 @@ char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code)
 	}
 }
 
+// * Check if the command has a direct path and whether it is accessible
 static char	*check_direct_path(char *cmd, int *exit_code)
 {
 	if (access(cmd, F_OK) != 0)
@@ -44,6 +45,7 @@ static char	*check_direct_path(char *cmd, int *exit_code)
 	return (ft_strdup(cmd));
 }
 
+// * Search for the command in the directories listed in PATH
 static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, int *flag)
 {
 	char	**paths;
@@ -73,6 +75,7 @@ static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, i
 	return (NULL);
 }
 
+// * Handle the case where there are no paths in the PATH variable
 static bool unset_path_case(char **paths, int *exit_code, int *flag)
 {
 	if (!paths)
@@ -84,6 +87,7 @@ static bool unset_path_case(char **paths, int *exit_code, int *flag)
 	return (false);
 }
 
+// * Check if the command exists in a single directory and if it's executable
 static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_code)
 {
 	char	*full_path;

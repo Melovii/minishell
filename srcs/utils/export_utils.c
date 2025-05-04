@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-
 static void	add_env_node_with_data(t_shell *shell, char *key, char *value);
 
+// * Adds or updates an environment variable in the shell's environment
 void	add_or_update_env(t_shell *shell, char *key, char *value)
 {
 	t_env	*node;
@@ -28,6 +28,7 @@ void	add_or_update_env(t_shell *shell, char *key, char *value)
 	}
 }
 
+// * Helper function to add a new environment node with the specified key and value
 static void	add_env_node_with_data(t_shell *shell, char *key, char *value)
 {
 	t_env	*new;
@@ -54,6 +55,7 @@ static void	add_env_node_with_data(t_shell *shell, char *key, char *value)
 	add_env_node(&shell->env, new);
 }
 
+// * Parses an export argument to create a new environment variable node
 t_env	*parse_export_argument(t_shell *shell, char *arg)
 {
 	t_env	*new;

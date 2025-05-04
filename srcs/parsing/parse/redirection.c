@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-
 static char    *get_filename(t_shell *shell);
 static t_redir_type    get_redir_type(t_shell *shell, t_token *token);
 
+// * Parses the redirection in a command and adds it to the redirection list
 void    parse_redirection(t_shell *shell, t_cmd *cmd)
 {
     t_token     *token;
@@ -25,6 +25,7 @@ void    parse_redirection(t_shell *shell, t_cmd *cmd)
     add_redir_node(&cmd->redir_list, redir);
 }
 
+// * Gets the redirection type based on the token's type
 static t_redir_type    get_redir_type(t_shell *shell, t_token *token)
 {
     if (token->type == REDIRECT_IN)
@@ -40,6 +41,7 @@ static t_redir_type    get_redir_type(t_shell *shell, t_token *token)
     return (DIR_IN); // Unreachable, for norm compliance
 }
 
+// * Retrieves the filename associated with a redirection
 static char    *get_filename(t_shell *shell)
 {
     char    *file;
@@ -59,6 +61,7 @@ static char    *get_filename(t_shell *shell)
     return (file);
 }
 
+// * Checks if the command has an output redirection (either > or >>)
 bool	has_output_redirection_via_list(t_cmd *cmd)
 {
 	t_dir	*redir;
@@ -73,6 +76,7 @@ bool	has_output_redirection_via_list(t_cmd *cmd)
 	return (false);
 }
 
+// * Checks if the command has an input redirection (either < or <<)
 bool	has_input_redirection_via_list(t_cmd *cmd)
 {
 	t_dir	*redir;
@@ -86,4 +90,3 @@ bool	has_input_redirection_via_list(t_cmd *cmd)
 	}
 	return (false);
 }
-

@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-
 static bool	is_numeric(const char *str);
 static void custom_exit_msg(char *flag);
 
+// * Handles the exit command by checking arguments and shutting down the program
 int	ft_exit(t_shell *shell, char **args)
 {
 	int	exit_code;
@@ -31,6 +31,7 @@ int	ft_exit(t_shell *shell, char **args)
 	return (0);
 }
 
+// * Prints a custom error message when the exit argument is invalid
 static void custom_exit_msg(char *flag)
 {
     if (!flag)
@@ -40,7 +41,7 @@ static void custom_exit_msg(char *flag)
     ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 }
 
-
+// * Determines if a string represents a valid numeric value (integer)
 static bool	is_numeric(const char *str)
 {
 	int	i;

@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-
 static bool	process_export_argument(t_shell *shell, char *arg);
 static void	print_invalid_identifier(char *arg);
 static bool	is_valid_identifier(char *key);
 
+// * Main function for handling the export command, processes each argument for export
 int	ft_export(t_shell *shell, char **args)
 {
 	int	i;
@@ -26,6 +26,7 @@ int	ft_export(t_shell *shell, char **args)
 	return (status);
 }
 
+// * Processes a single export argument, validating and adding/updating the environment variable
 static bool	process_export_argument(t_shell *shell, char *arg)
 {
 	t_env	*node;
@@ -42,6 +43,7 @@ static bool	process_export_argument(t_shell *shell, char *arg)
 	return (true);
 }
 
+// * Prints an error message when an invalid export identifier is encountered
 static void	print_invalid_identifier(char *arg)
 {
 	ft_putstr_fd("minishell: export: `", 2);
@@ -49,6 +51,7 @@ static void	print_invalid_identifier(char *arg)
 	ft_putendl_fd("': not a valid identifier", 2);
 }
 
+// * Checks if a given key is a valid environment variable identifier
 static bool	is_valid_identifier(char *key)
 {
 	int	i;

@@ -2,6 +2,7 @@
 
 void null_path_name_msg(char *before_expansion);
 
+// * Expands the file path name for redirections and handles potential errors
 bool    file_path_name_expansion(t_shell *shell, t_dir *dir)
 {
     char    *before_expansion;
@@ -19,6 +20,7 @@ bool    file_path_name_expansion(t_shell *shell, t_dir *dir)
     return (true);
 }
 
+// * Prints an error message for ambiguous redirects
 void null_path_name_msg(char *before_expansion)
 {
     ft_putstr_fd("bash: ", 2);

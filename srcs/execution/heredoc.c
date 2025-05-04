@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-
 static char *update_heredoc_prompt(t_shell *shell, bool is_quoted, char *line);
 static int	setup_heredoc(t_shell *shell, t_dir *redir);
 static void	handle_heredoc_child(t_shell *shell, t_dir *redir);
 static int	wait_for_heredoc_child(pid_t pid);
 
+// * Processes all heredoc redirections in the shell command list
 int	process_heredocs(t_shell *shell)
 {
 	t_cmd	*cmd;
@@ -31,6 +31,7 @@ int	process_heredocs(t_shell *shell)
 	return (EX_OK);
 }
 
+// * Sets up the pipe and forks a child process for heredoc input handling
 static int	setup_heredoc(t_shell *shell, t_dir *redir)
 {
 	pid_t	pid;
@@ -84,6 +85,7 @@ static void	handle_heredoc_child(t_shell *shell, t_dir *redir)
 	shut_program(shell, false, EX_OK);    // Delimiter matched, also Ctrl+D treated as success
 }
 
+// * Handles the child process for reading and writing heredoc input
 static int wait_for_heredoc_child(pid_t pid)
 {
 	int	status;
@@ -105,6 +107,7 @@ static int wait_for_heredoc_child(pid_t pid)
 	return (exit_code); // Undefined behavior, should not happen!
 }
 
+// * Waits for the heredoc child process to finish and returns the exit status or signal
 static char *update_heredoc_prompt(t_shell *shell, bool is_quoted, char *line)
 {
 	char  *temp;

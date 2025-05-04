@@ -4,6 +4,7 @@ static pid_t execute_cmd(t_shell *shell, t_cmd *cmd, int index);
 static pid_t fork_and_execute(t_shell *shell, t_cmd *cmd, int index);
 static void parent_wait(t_shell *shell, pid_t last_pid);
 
+// * Executes the command and handles the redirections and pipe setup
 void execution(t_shell *shell)
 {
     pid_t last_pid;
@@ -30,6 +31,7 @@ void execution(t_shell *shell)
     parent_wait(shell, last_pid);
 }
 
+// * Executes the command, either as a built-in or by forking a process
 static pid_t execute_cmd(t_shell *shell, t_cmd *cmd, int index)
 {
     if ((is_builtin(cmd->args) && shell->num_pipes == 0))
@@ -40,6 +42,7 @@ static pid_t execute_cmd(t_shell *shell, t_cmd *cmd, int index)
     return (fork_and_execute(shell, cmd, index));
 }
 
+// * Forks a new process and executes the command in the child process
 static pid_t fork_and_execute(t_shell *shell, t_cmd *cmd, int index)
 {
     pid_t pid;
@@ -69,6 +72,7 @@ static pid_t fork_and_execute(t_shell *shell, t_cmd *cmd, int index)
     return (pid);
 }
 
+// * Waits for the child process to finish and handles exit status
 static void	parent_wait(t_shell *shell, pid_t last_pid)
 {
 	pid_t	pid;

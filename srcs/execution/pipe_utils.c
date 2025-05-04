@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+// * Closes all unused pipe file descriptors except for the current one being used
 void	close_unused_pipes(t_shell *shell, int current)
 {
 	int	i;
@@ -25,6 +26,7 @@ void	close_unused_pipes(t_shell *shell, int current)
 	}
 }
 
+// * Closes all pipe file descriptors that are open
 void	close_all_pipes(t_shell *shell)
 {
 	int	i;
@@ -48,7 +50,7 @@ void	close_all_pipes(t_shell *shell)
 	}
 }
 
-
+// * Closes input and output redirection file descriptors for commands in the list
 void close_redirections(t_cmd *cmd_list)
 {
     t_cmd *cmd = cmd_list;

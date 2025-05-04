@@ -1,6 +1,7 @@
 
 #include "minishell.h"
 
+// * Joins a directory and command into a valid path, ensuring proper formatting
 char	*ft_strjoin_path(char *dir, char *cmd)
 {
 	char	*joined;
@@ -18,7 +19,7 @@ char	*ft_strjoin_path(char *dir, char *cmd)
 	return (joined);
 }
 
-// * Checks if the command is a directory rather than an executable.
+// * Checks if the command is a directory rather than an executable
 bool	cmd_is_dir(char *cmd)
 {
 	struct stat	cmd_stat;
@@ -28,6 +29,7 @@ bool	cmd_is_dir(char *cmd)
 	return (S_ISDIR(cmd_stat.st_mode)); // * True if the command is a directory
 }
 
+// * Retrieves the PATH environment variable as an array of paths
 char	**get_paths_array(t_shell *shell)
 {
 	char	*path_env;

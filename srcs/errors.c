@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-// * Function to print error message for if command is a directory
+// * Prints error message when the command is a directory
 void	print_dir_error(char *cmd)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -9,6 +9,7 @@ void	print_dir_error(char *cmd)
 	ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
 }
 
+// * Prints error message for path-related issues (no file or command not found)
 void	path_error_msg(char *cmd, int exit_code, bool is_direct)
 {
 	if (exit_code == 127)
@@ -31,6 +32,7 @@ void	path_error_msg(char *cmd, int exit_code, bool is_direct)
 	}
 }
 
+// * Prints error message based on the filename and error type (ENOENT, EACCES, etc.)
 void print_open_error(char *filename)
 {
     if (errno == ENOENT)
@@ -54,6 +56,7 @@ void print_open_error(char *filename)
     }
 }
 
+// * Prints a warning message when encountering an EOF in a heredoc
 void	eof_msg(t_shell *shell, char *delimiter)
 {
 	ft_putstr_fd("warning: here-document at line ", 2);

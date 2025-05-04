@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-
 static void	remove_env_node(t_env **env_list, char *key);
 static bool	is_valid_identifier(char *str);
 
+// * Main function for handling the unset command, removes environment variables specified in the arguments
 int	ft_unset(t_shell *shell, char **args)
 {
 	int		i;
@@ -20,6 +20,7 @@ int	ft_unset(t_shell *shell, char **args)
 	return (EX_OK);
 }
 
+// * Removes the environment node associated with the specified key
 static void	remove_env_node(t_env **env_list, char *key)
 {
 	t_env	*tmp;
@@ -45,6 +46,7 @@ static void	remove_env_node(t_env **env_list, char *key)
 	}
 }
 
+// * Checks if the provided string is a valid environment variable identifier
 static bool	is_valid_identifier(char *str)
 {
 	int	i;

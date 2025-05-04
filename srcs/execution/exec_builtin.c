@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-
 static int run_builtin(t_shell *shell, t_cmd *cmd);
 
+// * Checks if the given token list represents a built-in command
 bool	is_builtin(t_token *token_lst)
 {
 	char *cmd;
@@ -23,6 +23,7 @@ bool	is_builtin(t_token *token_lst)
 	return (false);
 }
 
+// * Executes the built-in command by modifying file descriptors and calling the appropriate function
 int	execute_builtin(t_shell *shell, t_cmd *cmd)
 {
 	int	original_stdin;
@@ -51,6 +52,7 @@ int	execute_builtin(t_shell *shell, t_cmd *cmd)
     return (exit_status);
 }
 
+// * Runs the actual built-in command and returns its exit status
 static int	run_builtin(t_shell *shell, t_cmd *cmd)
 {
 	char	**args;
@@ -79,7 +81,7 @@ static int	run_builtin(t_shell *shell, t_cmd *cmd)
 	return (status);
 }
 
-
+// * Modifies the command arguments by converting them into a string array
 char	**modify_args(t_cmd *cmd)
 {
 	char	**args;
@@ -106,4 +108,3 @@ char	**modify_args(t_cmd *cmd)
 	}
 	return (args);
 }
-

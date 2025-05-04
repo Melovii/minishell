@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+// * Prints the current working directory
 int	ft_pwd(t_shell *shell)
 {
 	char	*buf;

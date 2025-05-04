@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-
+// * Creates a new command node and initializes its fields
 t_cmd	*new_cmd_node(t_shell *shell)
 {
 	t_cmd	*cmd;
@@ -16,6 +16,7 @@ t_cmd	*new_cmd_node(t_shell *shell)
 	return (cmd);
 }
 
+// * Frees all nodes in the redirection list and closes open heredoc fds
 static void    free_redir_list(t_dir *redir)
 {
     t_dir *tmp;
@@ -34,6 +35,7 @@ static void    free_redir_list(t_dir *redir)
     }
 }
 
+// * Frees the entire command list including redirections and arguments
 void    free_cmd_list(t_cmd *head)
 {
     t_cmd *curr;
@@ -62,7 +64,8 @@ void    free_cmd_list(t_cmd *head)
     }
 }
 
-t_dir *create_redir_node(t_shell *shell, t_redir_type type, char *filename)
+// * Creates a new redirection node with the specified type and filename
+	t_dir *create_redir_node(t_shell *shell, t_redir_type type, char *filename)
 {
     t_dir *new;
 	(void)shell;
@@ -79,6 +82,7 @@ t_dir *create_redir_node(t_shell *shell, t_redir_type type, char *filename)
     return (new);
 }
 
+// * Adds a redirection node to the end of the redirection list
 void add_redir_node(t_dir **redir_list, t_dir *new_node)
 {
     t_dir *current;
@@ -97,6 +101,7 @@ void add_redir_node(t_dir **redir_list, t_dir *new_node)
 	new_node->prev = current;
 }
 
+// * Prints the redirection list for debugging purposes
 void    print_redir_list(t_dir *redir)
 {
     while (redir)

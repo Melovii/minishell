@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-
 static bool	check_invalid_operator(t_token *tokens);
 static bool	check_token_pair_syntax(t_token *prev, t_token *tokens);
 static bool	check_last_token_syntax(t_token *prev);
 static bool	check_first_token_syntax(t_token *tokens);
 
+// * Checks the overall syntax of a list of tokens
 bool	check_syntax(t_token *tokens)
 {
 	t_token	*prev;
@@ -27,6 +27,7 @@ bool	check_syntax(t_token *tokens)
 	return (check_last_token_syntax(prev));
 }
 
+// * Checks if the token is an invalid operator and prints an error message
 static bool	check_invalid_operator(t_token *tokens)
 {
 	if (tokens->type == INV_OPERATOR)
@@ -39,6 +40,7 @@ static bool	check_invalid_operator(t_token *tokens)
 	return (true);
 }
 
+// * Checks the syntax between two tokens, ensuring no invalid token pairs exist
 static bool	check_token_pair_syntax(t_token *prev, t_token *tokens)
 {
 	if (!prev)
@@ -63,6 +65,7 @@ static bool	check_token_pair_syntax(t_token *prev, t_token *tokens)
 	return (true);
 }
 
+// * Checks the syntax of the last token to ensure it's valid
 static bool	check_last_token_syntax(t_token *tokens)
 {
 	if (!tokens)
@@ -77,6 +80,7 @@ static bool	check_last_token_syntax(t_token *tokens)
 	return (true);
 }
 
+// * Checks the syntax of the first token to ensure it's valid
 static bool	check_first_token_syntax(t_token *tokens)
 {
 	if (!tokens)

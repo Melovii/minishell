@@ -5,6 +5,7 @@ static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir);
 static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir);
 static void	handle_heredoc_redir(t_cmd *cmd, t_dir *redir);
 
+// * Sets up redirections and pipe connections for a command
 bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 {
 	if (!handle_redirections(shell, cmd))
@@ -32,6 +33,7 @@ bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 	return (true);
 }
 
+// * Handles all redirection types for a command
 static bool	handle_redirections(t_shell *shell, t_cmd *cmd)
 {
 	t_dir	*redir;
@@ -58,6 +60,7 @@ static bool	handle_redirections(t_shell *shell, t_cmd *cmd)
 	return (true);
 }
 
+// * Handles input redirection (e.g. < file)
 static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 {
 	t_dir	*prev;
@@ -84,6 +87,7 @@ static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 	return (true);
 }
 
+// * Handles output and append redirection (e.g. > file, >> file)
 static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 {
 	if (cmd->out_fd != STDOUT_FILENO)
@@ -101,6 +105,7 @@ static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 	return (true);
 }
 
+// * Handles heredoc redirection (e.g. << delimiter)
 static void	handle_heredoc_redir(t_cmd *cmd, t_dir *redir)
 {
 	t_dir	*prev;

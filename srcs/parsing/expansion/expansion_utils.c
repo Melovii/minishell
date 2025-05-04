@@ -3,6 +3,7 @@
 static int	get_special_case_len(t_shell *shell, int *i);
 static int get_default_len(t_shell *shell, char *s, int *i);
 
+// * Copies characters from src to dst starting at index j
 void	ft_strcpy_to(char *dst, char *src, int *j)
 {
 	int i = 0;
@@ -10,7 +11,7 @@ void	ft_strcpy_to(char *dst, char *src, int *j)
 		dst[(*j)++] = src[i++];
 }
 
-
+// * Calculates the length of an environment variable or special case and updates the index
 int	handle_env_var_len(t_shell *shell, char *str, int *i, bool is_in_q)
 {
 	int j;
@@ -40,7 +41,7 @@ int	handle_env_var_len(t_shell *shell, char *str, int *i, bool is_in_q)
 	return (1);
 }
 
-
+// * Gets the length of a normal environment variable's value and updates the index
 static int	get_default_len(t_shell *shell, char *str, int *i)
 {
 	int		start;
@@ -66,6 +67,7 @@ static int	get_default_len(t_shell *shell, char *str, int *i)
 	return (len);
 }
 
+// * Returns the length of the exit code as a string and updates the index
 static int	get_special_case_len(t_shell *shell, int *i)
 {
 	int len;
