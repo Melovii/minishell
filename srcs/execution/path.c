@@ -22,6 +22,7 @@ char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code)
 			path_error_msg(cmd, 127, false);
 			return (NULL);
 		}
+		return (path);
 	}
 }
 
