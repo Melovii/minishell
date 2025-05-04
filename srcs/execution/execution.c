@@ -55,7 +55,7 @@ static pid_t fork_and_execute(t_shell *shell, t_cmd *cmd, int index)
 	}
     else
     {
-        if (index > 0 && pipes[index - 1][0] >= 0)
+        if (index > 0 && pipes[index - 1][0] >= 2)
         {
             close(pipes[index - 1][0]);
             pipes[index - 1][0] = -1;

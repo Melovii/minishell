@@ -25,6 +25,10 @@ static void    free_redir_list(t_dir *redir)
         tmp = redir->next;
         if (redir->filename)
             free(redir->filename);
+		if (redir->heredoc_fd[0] > 2)
+			close(redir->heredoc_fd[0]);
+		if (redir->heredoc_fd[1] > 2)
+			close(redir->heredoc_fd[1]);
         free(redir);
         redir = tmp;
     }
@@ -71,6 +75,7 @@ t_dir *create_redir_node(t_shell *shell, t_redir_type type, char *filename)
     new->heredoc_fd[0] = -1;
     new->heredoc_fd[1] = -1;
     new->next = NULL;
+	new->prev = NULL;
     return (new);
 }
 
@@ -89,6 +94,7 @@ void add_redir_node(t_dir **redir_list, t_dir *new_node)
     while (current->next)
         current = current->next;
     current->next = new_node;
+	new_node->prev = current;
 }
 
 // ! Will be removed later, for debugging purposes ===========================
