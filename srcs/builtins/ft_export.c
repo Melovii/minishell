@@ -3,7 +3,7 @@
 
 static bool	process_export_argument(t_shell *shell, char *arg);
 static void	print_invalid_identifier(char *arg);
-static int	is_valid_identifier(char *key);
+static bool	is_valid_identifier(char *key);
 
 int	ft_export(t_shell *shell, char **args)
 {
@@ -14,7 +14,7 @@ int	ft_export(t_shell *shell, char **args)
 	status = 0;
 	if (!args[1])
 	{
-		ft_env(shell, args, true);
+		print_export(shell);
 		return (0);
 	}
 	while (args[i])
@@ -49,18 +49,18 @@ static void	print_invalid_identifier(char *arg)
 	ft_putendl_fd("': not a valid identifier", 2);
 }
 
-static int	is_valid_identifier(char *key)
+static bool	is_valid_identifier(char *key)
 {
 	int	i;
 
 	if (!key || (!ft_isalpha(key[0]) && key[0] != '_'))
-		return (0);
+		return (false);
 	i = 1;
 	while (key[i])
 	{
 		if (!ft_isalnum(key[i]) && key[i] != '_')
-			return (0);
+			return (false);
 		i++;
 	}
-	return (1);
+	return (true);
 }
