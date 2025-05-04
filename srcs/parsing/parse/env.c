@@ -7,6 +7,7 @@ void	init_env(t_shell *shell, char **envp)
 	int		i;
 	t_env	*new_node;
 
+	shell->og_env = envp;
 	if (!shell || !envp)
 		return ;
 	shell->env = NULL;
