@@ -10,7 +10,7 @@ int	ft_env(t_shell *shell, char **args, bool is_export)
 	if (args[1])
 	{
 		print_env_error(args[1]);
-		return (127);
+		return (CMD_NOT_FOUND);
 	}
 	env = shell->env;
 	while (env)

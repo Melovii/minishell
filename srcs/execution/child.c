@@ -16,7 +16,7 @@ void	child_process(t_shell *shell, t_cmd *cmd, int i)
 	if (are_strs_equal(cmd->args->value, ""))
 	{
 		ft_putendl_fd("minishell: command not found: ''", STDERR_FILENO);
-		child_cleanup_and_exit(shell, cmd, i, 127);
+		child_cleanup_and_exit(shell, cmd, i, CMD_NOT_FOUND);
 	}
 	setup_child(cmd, shell, i);
 	resolve_cmd_and_args(shell, cmd, &path, &args);
@@ -24,7 +24,7 @@ void	child_process(t_shell *shell, t_cmd *cmd, int i)
 	{
 		print_dir_error(path);
 		free(path);
-		shut_program(shell, false, 126);
+		shut_program(shell, false, EXEC_NO_PERM);
 	}
 	execute_resolved_cmd(shell, path, args);
 }
@@ -92,5 +92,5 @@ static void	execute_resolved_cmd(t_shell *shell, char *path, char **args)
 	execve(path, args, shell->og_env);
 	free(path);
 	ft_free_tab(args);
-	shut_program(shell, true, 127);
+	shut_program(shell, true, CMD_NOT_FOUND);
 }

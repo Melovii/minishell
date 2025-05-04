@@ -19,7 +19,7 @@ char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code)
 		path = search_command_in_path(shell, cmd, exit_code, &flag);
 		if (!path && flag)
 		{
-			path_error_msg(cmd, 127, false);
+			path_error_msg(cmd, CMD_NOT_FOUND, false);
 			return (NULL);
 		}
 		return (path);
@@ -31,13 +31,13 @@ static char	*check_direct_path(char *cmd, int *exit_code)
 {
 	if (access(cmd, F_OK) != 0)
 	{
-		*exit_code = 127;
+		*exit_code = CMD_NOT_FOUND;
         path_error_msg(cmd, *exit_code, true);
 		return (NULL);
 	}
 	if (access(cmd, X_OK) != 0)
 	{
-		*exit_code = 126;
+		*exit_code = EXEC_NO_PERM;
         path_error_msg(cmd, *exit_code, true);
 		return (NULL);
 	}
@@ -57,7 +57,7 @@ static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, i
 	if (unset_path_case(paths, exit_code, flag))
 		return (NULL);
 	i = -1;
-	final_exit = 127;
+	final_exit = CMD_NOT_FOUND;
 	while (paths[++i])
 	{
 		result = check_single_path(shell, paths[i], cmd, exit_code);
@@ -66,8 +66,8 @@ static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, i
 			ft_free_tab(paths);
 			return (result);
 		}
-		if (*exit_code == 126)
-			final_exit = 126;
+		if (*exit_code == EXEC_NO_PERM)
+			final_exit = EXEC_NO_PERM;
 	}
 	ft_free_tab(paths);
 	*exit_code = final_exit;
@@ -81,7 +81,7 @@ static bool unset_path_case(char **paths, int *exit_code, int *flag)
 	if (!paths)
 	{
 		*flag = 1;
-		*exit_code = 127;
+		*exit_code = CMD_NOT_FOUND;
 		return (true);
 	}
 	return (false);
@@ -106,10 +106,10 @@ static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_c
 			*exit_code = 0;
 			return (full_path);
 		}
-		*exit_code = 126;
+		*exit_code = EXEC_NO_PERM;
 	}
 	else
-		*exit_code = 127;
+		*exit_code = CMD_NOT_FOUND;
 	free(full_path);
 	return (NULL);
 }
