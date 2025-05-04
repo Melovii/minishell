@@ -109,6 +109,7 @@ leaks:
 			  --suppressions=$(SUPP_DIR)/readline.supp	\
 			  --show-leak-kinds=all						\
 			  --track-origins=yes						\
+			  --track-fds=yes							\
 			  --verbose									\
 			  --log-file=valgrind-out.txt 				\
 			  ./$(NAME)
