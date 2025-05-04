@@ -37,7 +37,7 @@ static int	setup_heredoc(t_shell *shell, t_dir *redir)
 
 	if (pipe(redir->heredoc_fd) == -1)
 	{
-		shut_program(shell, true, EXIT_FAILURE);
+		shut_program(shell, true, EX_KO);
 		return (HEREDOC_PIPE_ERROR); // * Cannot be reached
 	}
 	pid = fork();
