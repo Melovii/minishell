@@ -3,7 +3,7 @@
 static void	print_env_error(char *arg);
 
 // * Function to print the environment variables
-int	ft_env(t_shell *shell, char **args, bool is_export)
+int	ft_env(t_shell *shell, char **args)
 {
 	t_env	*env;
 
@@ -15,17 +15,9 @@ int	ft_env(t_shell *shell, char **args, bool is_export)
 	env = shell->env;
 	while (env)
 	{
-		if (is_export)
+		if (env->value)
 		{
-			printf("declare -x %s", env->key);
-			if (env->value)
-				printf("=\"%s\"", env->value);
-			printf("\n");
-		}
-		else
-		{
-			if (env->value)
-				printf("%s=%s\n", env->key, env->value);
+			printf("%s=%s\n", env->key, env->value);
 		}
 		env = env->next;
 	}
