@@ -97,8 +97,6 @@ void add_redir_node(t_dir **redir_list, t_dir *new_node)
 	new_node->prev = current;
 }
 
-// ! Will be removed later, for debugging purposes ===========================
-
 void    print_redir_list(t_dir *redir)
 {
     while (redir)
@@ -121,38 +119,3 @@ void    print_redir_list(t_dir *redir)
         redir = redir->next;
     }
 }
-
-void	print_cmd_list(t_cmd *head)
-{
-	t_cmd	*curr = head;
-	t_token	*arg;
-
-	while (curr)
-	{
-		printf("Command:\n  args:");
-		arg = curr->args;
-		if (!arg)
-			printf(" (none)");
-		while (arg)
-		{
-			if (!arg->value)
-				printf(" (NULL)");
-			else if (arg->value[0] == '\0')
-				printf(" (empty string)");
-			else
-				printf(" \"%s\"", arg->value);
-			arg = arg->next;
-		}
-		printf("\n");
-
-		if (curr->redir_list)
-			print_redir_list(curr->redir_list);
-		else
-			printf("  redirection: (none)\n");
-
-		curr = curr->next;
-	}
-}
-
-
-

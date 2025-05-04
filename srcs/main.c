@@ -65,7 +65,7 @@ static void general_process(t_shell *shell, char *prompt)
     parser(shell);
 	shell->num_pipes = count_pipes(shell->cmd);
 	shell->num_pipes_fd = setup_pipes(shell, shell->num_pipes);
-	shell->cur_exit_flag = process_heredocs(shell); // ! Check (exit code + signal handling) out
+	shell->cur_exit_flag = process_heredocs(shell); // TODO: Check (exit code + signal handling) out
     if (shell->cur_exit_flag != EX_OK)
 	{
         return ;
@@ -74,7 +74,7 @@ static void general_process(t_shell *shell, char *prompt)
     execution(shell);
 }
 
-static void init_shell(t_shell *shell, char **envp) // ? Check if this is needed
+static void init_shell(t_shell *shell, char **envp) // TODO: Check if this is needed
 {
 	shell->input = NULL;
 	shell->cur_exit_flag = 0;

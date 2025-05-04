@@ -16,7 +16,7 @@ int	ft_exit(t_shell *shell, char **args)
 	if (!is_numeric(args[1]))
 	{
 		custom_exit_msg(args[1]);
-        shut_program(shell, NULL, 2); // ? Maybe instead of 2, macro for exit code
+        shut_program(shell, NULL, 2); // TODO: consider using macro for exit code (instead of 2)
 	}
 	if (args[2])
 	{

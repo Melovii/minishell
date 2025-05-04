@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-// TODO: Check if I should return something else instead of EX_OK etc.
 // * Function to setup termios flags
 int	setup_termios(t_shell *shell, t_termios_action action)
 {

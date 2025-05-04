@@ -1,6 +1,5 @@
 #include "stdbool.h"
 #include "minishell.h"
-#include "stdio.h" // ! For testing purposes
 
 bool    is_operator(char c)
 {
@@ -52,24 +51,3 @@ bool	is_redirection_type(t_token_type type)
 	return (type == REDIRECT_IN || type == REDIRECT_OUT
 		|| type == HEREDOC || type == APPEND);
 }
-
-
-void	print_tokens(t_token *tokens) // ! For testing purposes
-{
-	if (!tokens)
-	{
-		printf("No tokens to print.\n");
-		return ;
-	}
-	while (tokens)
-	{
-		if (tokens->value == NULL)
-			printf("Token Value: (NULL), Type: %d\n", tokens->type);
-		else if (tokens->value[0] == '\0')
-			printf("Token Value: (empty string), Type: %d\n", tokens->type);
-		else
-			printf("Token Value: \"%s\", Type: %d\n", tokens->value, tokens->type);
-		tokens = tokens->next;
-	}
-}
-

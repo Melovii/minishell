@@ -10,10 +10,8 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <errno.h>
-# include <string.h>
 # include <dirent.h>
 # include <stdbool.h>
-// # include <termios.h> // TODO: do we keep this?
 # include <ctype.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -34,10 +32,6 @@
 # define HEREDOC_PROMPT "heredoc> "
 
 # define PIPE_PAIR 2
-
-
-extern volatile sig_atomic_t	g_signal; // TODO: remove lmfao
-
 
 // * =======================================================>>>>> Shuting down
 
@@ -65,7 +59,6 @@ char	*ft_strjoin_path(char *dir, char *cmd);
 
 // * =======================================================>>>>> Token utils
 
-void	print_tokens(t_token *tokens); // ! Will be removed later
 bool	is_operator(char c);
 void	update_token_type(t_token *tokens);
 bool	is_operator_type(t_token_type type);
@@ -93,7 +86,6 @@ void	parser(t_shell *shell);
 t_cmd	*new_cmd_node(t_shell *shell);
 int		get_len_cmd_args(t_cmd *cmd);
 void	free_cmd_list(t_cmd *head);
-void	print_cmd_list(t_cmd *head); // ! Will be removed later
 
 t_dir *create_redir_node(t_shell *shell, t_redir_type type, char *filename);
 void add_redir_node(t_dir **redir_list, t_dir *new_node);

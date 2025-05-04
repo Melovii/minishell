@@ -6,8 +6,6 @@ static bool	check_token_pair_syntax(t_token *prev, t_token *tokens);
 static bool	check_last_token_syntax(t_token *prev);
 static bool	check_first_token_syntax(t_token *tokens);
 
-// !!! SET exit code here
-
 bool	check_syntax(t_token *tokens)
 {
 	t_token	*prev;

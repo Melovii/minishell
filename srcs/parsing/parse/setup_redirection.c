@@ -5,8 +5,6 @@ static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir);
 static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir);
 static void	handle_heredoc_redir(t_cmd *cmd, t_dir *redir);
 
-// ! Check Error handling
-
 bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 {
 	if (!handle_redirections(shell, cmd))
@@ -77,7 +75,6 @@ static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 			close(cmd->in_fd);
 	}
 	cmd->in_fd = open(redir->filename, O_RDONLY);
-	// ! Check Errno Codes 
 	if (cmd->in_fd == -1)
 	{
 		print_open_error(redir->filename);

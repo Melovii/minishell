@@ -7,7 +7,6 @@ void	handle_sigint_output(void)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-// TODO: FIX NO NEW_LINE APPEARING BEFORE CTRL+C
 // * Function to handle SIGINT signal (standby mode)
 static void	handle_interrupt(int sig)
 {
@@ -23,14 +22,14 @@ static void	signal_heredoc(int sig)
 {
 	(void)sig;
 	handle_sigint_output();
-	exit(130); // ? Shouldn't we free the main struct here?
+	exit(130);
 }
 
 // * Function to handle SIGINT signal (command mode)
 static void	signal_cmd(int sig)
 {
 	(void)sig;
-	exit(130); // ? Shouldn't we free the main struct here?
+	exit(130);
 }
 
 // * Default signals function
