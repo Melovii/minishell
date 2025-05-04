@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static void	init_buf(t_buffer *buf);
 static void	fill_expanded_string(t_shell *shell, char *input, char *expanded);

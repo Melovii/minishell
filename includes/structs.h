@@ -20,6 +20,7 @@ typedef enum	e_token_type
 
 }				t_token_type;
 
+
 // * Enum for redirection types
 typedef enum e_redir_type
 {
@@ -30,6 +31,7 @@ typedef enum e_redir_type
 
 }   			t_redir_type;
 
+
 // * Struct for holding signal status
 typedef enum	e_status
 {
@@ -39,6 +41,7 @@ typedef enum	e_status
 	EXEC_HRDC
 }				t_status;
 
+
 // * Enum for holding termios action
 typedef enum e_termios_action
 {
@@ -46,30 +49,32 @@ typedef enum e_termios_action
 	LOAD
 }		t_termios_action;
 
+
 // * ==========================================================>		Structures
 
-typedef struct termios		t_termios; // ? test without this
+typedef struct termios		t_termios;
 
-
+// * Struct for holding buffer information
 typedef struct s_buffer
 {
+    bool in_sq;
+    bool in_dq;
     int i;
     int j;
     int k;
-    bool in_sq;
-    bool in_dq;
 }   t_buffer;
 
 
 // * Struct for redirection
 typedef struct s_dir
 {
-    t_redir_type    type;
-    char            *filename;      // infile, outfile, delimiter (for heredoc)
+	char            *filename;      // infile, outfile, delimiter (for heredoc)
     int             heredoc_fd[2];  // only for heredoc
     struct s_dir    *next;
 	struct s_dir    *prev;
+    t_redir_type    type;
 }               t_dir;
+
 
 // * Struct for environment variables
 typedef struct s_env
@@ -85,8 +90,8 @@ typedef struct s_env
 typedef struct s_token
 {
 	char            *value;
-    t_token_type    type;
 	struct s_token  *next;
+    t_token_type    type;
 }               t_token;
 
 
@@ -94,14 +99,11 @@ typedef struct s_token
 // * Struct for command arguments
 typedef struct s_cmd
 {
-    t_token		    *args;
-
-    int             in_fd;
+	int             in_fd;
     int             out_fd;
-
-    t_dir           *redir_list;    // redirection queue
-
     struct s_cmd    *next;
+    t_token		    *args;
+    t_dir           *redir_list;    // redirection queue
 }               t_cmd;
 
 

@@ -1,4 +1,3 @@
-#include "stdbool.h"
 #include "minishell.h"
 
 bool    is_operator(char c)
