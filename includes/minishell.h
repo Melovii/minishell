@@ -170,6 +170,7 @@ bool	has_output_redirection_via_list(t_cmd *cmd);
 
 bool	is_builtin(t_token *token_lst);
 int		execute_builtin(t_shell *shell, t_cmd *cmd);
+void print_export(t_shell *shell);
 
 int		ft_cd(t_shell *shell, char **args);
 int		ft_echo(char **args);
