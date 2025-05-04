@@ -107,9 +107,22 @@ static int wait_for_heredoc_child(pid_t pid)
 
 static char *update_heredoc_prompt(t_shell *shell, bool is_quoted, char *line)
 {
+	char  *temp;
+
 	if (is_quoted)
 	{
 		return (line);
 	}
-	return (expand_vars(shell, line));
+	temp = expand_vars(shell, line);
+	if (!temp)
+	{
+		temp = ft_strdup("");
+		if (!temp)
+		{
+			shut_program(shell, true, EX_KO);
+			return (NULL);
+		}
+		return (temp);
+	}
+	return (temp);
 }
