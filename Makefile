@@ -1,13 +1,16 @@
-NAME			= 	minishell
-CC				= 	cc
-CFLAGS			= 	-g -Iincludes -I /home/my-home-dir/.local/include
-# CFLAGS			= 	-Wall -Wextra -Werror -Iincludes -I /home/my-home-dir/.local/include
-LDFLAGS			= 	-L /home/my-home-dir/.local/lib -lreadline -lncurses
-LIBFT			= 	libft/libft.a
+#* Program and compiler settings
+NAME		= 	minishell
+CC			= 	cc
+CFLAGS		= 	-Wall -Wextra -Werror -Iincludes -I /home/my-home-dir/.local/include
+LDFLAGS		= 	-L /home/my-home-dir/.local/lib -lreadline -lncurses
+LIBFT		= 	libft/libft.a
 
-SRC_DIR			= 	srcs
-OBJ_DIR			= 	objs
+#* Main directories
+SRC_DIR		= 	srcs
+OBJ_DIR		= 	objs
+SUPP_DIR	= 	supps
 
+#* Subdirectories
 UTILS_DIR	= 	$(SRC_DIR)/utils
 BUILTIN_DIR	= 	$(SRC_DIR)/builtins
 ENV_DIR		= 	$(SRC_DIR)/env
@@ -17,7 +20,16 @@ TOKENS_DIR	= 	$(PARSING_DIR)/tokenization
 PARSE_DIR	= 	$(PARSING_DIR)/parse
 EXP_DIR		= 	$(PARSING_DIR)/expansion
 
+#* Colors
+YELLOW		= \033[1;33m
+GREEN		= \033[1;32m
+BLUE		= \033[1;34m
+RED			= \033[1;31m
+CYAN		= \033[1;36m
+RESET		= \033[0m
+BOLD		= \033[1m
 
+#* Source files
 SRCS		=	$(SRC_DIR)/main.c					\
 				$(SRC_DIR)/free.c					\
 				$(SRC_DIR)/errors.c					\
@@ -66,33 +78,49 @@ OBJS		=	$(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
+	@echo "$(CYAN)🔧 Linking objects and libraries...$(RESET)"
 	@$(CC) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
-	@echo "Makefile run successfully!"
+	@echo "$(GREEN)✅ Build complete! Executable created: $(NAME)$(RESET)"
 
-# Compile source files into object files inside objs/
+#* Compile source files into object files inside objs/
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(dir $@)  # Creates subdirectory for object file if it doesn't exist
+	@mkdir -p $(dir $@)  #! Creates subdirectory for object file if it doesn't exist
+	@echo "$(YELLOW)📦 Compiling: $(notdir $<)$(RESET)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
+	@echo "$(BLUE)📚 Building libft...$(RESET)"
 	@make -C libft bonus --silent
 
 clean:
+	@echo "$(RED)🧹 Cleaning object files...$(RESET)"
 	@rm -rf $(OBJ_DIR)
 	@make fclean -C libft --silent
 
 fclean: clean
+	@echo "$(RED)🗑️  Removing executable...$(RESET)"
 	@rm -f $(NAME)
 
 re: fclean all
 
 leaks:
-	@valgrind --leak-check=full		\
-	--show-leak-kinds=all			\
-	--track-origins=yes				\
-	--verbose						\
-	--log-file=valgrind-out.txt		\
-	./minishell						\
+	@echo "$(CYAN)🧠 Running valgrind...$(RESET)"
+	@valgrind --leak-check=full							\
+			  --suppressions=$(SUPP_DIR)/readline.supp	\
+			  --show-leak-kinds=all						\
+			  --track-origins=yes						\
+			  --verbose									\
+			  --log-file=valgrind-out.txt 				\
+			  ./$(NAME)
 
 test:
-	bash tests.sh
+	@cd minishell_tester && ./tester && cd -
+
+count_lines:
+	@echo "$(CYAN)📊 Counting uncommented C lines...$(RESET)"
+	@grep -vE '^\s*//|^\s*/\*|^\s*\*/|^\s*\*' $(SRCS) | wc -l \
+	| awk -v green="$(GREEN)" -v bold="$(BOLD)" -v reset="$(RESET)" \
+	'{ printf "📄 %s%sUncommented lines:%s %s%d%s\n", bold, green, reset, green, $$1, reset }'
+
+
+.PHONY: all clean fclean re leaks test count_lines
