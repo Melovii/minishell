@@ -11,12 +11,12 @@ bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 {
 	if (!handle_redirections(shell, cmd))
 	{
-		if (i > 0 && shell->num_pipes_fd[i - 1][0] >= 0)
+		if (i > 0 && shell->num_pipes_fd[i - 1][0] > 2)
 		{
 			close(shell->num_pipes_fd[i - 1][0]);
 			shell->num_pipes_fd[i - 1][0] = -1;
 		}
-		if (i < shell->num_pipes && shell->num_pipes_fd[i][1] >= 0)
+		if (i < shell->num_pipes && shell->num_pipes_fd[i][1] > 2)
 		{
 			close(shell->num_pipes_fd[i][1]);
 			shell->num_pipes_fd[i][1] = -1;
@@ -37,8 +37,6 @@ bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 static bool	handle_redirections(t_shell *shell, t_cmd *cmd)
 {
 	t_dir	*redir;
-	char	*before_expand;
-	(void)before_expand;
 
 	redir = cmd->redir_list;
 	while (redir)
@@ -64,8 +62,20 @@ static bool	handle_redirections(t_shell *shell, t_cmd *cmd)
 
 static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 {
+	t_dir	*prev;
+
 	if (cmd->in_fd != STDIN_FILENO)
-		close(cmd->in_fd);
+	{
+		prev = redir->prev;
+		if (prev && prev->type == DIR_HEREDOC)
+		{
+			if (prev->heredoc_fd[0] > 2)
+				close(prev->heredoc_fd[0]);
+			prev->heredoc_fd[0] = -1;
+		}
+		else
+			close(cmd->in_fd);
+	}
 	cmd->in_fd = open(redir->filename, O_RDONLY);
 	// ! Check Errno Codes 
 	if (cmd->in_fd == -1)
@@ -96,7 +106,19 @@ static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 
 static void	handle_heredoc_redir(t_cmd *cmd, t_dir *redir)
 {
+	t_dir	*prev;
+
 	if (cmd->in_fd != STDIN_FILENO)
-		close(cmd->in_fd);
+	{
+		prev = redir->prev;
+		if (prev && prev->type == DIR_HEREDOC)
+		{
+			if (prev->heredoc_fd[0] > 2)
+				close(prev->heredoc_fd[0]);
+			prev->heredoc_fd[0] = -1;
+		}
+		else
+			close(cmd->in_fd);
+	}
 	cmd->in_fd = redir->heredoc_fd[0];
 }

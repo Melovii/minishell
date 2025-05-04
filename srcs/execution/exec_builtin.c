@@ -35,11 +35,13 @@ int	execute_builtin(t_shell *shell, t_cmd *cmd)
 	{
 		dup2(cmd->in_fd, STDIN_FILENO);
 		close(cmd->in_fd);
+		cmd->in_fd = -1;
 	}
 	if (cmd->out_fd != STDOUT_FILENO)
 	{
 		dup2(cmd->out_fd, STDOUT_FILENO);
 		close(cmd->out_fd);
+		cmd->out_fd = -1;
 	}
 	exit_status = run_builtin(shell, cmd);
 	dup2(original_stdin, STDIN_FILENO);

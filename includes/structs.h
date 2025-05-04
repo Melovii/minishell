@@ -68,6 +68,7 @@ typedef struct s_dir
     char            *filename;      // infile, outfile, delimiter (for heredoc)
     int             heredoc_fd[2];  // only for heredoc
     struct s_dir    *next;
+	struct s_dir    *prev;
 }               t_dir;
 
 // * Struct for environment variables
@@ -78,6 +79,8 @@ typedef struct s_env
     struct s_env    *next;
 }               t_env;
 
+
+
 // * Struct for tokens
 typedef struct s_token
 {
@@ -85,6 +88,8 @@ typedef struct s_token
     t_token_type    type;
 	struct s_token  *next;
 }               t_token;
+
+
 
 // * Struct for command arguments
 typedef struct s_cmd
@@ -98,6 +103,8 @@ typedef struct s_cmd
 
     struct s_cmd    *next;
 }               t_cmd;
+
+
 
 // * Struct for shell state
 typedef struct s_shell
