@@ -8,6 +8,9 @@
 bool    is_builtin(t_token *token_lst);
 int     execute_builtin(t_shell *shell, t_cmd *cmd);
 
+int	    update_pwd_vars(t_shell *shell, char *oldpwd);
+char    *get_cd_target(char **args, t_env *env, bool *print_path);
+
 int     ft_echo(char **args);
 int     ft_pwd(t_shell *shell);
 int     ft_cd(t_shell *shell, char **args);

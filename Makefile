@@ -62,6 +62,7 @@ SRCS		=	$(SRC_DIR)/main.c					\
 				$(BUILTIN_DIR)/ft_exit.c			\
 				$(BUILTIN_DIR)/ft_unset.c			\
 				$(BUILTIN_DIR)/ft_export.c			\
+				$(BUILTIN_DIR)/ft_cd_utils.c		\
 				$(BUILTIN_DIR)/ft_export_utils.c	\
 				$(BUILTIN_DIR)/ft_export_utils2.c	\
 				$(UTILS_DIR)/env_utils.c			\
