@@ -22,6 +22,9 @@ int     ft_export(t_shell *shell, char **args);
 
 void    print_export(t_shell *shell);
 void    add_or_update_env(t_shell *shell, char *key, char *value);
+
+bool	is_valid_identifier(char *key);
+
 t_env   *parse_export_argument(t_shell *shell, char *arg);
 
 #endif

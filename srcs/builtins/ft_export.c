@@ -2,7 +2,6 @@
 
 static bool	process_export_argument(t_shell *shell, char *arg);
 static void	print_invalid_identifier(char *arg);
-static bool	is_valid_identifier(char *key);
 
 // * Main function for handling the export command, processes each argument for export
 int	ft_export(t_shell *shell, char **args)
@@ -52,7 +51,7 @@ static void	print_invalid_identifier(char *arg)
 }
 
 // * Checks if a given key is a valid environment variable identifier
-static bool	is_valid_identifier(char *key)
+bool	is_valid_identifier(char *key)
 {
 	int	i;
 
