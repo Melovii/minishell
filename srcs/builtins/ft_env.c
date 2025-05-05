@@ -17,7 +17,9 @@ int	ft_env(t_shell *shell, char **args)
 	{
 		if (env->value)
 		{
-			printf("%s=%s\n", env->key, env->value);
+			ft_putstr_fd(env->key, 1);
+			ft_putstr_fd("=", 1);
+			ft_putendl_fd(env->value, 1);
 		}
 		env = env->next;
 	}
