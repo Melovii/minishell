@@ -4,7 +4,7 @@ static bool	is_tilde_path(char *s);
 static char	*expand_tilde(char *arg);
 static char	*get_oldpwd_path(t_env *env, bool *print_path);
 
-// Update PWD and OLDPWD using malloc'lı getcwd()
+// * Update PWD and OLDPWD using malloc'lı getcwd()
 int	update_pwd_vars(t_shell *shell, char *oldpwd)
 {
 	char	*cwd;
@@ -18,7 +18,7 @@ int	update_pwd_vars(t_shell *shell, char *oldpwd)
 	return (EX_OK);
 }
 
-// Determine target path for 'cd'
+// * Determine target path for 'cd'
 char	*get_cd_target(char **args, t_env *env, bool *print_path)
 {
 	char	*val;
@@ -46,13 +46,13 @@ char	*get_cd_target(char **args, t_env *env, bool *print_path)
 	return (ft_strdup(args[1]));
 }
 
-// Check if arg is '~' or '~/...'
+// * Check if arg is '~' or '~/...'
 static bool	is_tilde_path(char *s)
 {
 	return (s && s[0] == '~' && (s[1] == '\0' || s[1] == '/'));
 }
 
-// Convert '~' to HOME, no matter if $HOME exist or not
+// * Convert '~' to HOME, no matter if $HOME exist or not
 static char	*expand_tilde(char *arg)
 {
 	char	*home;
@@ -72,7 +72,7 @@ static char	*expand_tilde(char *arg)
 	return (expanded);
 }
 
-// Retrieve OLDPWD path for 'cd -' and enable printing if available
+// * Retrieve OLDPWD path for 'cd -' and enable printing if available
 static char	*get_oldpwd_path(t_env *env, bool *print_path)
 {
 	char	*val;

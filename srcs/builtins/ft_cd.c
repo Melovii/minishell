@@ -4,7 +4,7 @@ static char		*get_oldpwd_or_error(void);
 static int		do_cd(t_shell *shell, char **args);
 static int		change_directory(t_shell *shell, char **args, char **target, bool *print_path);
 
-// Entry point for 'cd' builtin
+// * Entry point for 'cd' builtin
 int	ft_cd(t_shell *shell, char **args)
 {
 	if (args[1] && args[2])
@@ -15,7 +15,7 @@ int	ft_cd(t_shell *shell, char **args)
 	return (do_cd(shell, args));
 }
 
-// Main cd logic
+// * Main cd logic
 static int	do_cd(t_shell *shell, char **args)
 {
 	char	*oldpwd;
@@ -44,7 +44,7 @@ static int	do_cd(t_shell *shell, char **args)
 	return (EX_OK);
 }
 
-// Get current directory as OLDPWD (malloc'lı)
+// * Get current directory as OLDPWD (malloc'lı)
 static char	*get_oldpwd_or_error(void)
 {
 	char	*oldpwd;
@@ -55,7 +55,7 @@ static char	*get_oldpwd_or_error(void)
 	return (oldpwd);
 }
 
-// Resolve and chdir to target
+// * Resolve and chdir to target
 static int	change_directory(t_shell *shell, char **args, char **target, bool *print_path)
 {
 	*print_path = false;

@@ -1,9 +1,8 @@
 #ifndef SH_SIGNALS_H
 # define SH_SIGNALS_H
 
-# include <signal.h>
-
 # include "structs.h"
+# include <signal.h>
 
 // * =======================================================>>>>> Signal Handling
 

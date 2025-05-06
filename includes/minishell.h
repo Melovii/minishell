@@ -1,37 +1,36 @@
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
-// * =======================================================>>>>> Standard Library Includes
+// * ======================================================= >>>>> Standard Library Includes
 
 // TODO: Remove unused includes (check with clang-tidy)
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
 # include <errno.h>
-# include <sys/wait.h>
-# include <sys/stat.h>
-# include <readline/readline.h>
+# include <fcntl.h>
 # include <readline/history.h>
+# include <readline/readline.h>
+# include <stdlib.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <unistd.h>
 // # include <sys/types.h>
 // # include <dirent.h>
 // # include <ctype.h>
 // # include <stdio.h>
 
-
-// * =======================================================>>>>> Local Includes
+// * ======================================================= >>>>> Local Includes
 
 # include "../libft/libft.h"
-# include "structs.h"
-# include "sh_signals.h"
-# include "sh_env.h"
-# include "sh_tokenizer.h"
 # include "sh_builtin.h"
-# include "sh_parser.h"
+# include "sh_env.h"
 # include "sh_exec.h"
-# include "sh_utils.h"
 # include "sh_expansion.h"
+# include "sh_parser.h"
+# include "sh_signals.h"
+# include "sh_tokenizer.h"
+# include "sh_utils.h"
+# include "structs.h"
 
-// * =======================================================>>>>> Macros
+// * ======================================================= >>>>> Macros
 
 // Exit status codes
 # define EX_OK EXIT_SUCCESS
