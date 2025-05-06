@@ -23,7 +23,7 @@ bool    file_path_name_expansion(t_shell *shell, t_dir *dir)
 // * Prints an error message for ambiguous redirects
 void null_path_name_msg(char *before_expansion)
 {
-    ft_putstr_fd("bash: ", 2);
-    ft_putstr_fd(before_expansion, 2);
-    ft_putendl_fd(": ambiguous redirect", 2);
+    ft_putstr_fd("bash: ", STDERR_FILENO);
+    ft_putstr_fd(before_expansion, STDERR_FILENO);
+    ft_putendl_fd(": ambiguous redirect", STDERR_FILENO);
 }

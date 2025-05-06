@@ -37,31 +37,31 @@ void print_open_error(char *filename)
 {
     if (errno == ENOENT)
     {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(filename, 2);
-        ft_putendl_fd(": No such file or directory", 2);
+        ft_putstr_fd("minishell: ", STDERR_FILENO);
+        ft_putstr_fd(filename, STDERR_FILENO);
+        ft_putendl_fd(": No such file or directory", STDERR_FILENO);
     }
     else if (errno == EACCES)
     {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(filename, 2);
-        ft_putendl_fd(": Permission denied", 2);
+        ft_putstr_fd("minishell: ", STDERR_FILENO);
+        ft_putstr_fd(filename, STDERR_FILENO);
+        ft_putendl_fd(": Permission denied", STDERR_FILENO);
     }
     else
     {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(filename, 2);
-        ft_putstr_fd(": ", 2);
-        ft_putendl_fd(strerror(errno), 2);
+        ft_putstr_fd("minishell: ", STDERR_FILENO);
+        ft_putstr_fd(filename, STDERR_FILENO);
+        ft_putstr_fd(": ", STDERR_FILENO);
+        ft_putendl_fd(strerror(errno), STDERR_FILENO);
     }
 }
 
 // * Prints a warning message when encountering an EOF in a heredoc
 void	eof_msg(t_shell *shell, char *delimiter)
 {
-	ft_putstr_fd("warning: here-document at line ", 2);
-	ft_putnbr_fd((int)shell->number_of_prompts, 2);
-	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
-	ft_putstr_fd(delimiter, 2);
-	ft_putstr_fd("')\n", 2);
+	ft_putstr_fd("warning: here-document at line ", STDERR_FILENO);
+	ft_putnbr_fd((int)shell->number_of_prompts, STDERR_FILENO);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", STDERR_FILENO);
+	ft_putstr_fd(delimiter, STDERR_FILENO);
+	ft_putendl_fd("')", STDERR_FILENO);
 }

@@ -45,9 +45,9 @@ static bool	process_export_argument(t_shell *shell, char *arg)
 // * Prints an error message when an invalid export identifier is encountered
 static void	print_invalid_identifier(char *arg)
 {
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putendl_fd("': not a valid identifier", 2);
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 }
 
 // * Checks if a given key is a valid environment variable identifier

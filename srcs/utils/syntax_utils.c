@@ -32,9 +32,9 @@ static bool	check_invalid_operator(t_token *tokens)
 {
 	if (tokens->type == INV_OPERATOR)
 	{
-		ft_putstr_fd("minishell: syntax error near invalid operator `", 2);
-		ft_putstr_fd(tokens->value, 2);
-		ft_putendl_fd("'", 2);
+		ft_putstr_fd("minishell: syntax error near invalid operator `", STDERR_FILENO);
+		ft_putstr_fd(tokens->value, STDERR_FILENO);
+		ft_putendl_fd("'", STDERR_FILENO);
 		return (false);
 	}
 	return (true);
@@ -49,17 +49,17 @@ static bool	check_token_pair_syntax(t_token *prev, t_token *tokens)
 	{
 		if (!(prev->type == PIPE && is_redirection_type(tokens->type)))
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-			ft_putstr_fd(tokens->value, 2);
-			ft_putendl_fd("'", 2);
+			ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
+			ft_putstr_fd(tokens->value, STDERR_FILENO);
+			ft_putendl_fd("'", STDERR_FILENO);
 			return (false);
 		}
 	}
 	if (is_redirection_type(prev->type) && tokens->type != WORD)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-		ft_putstr_fd(tokens->value, 2);
-		ft_putendl_fd("'", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
+		ft_putstr_fd(tokens->value, STDERR_FILENO);
+		ft_putendl_fd("'", STDERR_FILENO);
 		return (false);
 	}
 	return (true);
@@ -74,7 +74,7 @@ static bool	check_last_token_syntax(t_token *tokens)
 		tokens = tokens->next;
 	if (is_operator_type(tokens->type))
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token `newline'", 2);
+		ft_putendl_fd("minishell: syntax error near unexpected token `newline'", STDERR_FILENO);
 		return (false);
 	}
 	return (true);
@@ -87,21 +87,21 @@ static bool	check_first_token_syntax(t_token *tokens)
 		return (false);
 	if (tokens->type == PIPE)
 	{
-		ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+		ft_putendl_fd("minishell: syntax error near unexpected token `|'", STDERR_FILENO);
 		return (false);
 	}
 	if (is_redirection_type(tokens->type))
 	{
 		if (!tokens->next)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `newline'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token `newline'", STDERR_FILENO);
 			return (false);
 		}
 		if (tokens->next->type != WORD)
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-			ft_putstr_fd(tokens->next->value, 2);
-			ft_putendl_fd("'", 2);
+			ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
+			ft_putstr_fd(tokens->next->value, STDERR_FILENO);
+			ft_putendl_fd("'", STDERR_FILENO);
 			return (false);
 		}
 	}
