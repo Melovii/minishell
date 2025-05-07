@@ -52,8 +52,8 @@ static int	setup_heredoc(t_shell *shell, t_dir *redir)
 		handle_signals(EXEC_HRDC);
 		handle_heredoc_child(shell, redir);
 	}
-	close(redir->heredoc_fd[1]);
-	redir->heredoc_fd[1] = -1;
+	close(redir->heredoc_fd[WRITE_END]);
+	redir->heredoc_fd[WRITE_END] = -1;
 	return (wait_for_heredoc_child(pid)); // exit code or (128+sig)
 }
 
@@ -62,7 +62,7 @@ static void	handle_heredoc_child(t_shell *shell, t_dir *redir)
 	char	*line;
 	bool	is_quoted;
 
-	close(redir->heredoc_fd[0]);
+	close(redir->heredoc_fd[READ_END]);
 	is_quoted = does_included_quote(redir->filename);
 	redir->filename = remove_quotes_update_str(shell, redir->filename);
 	while (1)
@@ -76,10 +76,10 @@ static void	handle_heredoc_child(t_shell *shell, t_dir *redir)
 			break;
 		}
 		line = update_heredoc_prompt(shell, is_quoted, line);
-		ft_putendl_fd(line, redir->heredoc_fd[1]);
+		ft_putendl_fd(line, redir->heredoc_fd[WRITE_END]);
 		free(line);
 	}
-	close(redir->heredoc_fd[1]);
+	close(redir->heredoc_fd[WRITE_END]);
 	if (!line)
 		eof_msg(shell, redir->filename);
 	shut_program(shell, false, EX_OK);    // Delimiter matched, also Ctrl+D treated as success
@@ -92,7 +92,7 @@ static int wait_for_heredoc_child(pid_t pid)
 	int	signal_num;
 	int	exit_code;
 
-	exit_code = 1;
+	exit_code = EX_KO;
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 	{

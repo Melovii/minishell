@@ -30,10 +30,10 @@ void	free_pipe_fd(int **pipe_fd, int num)
 	{
 		if (pipe_fd[i])
 		{
-			if (pipe_fd[i][0] != -1)
-				close(pipe_fd[i][0]);
-			if (pipe_fd[i][1] != -1)
-				close(pipe_fd[i][1]);
+			if (pipe_fd[i][READ_END] != -1)
+				close(pipe_fd[i][READ_END]);
+			if (pipe_fd[i][WRITE_END] != -1)
+				close(pipe_fd[i][WRITE_END]);
 			free(pipe_fd[i]);
 		}
 		i++;
@@ -74,8 +74,8 @@ static int	**allocate_pipe_fd(t_shell *shell, int num_pipes)
 			free_pipe_fd(pipe_fd, i);
 			shut_program(shell, true, EX_KO);
 		}
-        pipe_fd[i][0] = -1;
-        pipe_fd[i][1] = -1;
+        pipe_fd[i][READ_END] = -1;
+        pipe_fd[i][WRITE_END] = -1;
 		i++;
 	}
 	return (pipe_fd);

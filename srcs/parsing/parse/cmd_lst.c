@@ -49,16 +49,7 @@ void    free_cmd_list(t_cmd *head)
             free_tokens(curr->args);
         if (curr->redir_list)
             free_redir_list(curr->redir_list);
-        if (curr->in_fd > 2)
-        {
-            close(curr->in_fd);
-            curr->in_fd = -1;
-        }
-        if (curr->out_fd > 2)
-        {
-            close(curr->out_fd);
-            curr->out_fd = -1;
-        }
+        close_redirections(curr);
         free(curr);
         curr = next;
     }

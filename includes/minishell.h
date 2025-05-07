@@ -46,6 +46,9 @@
 # define HEREDOC_PIPE_ERROR 1
 # define HEREDOC_FORK_ERROR 2
 
+# define WRITE_END 1
+# define READ_END 0
+
 # define INV_ARGC 2
 
 # define PIPE_PAIR 2

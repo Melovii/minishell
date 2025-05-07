@@ -60,7 +60,7 @@ static int	run_builtin(t_shell *shell, t_cmd *cmd)
 
 	args = modify_args(cmd);
 	if (!args)
-		return (1);
+		return (EX_KO);
 	if (are_strs_equal(cmd->args->value, "echo"))
 		status = ft_echo(args);
 	else if (are_strs_equal(cmd->args->value, "cd"))
@@ -76,7 +76,7 @@ static int	run_builtin(t_shell *shell, t_cmd *cmd)
 	else if (are_strs_equal(cmd->args->value, "exit"))
 		status = ft_exit(shell, args);
 	else
-		status = 1;
+		status = EX_KO;
 	ft_free_tab(args);
 	return (status);
 }

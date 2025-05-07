@@ -12,7 +12,7 @@ void	child_process(t_shell *shell, t_cmd *cmd, int i)
 	char	**args;
 
 	if (cmd->args == NULL)
-		child_cleanup_and_exit(shell, cmd, i, 0);
+		child_cleanup_and_exit(shell, cmd, i, EX_OK);
 	if (are_strs_equal(cmd->args->value, ""))
 	{
 		ft_putendl_fd("minishell: command not found: ''", STDERR_FILENO);
@@ -38,8 +38,8 @@ static void	setup_child(t_cmd *cmd, t_shell *shell, int i)
 		close(cmd->in_fd);
 		if (has_input_redirection_via_list(cmd) && i > 0)
         {
-			close(shell->num_pipes_fd[i - 1][0]);
-            shell->num_pipes_fd[i - 1][0] = -1;
+			close(shell->num_pipes_fd[i - 1][READ_END]);
+            shell->num_pipes_fd[i - 1][READ_END] = -1;
         }
 	}
 	if (cmd->out_fd != STDOUT_FILENO)
@@ -48,8 +48,8 @@ static void	setup_child(t_cmd *cmd, t_shell *shell, int i)
 		close(cmd->out_fd);
 		if (has_output_redirection_via_list(cmd) && i < shell->num_pipes)
         {
-			close(shell->num_pipes_fd[i][1]);
-            shell->num_pipes_fd[i][1] = -1;
+			close(shell->num_pipes_fd[i][WRITE_END]);
+            shell->num_pipes_fd[i][WRITE_END] = -1;
         }
 	}
 	close_unused_pipes(shell, i);
@@ -74,7 +74,7 @@ static void	resolve_cmd_and_args(t_shell *shell, t_cmd *cmd, char **path, char *
 	if (!*args)
 	{
 		free(*path);
-		shut_program(shell, true, 1);
+		shut_program(shell, true, EX_KO);
 	}
 }
 

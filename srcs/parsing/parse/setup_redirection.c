@@ -10,25 +10,25 @@ bool	setup_redirections_with_pipe(t_shell *shell, t_cmd *cmd, int i)
 {
 	if (!handle_redirections(shell, cmd))
 	{
-		if (i > 0 && shell->num_pipes_fd[i - 1][0] > 2)
+		if (i > 0 && shell->num_pipes_fd[i - 1][READ_END] > 2)
 		{
-			close(shell->num_pipes_fd[i - 1][0]);
-			shell->num_pipes_fd[i - 1][0] = -1;
+			close(shell->num_pipes_fd[i - 1][READ_END]);
+			shell->num_pipes_fd[i - 1][READ_END] = -1;
 		}
-		if (i < shell->num_pipes && shell->num_pipes_fd[i][1] > 2)
+		if (i < shell->num_pipes && shell->num_pipes_fd[i][WRITE_END] > 2)
 		{
-			close(shell->num_pipes_fd[i][1]);
-			shell->num_pipes_fd[i][1] = -1;
+			close(shell->num_pipes_fd[i][WRITE_END]);
+			shell->num_pipes_fd[i][WRITE_END] = -1;
 		}
 		return (false);
 	}
 	if (cmd->in_fd == STDIN_FILENO && i > 0)
 	{
-		cmd->in_fd = shell->num_pipes_fd[i - 1][0];
+		cmd->in_fd = shell->num_pipes_fd[i - 1][READ_END];
 	}
 	if (cmd->out_fd == STDOUT_FILENO && i < shell->num_pipes)
 	{
-		cmd->out_fd = shell->num_pipes_fd[i][1];
+		cmd->out_fd = shell->num_pipes_fd[i][WRITE_END];
 	}
 	return (true);
 }
@@ -70,9 +70,9 @@ static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 		prev = redir->prev;
 		if (prev && prev->type == DIR_HEREDOC)
 		{
-			if (prev->heredoc_fd[0] > 2)
-				close(prev->heredoc_fd[0]);
-			prev->heredoc_fd[0] = -1;
+			if (prev->heredoc_fd[READ_END] > 2)
+				close(prev->heredoc_fd[READ_END]);
+			prev->heredoc_fd[READ_END] = -1;
 		}
 		else
 			close(cmd->in_fd);
@@ -99,7 +99,7 @@ static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 	if (cmd->out_fd == -1)
 	{
 		print_open_error(redir->filename);
-		shell->cur_exit_flag = 1;
+		shell->cur_exit_flag = EX_KO;
 		return (false);
 	}
 	return (true);
@@ -115,12 +115,12 @@ static void	handle_heredoc_redir(t_cmd *cmd, t_dir *redir)
 		prev = redir->prev;
 		if (prev && prev->type == DIR_HEREDOC)
 		{
-			if (prev->heredoc_fd[0] > 2)
-				close(prev->heredoc_fd[0]);
-			prev->heredoc_fd[0] = -1;
+			if (prev->heredoc_fd[READ_END] > 2)
+				close(prev->heredoc_fd[READ_END]);
+			prev->heredoc_fd[READ_END] = -1;
 		}
 		else
 			close(cmd->in_fd);
 	}
-	cmd->in_fd = redir->heredoc_fd[0];
+	cmd->in_fd = redir->heredoc_fd[READ_END];
 }
