@@ -10,7 +10,7 @@ int	ft_env(t_shell *shell, char **args)
 	if (args[1])
 	{
 		print_env_error(args[1]);
-		return (CMD_NOT_FOUND);
+		return (NOT_FOUND);
 	}
 	env = shell->env;
 	while (env)

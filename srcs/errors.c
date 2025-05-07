@@ -12,7 +12,7 @@ void	print_dir_error(char *cmd)
 // * Prints error message for path-related issues (no file or command not found)
 void	path_error_msg(char *cmd, int exit_code, bool is_direct)
 {
-	if (exit_code == CMD_NOT_FOUND)
+	if (exit_code == NOT_FOUND)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		if (is_direct)
@@ -26,7 +26,7 @@ void	path_error_msg(char *cmd, int exit_code, bool is_direct)
 			ft_putendl_fd(": command not found", STDERR_FILENO);
 		}
 	}
-	else if (exit_code == EXEC_NO_PERM)
+	else if (exit_code == NO_PERM)
 	{
 		print_open_error(cmd);
 	}

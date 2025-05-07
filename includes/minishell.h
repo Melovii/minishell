@@ -35,8 +35,8 @@
 // Exit status codes
 # define EX_OK EXIT_SUCCESS
 # define EX_KO EXIT_FAILURE
-# define CMD_NOT_FOUND 127
-# define EXEC_NO_PERM 126
+# define NOT_FOUND 127
+# define NO_PERM 126
 
 // Prompts
 # define PROMPT "minishell> "
@@ -45,7 +45,6 @@
 // Heredoc error codes
 # define HEREDOC_PIPE_ERROR 1
 # define HEREDOC_FORK_ERROR 2
-# define HEREDOC_EXIT_INTERRUPTED 130
 
 # define INV_ARGC 2
 

@@ -24,7 +24,7 @@ int	ft_exit(t_shell *shell, char **args)
 		shell->exit_flag = 1;
 		return (1);
 	}
-	exit_code = atoi(args[1]) % 256;
+	exit_code = ft_atoi(args[1]) % 256;
 	if (exit_code < 0)
 		exit_code += 256;
     shut_program(shell, NULL, exit_code);
