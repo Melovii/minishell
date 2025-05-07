@@ -8,7 +8,7 @@ int	ft_exit(t_shell *shell, char **args)
 {
 	int	exit_code;
 
-	ft_putendl_fd("exit", 1);
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (!args[1])
 	{
         shut_program(shell, NULL, shell->exit_flag);

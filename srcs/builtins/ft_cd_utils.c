@@ -68,7 +68,10 @@ static char	*expand_tilde(char *arg)
 		return (ft_strdup(home));
 	expanded = ft_strjoin(home, arg + 1);
 	if (!expanded)
+	{
 		ft_putendl_fd("minishell: cd: memory allocation error", STDERR_FILENO);
+		return (NULL);
+	}
 	return (expanded);
 }
 

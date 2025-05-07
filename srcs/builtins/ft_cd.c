@@ -12,6 +12,10 @@ int	ft_cd(t_shell *shell, char **args)
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
 		return (EX_KO);
 	}
+	if (args[1] && are_strs_equal(args[1], ""))
+	{
+		return (EX_OK);
+	}
 	return (do_cd(shell, args));
 }
 

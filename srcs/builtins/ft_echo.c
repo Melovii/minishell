@@ -22,5 +22,5 @@ int	ft_echo(char **args)
 	}
 	if (!is_newline)
 		ft_putendl_fd("", 1);
-	return (0);
+	return (EX_OK);
 }
