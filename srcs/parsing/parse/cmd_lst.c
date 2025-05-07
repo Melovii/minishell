@@ -26,10 +26,10 @@ static void    free_redir_list(t_dir *redir)
         tmp = redir->next;
         if (redir->filename)
             free(redir->filename);
-		if (redir->heredoc_fd[0] > 2)
-			close(redir->heredoc_fd[0]);
-		if (redir->heredoc_fd[1] > 2)
-			close(redir->heredoc_fd[1]);
+		if (redir->heredoc_fd[READ_END] > 2)
+			close(redir->heredoc_fd[READ_END]);
+		if (redir->heredoc_fd[WRITE_END] > 2)
+			close(redir->heredoc_fd[WRITE_END]);
         free(redir);
         redir = tmp;
     }
@@ -66,8 +66,8 @@ void    free_cmd_list(t_cmd *head)
         return (NULL);
     new->type = type;
     new->filename = filename;
-    new->heredoc_fd[0] = -1;
-    new->heredoc_fd[1] = -1;
+    new->heredoc_fd[READ_END] = -1;
+    new->heredoc_fd[WRITE_END] = -1;
     new->next = NULL;
 	new->prev = NULL;
     return (new);

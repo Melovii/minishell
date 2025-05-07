@@ -70,15 +70,15 @@ static void	close_unused_pipe_ends(t_shell *shell, int index)
 
 	pipes = shell->num_pipes_fd;
 	pipes = shell->num_pipes_fd;
-	if (index > 0 && pipes[index - 1][0] >= 2)
+	if (index > 0 && pipes[index - 1][READ_END] >= 2)
 	{
-		close(pipes[index - 1][0]);
-		pipes[index - 1][0] = -1;
+		close(pipes[index - 1][READ_END]);
+		pipes[index - 1][READ_END] = -1;
 	}
-	if (index < shell->num_pipes && pipes[index][1] >= 0)
+	if (index < shell->num_pipes && pipes[index][WRITE_END] >= 0)
 	{
-		close(pipes[index][1]);
-		pipes[index][1] = -1;
+		close(pipes[index][WRITE_END]);
+		pipes[index][WRITE_END] = -1;
 	}
 }
 
