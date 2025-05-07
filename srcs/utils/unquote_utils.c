@@ -25,15 +25,6 @@ char *remove_quotes_update_str(t_shell *shell, char *str)
     return (new_str);
 }
 
-// * Initializes variables used for quote detection and indexing
-static void  init_vars(int *i, int *j, bool *in_sq, bool *in_dq)
-{
-    *i = 0;
-    *j = 0;
-    *in_sq = false;
-    *in_dq = false;
-}
-
 // * Measures the length of the string excluding quotes (single and double)
 static int measure_unquoted_length(char *str)
 {
@@ -84,4 +75,13 @@ static void copy_unquoted_content(char *dst, char *src)
         i++;
     }
     dst[j] = '\0';
+}
+
+// * Initializes variables used for quote detection and indexing
+static void  init_vars(int *i, int *j, bool *in_sq, bool *in_dq)
+{
+    *i = 0;
+    *j = 0;
+    *in_sq = false;
+    *in_dq = false;
 }
