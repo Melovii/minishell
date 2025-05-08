@@ -7,7 +7,7 @@
 
 void	execution(t_shell *shell);
 void	print_dir_error(char *cmd);
-void	print_open_error(char *filename);
+void	print_open_error(t_shell *shell, char *filename);
 void	free_pipe_fd(int **pipe_fd, int num);
 void	eof_msg(t_shell *shell, char *delimiter);
 void	close_unused_pipes(t_shell *shell, int current);

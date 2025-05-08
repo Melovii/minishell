@@ -2,7 +2,7 @@
 
 static bool unset_path_case(char **paths, int *exit_code, int *flag);
 static char	*check_single_path(t_shell *shell, char *dir, char *cmd, int *exit_code);
-static char	*check_direct_path(char *cmd, int *exit_code);
+static char	*check_direct_path(t_shell *shell, char *cmd, int *exit_code);
 static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, int *flag);
 
 // * Main function to get the full path of a command
@@ -13,13 +13,13 @@ char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code)
 
 	flag = 0;
 	if (ft_strchr(cmd, '/'))
-		return (check_direct_path(cmd, exit_code));
+		return (check_direct_path(shell, cmd, exit_code));
 	else
 	{
 		path = search_command_in_path(shell, cmd, exit_code, &flag);
 		if (!path && flag)
 		{
-			path_error_msg(cmd, NOT_FOUND, false);
+			path_error_msg(shell, cmd, NOT_FOUND, false);
 			return (NULL);
 		}
 		return (path);
@@ -27,18 +27,18 @@ char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code)
 }
 
 // * Check if the command has a direct path and whether it is accessible
-static char	*check_direct_path(char *cmd, int *exit_code)
+static char	*check_direct_path(t_shell *shell, char *cmd, int *exit_code)
 {
 	if (access(cmd, F_OK) != 0)
 	{
 		*exit_code = NOT_FOUND;
-        path_error_msg(cmd, *exit_code, true);
+        path_error_msg(shell, cmd, *exit_code, true);
 		return (NULL);
 	}
 	if (access(cmd, X_OK) != 0)
 	{
 		*exit_code = NO_PERM;
-        path_error_msg(cmd, *exit_code, true);
+        path_error_msg(shell, cmd, *exit_code, true);
 		return (NULL);
 	}
 	*exit_code = 0;
@@ -71,7 +71,7 @@ static char	*search_command_in_path(t_shell *shell, char *cmd, int *exit_code, i
 	}
 	ft_free_tab(paths);
 	*exit_code = final_exit;
-	path_error_msg(cmd, *exit_code, false);
+	path_error_msg(shell, cmd, *exit_code, false);
 	return (NULL);
 }
 

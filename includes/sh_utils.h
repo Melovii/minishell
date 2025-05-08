@@ -28,7 +28,7 @@ bool	are_quotes_closed(t_token *tokens);
 
 // * =======================================================>>>>> Path utils
 
-void	path_error_msg(char *cmd, int exit_code, bool is_direct);
+void	path_error_msg(t_shell *shell, char *cmd, int exit_code, bool is_direct);
 
 char	**get_paths_array(t_shell *shell);
 char	*get_cmd_path(t_shell *shell, char *cmd, int *exit_code);

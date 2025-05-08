@@ -63,64 +63,72 @@ static bool	handle_redirections(t_shell *shell, t_cmd *cmd)
 // * Handles input redirection (e.g. < file)
 static bool	handle_in_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
 {
-	t_dir	*prev;
+	t_dir	*prev = redir->prev;
 
 	if (cmd->in_fd != STDIN_FILENO)
 	{
-		prev = redir->prev;
-		if (prev && prev->type == DIR_HEREDOC)
+		if (prev && prev->type == DIR_HEREDOC && prev->heredoc_fd[READ_END] > 2)
 		{
-			if (prev->heredoc_fd[READ_END] > 2)
-				close(prev->heredoc_fd[READ_END]);
-			prev->heredoc_fd[READ_END] = -1;
+			close(prev->heredoc_fd[READ_END]);
 		}
 		else
+		{
 			close(cmd->in_fd);
+		}
+		cmd->in_fd = -1;
 	}
 	cmd->in_fd = open(redir->filename, O_RDONLY);
 	if (cmd->in_fd == -1)
 	{
-		print_open_error(redir->filename);
-		shell->cur_exit_flag = 1;
-		return (false);
-	}
-	return (true);
-}
-
-// * Handles output and append redirection (e.g. > file, >> file)
-static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
-{
-	if (cmd->out_fd != STDOUT_FILENO)
-		close(cmd->out_fd);
-	if (redir->type == DIR_OUT)
-		cmd->out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else
-		cmd->out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (cmd->out_fd == -1)
-	{
-		print_open_error(redir->filename);
+		print_open_error(shell, redir->filename);
 		shell->cur_exit_flag = EX_KO;
 		return (false);
 	}
 	return (true);
 }
 
-// * Handles heredoc redirection (e.g. << delimiter)
+// * Handles output or append redirection (e.g. > file, >> file)
+static bool	handle_out_redir(t_shell *shell, t_cmd *cmd, t_dir *redir)
+{
+	if (cmd->out_fd != STDOUT_FILENO)
+	{
+		close(cmd->out_fd);
+		cmd->out_fd = -1;
+	}
+	if (redir->type == DIR_OUT)
+	{
+		cmd->out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
+	else
+	{
+		cmd->out_fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
+	if (cmd->out_fd == -1)
+	{
+		print_open_error(shell, redir->filename);
+		shell->cur_exit_flag = EX_KO;
+		return (false);
+	}
+	return (true);
+}
+
+// * Handles heredoc redirection (e.g. << DELIMETER)
 static void	handle_heredoc_redir(t_cmd *cmd, t_dir *redir)
 {
-	t_dir	*prev;
+	t_dir	*prev = redir->prev;
 
 	if (cmd->in_fd != STDIN_FILENO)
 	{
-		prev = redir->prev;
-		if (prev && prev->type == DIR_HEREDOC)
+		if (prev && prev->type == DIR_HEREDOC && prev->heredoc_fd[READ_END] > 2)
 		{
-			if (prev->heredoc_fd[READ_END] > 2)
-				close(prev->heredoc_fd[READ_END]);
-			prev->heredoc_fd[READ_END] = -1;
+			close(prev->heredoc_fd[READ_END]);
 		}
 		else
+		{
 			close(cmd->in_fd);
+		}
+		cmd->in_fd = -1;
 	}
 	cmd->in_fd = redir->heredoc_fd[READ_END];
+	redir->heredoc_fd[READ_END] = -1;
 }
