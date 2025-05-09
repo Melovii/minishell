@@ -9,7 +9,7 @@ bool	are_quotes_closed(t_token *tokens)
 	{
 		if (!is_token_quote_balanced(tokens->value))
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `newline'", 2);
+			ft_putendl_fd("minishell: syntax error near unexpected token `newline'", STDERR_FILENO);
 			return (false);
 		}
 		tokens = tokens->next;
