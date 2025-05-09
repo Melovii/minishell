@@ -48,7 +48,7 @@ static int	do_cd(t_shell *shell, char **args)
 	return (EX_OK);
 }
 
-// * Get current directory as OLDPWD (malloc'lı)
+// * Get current directory as OLDPWD
 static char	*get_oldpwd_or_error(void)
 {
 	char	*oldpwd;
