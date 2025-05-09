@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+// * Prints the current working directory
 int	ft_pwd(t_shell *shell)
 {
 	char	*buf;
@@ -8,14 +9,14 @@ int	ft_pwd(t_shell *shell)
 	if (!buf)
 	{
 		if (errno == ENOMEM)
-			shut_program(shell, "minishell: malloc failed in pwd", 1);
+			shut_program(shell, true, 1);
 		else
 		{
 			perror("minishell: pwd");
 			return (1);
 		}
 	}
-	printf("%s\n", buf);
+	ft_putendl_fd(buf, 1);
 	free(buf);
 	return (0);
 }

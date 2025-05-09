@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-static void make_ready_for_next_prompt(t_shell *shell);
+static void prepare_for_next_prompt(t_shell *shell);
 static void general_process(t_shell *shell, char *prompt);
 static void shell_loop(t_shell *shell);
 
-
+// * Initializes and runs the shell program
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
@@ -29,6 +29,7 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
+// * Main loop for reading and processing commands
 static void shell_loop(t_shell *shell)
 {
 	char *prompt;
@@ -36,7 +37,7 @@ static void shell_loop(t_shell *shell)
 	while (1)
 	{
 		handle_signals(STANDBY);
-        make_ready_for_next_prompt(shell);
+        prepare_for_next_prompt(shell);
 		prompt = readline(PROMPT);
 		handle_signals(NEUTRAL);
 		if (!prompt)
@@ -49,10 +50,11 @@ static void shell_loop(t_shell *shell)
 			continue ;
 		}
 		general_process(shell, prompt);
-        make_ready_for_next_prompt(shell);
+        prepare_for_next_prompt(shell);
 	}
 }
 
+// * Process the input: tokenize, parse, and execute
 static void general_process(t_shell *shell, char *prompt)
 {
 	add_history(prompt);
@@ -73,7 +75,8 @@ static void general_process(t_shell *shell, char *prompt)
     execution(shell);
 }
 
-static void make_ready_for_next_prompt(t_shell *shell)
+// * Clean up resources and prepare for next prompt
+static void prepare_for_next_prompt(t_shell *shell)
 {
     if (shell->input)
         free(shell->input);

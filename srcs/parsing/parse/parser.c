@@ -3,6 +3,7 @@
 static void	append_arg_node(t_token **args, t_token *new_node);
 static void	parse_command(t_shell *shell, t_cmd *cmd);
 
+// * Returns the length of the argument list for a given command
 int get_len_cmd_args(t_cmd *cmd)
 {
     int len = 0;
@@ -16,6 +17,7 @@ int get_len_cmd_args(t_cmd *cmd)
     return (len);
 }
 
+// * Main parser function that handles command parsing and pipeline handling
 void	parser(t_shell *shell)
 {
 	t_cmd	*tail;
@@ -39,6 +41,7 @@ void	parser(t_shell *shell)
 	}
 }
 
+// * Parses a single command from the token stream
 static void	parse_command(t_shell *shell, t_cmd *cmd)
 {
 	t_token *temp;
@@ -63,7 +66,7 @@ static void	parse_command(t_shell *shell, t_cmd *cmd)
 	}
 }
 
-
+// * Appends a new argument node to the argument list of a command
 static void	append_arg_node(t_token **args, t_token *new_node)
 {
 	t_token	*cur;
@@ -79,4 +82,3 @@ static void	append_arg_node(t_token **args, t_token *new_node)
 		cur = cur->next;
 	cur->next = new_node;
 }
-

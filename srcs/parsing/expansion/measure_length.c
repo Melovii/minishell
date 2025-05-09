@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static int	measure_without_q(t_shell *shell, char *s, int *i);
 static int	measure_sq(char *s, int *i);

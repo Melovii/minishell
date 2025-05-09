@@ -36,25 +36,25 @@ SRCS		=	$(SRC_DIR)/main.c					\
 				$(SRC_DIR)/signals.c				\
 				$(TOKENS_DIR)/tokenizer.c			\
 				$(TOKENS_DIR)/token_lst.c			\
+				$(PARSE_DIR)/env.c					\
 				$(PARSE_DIR)/parser.c				\
 				$(PARSE_DIR)/cmd_lst.c				\
-				$(PARSE_DIR)/env.c					\
 				$(PARSE_DIR)/redirection.c			\
 				$(PARSE_DIR)/redirection_utils.c	\
 				$(PARSE_DIR)/setup_redirection.c	\
+				$(EXP_DIR)/fill.c					\
 				$(EXP_DIR)/expansion.c				\
 				$(EXP_DIR)/expand_cmds.c			\
-				$(EXP_DIR)/expansion_utils.c		\
 				$(EXP_DIR)/measure_length.c			\
-				$(EXP_DIR)/fill.c					\
-				$(EXEC_DIR)/execution.c				\
-				$(EXEC_DIR)/exec_builtin.c			\
-				$(EXEC_DIR)/child.c					\
-				$(EXEC_DIR)/heredoc.c				\
-				$(EXEC_DIR)/path.c					\
+				$(EXP_DIR)/expansion_utils.c		\
 				$(EXEC_DIR)/pipe.c					\
-				$(EXEC_DIR)/pipe_utils.c			\
+				$(EXEC_DIR)/path.c					\
+				$(EXEC_DIR)/child.c					\
 				$(EXEC_DIR)/termios.c				\
+				$(EXEC_DIR)/heredoc.c				\
+				$(EXEC_DIR)/execution.c				\
+				$(EXEC_DIR)/pipe_utils.c			\
+				$(EXEC_DIR)/exec_builtin.c			\
 				$(BUILTIN_DIR)/ft_cd.c				\
 				$(BUILTIN_DIR)/ft_pwd.c				\
 				$(BUILTIN_DIR)/ft_env.c				\
@@ -62,14 +62,15 @@ SRCS		=	$(SRC_DIR)/main.c					\
 				$(BUILTIN_DIR)/ft_exit.c			\
 				$(BUILTIN_DIR)/ft_unset.c			\
 				$(BUILTIN_DIR)/ft_export.c			\
+				$(BUILTIN_DIR)/ft_cd_utils.c		\
 				$(BUILTIN_DIR)/ft_export_utils.c	\
+				$(BUILTIN_DIR)/ft_export_utils2.c	\
 				$(UTILS_DIR)/env_utils.c			\
-				$(UTILS_DIR)/token_utils.c			\
-				$(UTILS_DIR)/export_utils.c			\
-				$(UTILS_DIR)/string_utils.c			\
 				$(UTILS_DIR)/path_utils.c			\
-				$(UTILS_DIR)/syntax_utils.c			\
 				$(UTILS_DIR)/quote_utils.c			\
+				$(UTILS_DIR)/token_utils.c			\
+				$(UTILS_DIR)/string_utils.c			\
+				$(UTILS_DIR)/syntax_utils.c			\
 				$(UTILS_DIR)/unquote_utils.c		\
 
 

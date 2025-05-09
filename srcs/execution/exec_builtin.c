@@ -1,8 +1,8 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static int run_builtin(t_shell *shell, t_cmd *cmd);
 
+// * Checks if the given token list represents a built-in command
 bool	is_builtin(t_token *token_lst)
 {
 	char *cmd;
@@ -23,6 +23,7 @@ bool	is_builtin(t_token *token_lst)
 	return (false);
 }
 
+// * Executes the built-in command by modifying file descriptors and calling the appropriate function
 int	execute_builtin(t_shell *shell, t_cmd *cmd)
 {
 	int	original_stdin;
@@ -51,6 +52,7 @@ int	execute_builtin(t_shell *shell, t_cmd *cmd)
     return (exit_status);
 }
 
+// * Runs the actual built-in command and returns its exit status
 static int	run_builtin(t_shell *shell, t_cmd *cmd)
 {
 	char	**args;
@@ -58,7 +60,7 @@ static int	run_builtin(t_shell *shell, t_cmd *cmd)
 
 	args = modify_args(cmd);
 	if (!args)
-		return (1);
+		return (EX_KO);
 	if (are_strs_equal(cmd->args->value, "echo"))
 		status = ft_echo(args);
 	else if (are_strs_equal(cmd->args->value, "cd"))
@@ -70,16 +72,16 @@ static int	run_builtin(t_shell *shell, t_cmd *cmd)
 	else if (are_strs_equal(cmd->args->value, "unset"))
 		status = ft_unset(shell, args);
 	else if (are_strs_equal(cmd->args->value, "env"))
-		status = ft_env(shell, args, false);
+		status = ft_env(shell, args);
 	else if (are_strs_equal(cmd->args->value, "exit"))
 		status = ft_exit(shell, args);
 	else
-		status = 1;
+		status = EX_KO;
 	ft_free_tab(args);
 	return (status);
 }
 
-
+// * Modifies the command arguments by converting them into a string array
 char	**modify_args(t_cmd *cmd)
 {
 	char	**args;
@@ -106,4 +108,3 @@ char	**modify_args(t_cmd *cmd)
 	}
 	return (args);
 }
-

@@ -1,8 +1,8 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static bool	is_token_quote_balanced(char *str);
 
+// * Checks if all quotes in the token are balanced (i.e., properly closed)
 bool	are_quotes_closed(t_token *tokens)
 {
 	while (tokens)
@@ -15,8 +15,9 @@ bool	are_quotes_closed(t_token *tokens)
 		tokens = tokens->next;
 	}
 	return (true);
-}
+}	
 
+// * Checks if a string contains either single or double quotes
 bool does_included_quote(char *str)
 {
     size_t i = 0;
@@ -29,7 +30,7 @@ bool does_included_quote(char *str)
     return (false);
 }
 
-
+// * Checks if the quotes in a token are balanced (paired and closed)
 static bool	is_token_quote_balanced(char *str)
 {
 	int		i;

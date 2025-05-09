@@ -1,10 +1,10 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static  void init_vars(int *i, int *j, bool *in_sq, bool *in_dq);
 static int measure_unquoted_length(char *str);
 static void copy_unquoted_content(char *dst, char *src);
 
+// * Removes quotes from a string and returns a new string without them
 char *remove_quotes_update_str(t_shell *shell, char *str)
 {
     char *new_str;
@@ -25,6 +25,7 @@ char *remove_quotes_update_str(t_shell *shell, char *str)
     return (new_str);
 }
 
+// * Measures the length of the string excluding quotes (single and double)
 static int measure_unquoted_length(char *str)
 {
     bool in_sq;
@@ -50,6 +51,7 @@ static int measure_unquoted_length(char *str)
     return len;
 }
 
+// * Copies the content of the string excluding quotes (single and double)
 static void copy_unquoted_content(char *dst, char *src)
 {
     bool in_sq;
@@ -75,6 +77,7 @@ static void copy_unquoted_content(char *dst, char *src)
     dst[j] = '\0';
 }
 
+// * Initializes variables used for quote detection and indexing
 static void  init_vars(int *i, int *j, bool *in_sq, bool *in_dq)
 {
     *i = 0;

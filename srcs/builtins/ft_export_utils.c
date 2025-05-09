@@ -5,6 +5,7 @@ static int	count_key_number(t_env *env);
 static void	sort_env_array(char **arr);
 static int	ft_strcmp(const char *s1, const char *s2);
 
+// * Prints the environment variables in the export format ("declare -x KEY=value")
 void print_export(t_shell *shell)
 {
 	char **sorted_keys;
@@ -27,6 +28,7 @@ void print_export(t_shell *shell)
 	free(sorted_keys);
 }
 
+// * Sorts the environment variable keys and returns an array of sorted keys
 static char **sort_keys(t_shell *shell)
 {
 	t_env	*env;
@@ -48,6 +50,7 @@ static char **sort_keys(t_shell *shell)
 	return (keys_arr);
 }
 
+// * Sorts an array of environment variable keys in lexicographical order
 static void	sort_env_array(char **arr)
 {
 	int		i;
@@ -75,7 +78,7 @@ static void	sort_env_array(char **arr)
 	}
 }
 
-
+// * Counts the number of environment variables in the linked list
 static int	count_key_number(t_env *env)
 {
 	int	count;
@@ -89,6 +92,7 @@ static int	count_key_number(t_env *env)
 	return (count);
 }
 
+// * Compares two strings lexicographically, returning the difference between them
 static int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
@@ -103,4 +107,3 @@ static int	ft_strcmp(const char *s1, const char *s2)
 	}
 	return ((unsigned char)s1[i] - (unsigned char)s2[j]);
 }
-

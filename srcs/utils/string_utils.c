@@ -1,6 +1,6 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
+// * Compares two strings for equality
 bool	are_strs_equal(char *s1, char *s2)
 {
 	if (!s1 || !s2)
@@ -10,7 +10,7 @@ bool	are_strs_equal(char *s1, char *s2)
 	return (false);
 }
 
-// * Function to check if a character is whitespace
+// * Checks if a character is whitespace
 bool ft_isspace(char c)
 {
 	if (c == '\0')
@@ -20,6 +20,7 @@ bool ft_isspace(char c)
 	return (false);
 }
 
+// * Skips all whitespace characters in the input string starting from index i
 void skip_spaces(char *input, int *i)
 {
 	if (!input)
@@ -28,6 +29,7 @@ void skip_spaces(char *input, int *i)
         (*i)++;
 }
 
+// * Checks if a character is either a single or double quote
 bool	is_quote(char c)
 {
 	if (c == '"' || c == '\'')
@@ -35,6 +37,7 @@ bool	is_quote(char c)
 	return (false);
 }
 
+// * Joins two strings and frees the original strings
 char	*ultimate_join(char *s1, char *s2)
 {
 	char	*ultimate;

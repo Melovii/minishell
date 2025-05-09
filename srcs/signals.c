@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 void	handle_sigint_output(void)
 {
@@ -7,7 +6,7 @@ void	handle_sigint_output(void)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-// * Function to handle SIGINT signal (standby mode)
+// * Handles SIGINT signal (standby mode)
 static void	handle_interrupt(int sig)
 {
 	(void)sig;
@@ -17,7 +16,7 @@ static void	handle_interrupt(int sig)
 	rl_redisplay();
 }
 
-// * Function to handle SIGINT signal (heredoc mode)
+// * Handles SIGINT signal (heredoc mode)
 static void	signal_heredoc(int sig)
 {
 	(void)sig;
@@ -25,7 +24,7 @@ static void	signal_heredoc(int sig)
 	exit(130);
 }
 
-// * Function to handle SIGINT signal (command mode)
+// * Handles SIGINT signal (command mode)
 static void	signal_cmd(int sig)
 {
 	(void)sig;

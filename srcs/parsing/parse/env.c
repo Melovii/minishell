@@ -1,7 +1,6 @@
 #include "minishell.h"
-#include "../libft/libft.h"
-#include "stdlib.h"
 
+// * Initializes the environment variables by creating nodes for each key-value pair
 void	init_env(t_shell *shell, char **envp)
 {
 	int		i;
@@ -20,6 +19,7 @@ void	init_env(t_shell *shell, char **envp)
 	}
 }
 
+// * Finds an environment variable node by its key
 t_env	*find_env_node(t_env *env, char *key)
 {
 	while (env)
@@ -31,6 +31,7 @@ t_env	*find_env_node(t_env *env, char *key)
 	return (NULL);
 }
 
+// * Returns the value associated with an environment variable given its key
 char    *get_env_value(t_env *env, char *key)
 {
     while (env)
@@ -42,6 +43,7 @@ char    *get_env_value(t_env *env, char *key)
     return (NULL);
 }
 
+// * Frees the entire linked list of environment nodes
 void	free_env_list(t_env *env)
 {
 	t_env	*curr;
@@ -60,6 +62,7 @@ void	free_env_list(t_env *env)
 	}
 }
 
+// * Frees a single environment node
 void	free_env(t_env *node)
 {
 	if (!node)

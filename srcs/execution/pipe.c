@@ -1,9 +1,9 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static int	**allocate_pipe_fd(t_shell *shell, int num_pipes);
 static int	open_pipes(int **pipe_fd, int num_pipes);
 
+// * Counts the number of pipes needed based on the number of commands in the list
 int     count_pipes(t_cmd *cmd)
 {
     int count;
@@ -18,6 +18,7 @@ int     count_pipes(t_cmd *cmd)
     return (count);
 }
 
+// * Frees the memory allocated for pipe file descriptors and closes open pipes
 void	free_pipe_fd(int **pipe_fd, int num)
 {
 	int	i;
@@ -29,10 +30,10 @@ void	free_pipe_fd(int **pipe_fd, int num)
 	{
 		if (pipe_fd[i])
 		{
-			if (pipe_fd[i][0] != -1)
-				close(pipe_fd[i][0]);
-			if (pipe_fd[i][1] != -1)
-				close(pipe_fd[i][1]);
+			if (pipe_fd[i][READ_END] != -1)
+				close(pipe_fd[i][READ_END]);
+			if (pipe_fd[i][WRITE_END] != -1)
+				close(pipe_fd[i][WRITE_END]);
 			free(pipe_fd[i]);
 		}
 		i++;
@@ -40,6 +41,7 @@ void	free_pipe_fd(int **pipe_fd, int num)
 	free(pipe_fd);
 }
 
+// * Sets up pipes by allocating memory for file descriptors and opening the pipes
 int	**setup_pipes(t_shell *shell, int num_pipes)
 {
 	int	**pipe_fd;
@@ -54,6 +56,7 @@ int	**setup_pipes(t_shell *shell, int num_pipes)
 	return (pipe_fd);
 }
 
+// * Allocates memory for the pipe file descriptor array and initializes each pipe
 static int	**allocate_pipe_fd(t_shell *shell, int num_pipes)
 {
 	int	**pipe_fd;
@@ -71,13 +74,14 @@ static int	**allocate_pipe_fd(t_shell *shell, int num_pipes)
 			free_pipe_fd(pipe_fd, i);
 			shut_program(shell, true, EX_KO);
 		}
-        pipe_fd[i][0] = -1;
-        pipe_fd[i][1] = -1;
+        pipe_fd[i][READ_END] = -1;
+        pipe_fd[i][WRITE_END] = -1;
 		i++;
 	}
 	return (pipe_fd);
 }
 
+// * Opens the pipes by creating the necessary file descriptors
 static int	open_pipes(int **pipe_fd, int num_pipes)
 {
 	int	i;

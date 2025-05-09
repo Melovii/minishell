@@ -1,9 +1,8 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static void	remove_env_node(t_env **env_list, char *key);
-static bool	is_valid_identifier(char *str);
 
+// * Main function for handling the unset command, removes environment variables specified in the arguments
 int	ft_unset(t_shell *shell, char **args)
 {
 	int		i;
@@ -20,6 +19,7 @@ int	ft_unset(t_shell *shell, char **args)
 	return (EX_OK);
 }
 
+// * Removes the environment node associated with the specified key
 static void	remove_env_node(t_env **env_list, char *key)
 {
 	t_env	*tmp;
@@ -43,20 +43,4 @@ static void	remove_env_node(t_env **env_list, char *key)
 		prev = tmp;
 		tmp = tmp->next;
 	}
-}
-
-static bool	is_valid_identifier(char *str)
-{
-	int	i;
-
-	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
-		return (false);
-	i = 1;
-	while (str[i])
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (false);
-		i++;
-	}
-	return (true);
 }

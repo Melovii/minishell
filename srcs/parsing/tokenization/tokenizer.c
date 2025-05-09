@@ -1,11 +1,11 @@
 #include "minishell.h"
-#include "../libft/libft.h"
 
 static char	*get_quote_part(t_shell *shell, char *input, int *i, char **combined);
 static char	*get_default_part(t_shell *shell, char *input, int *i, char **combined);
 static void	get_combined_token(t_shell *shell, char *input, int *i, t_token **tokens);
 static void	get_special_token(t_shell *shell, t_token **tokens, char *input, int *i);
 
+// * Tokenizes the input string into a linked list of tokens
 void	tokenizer(t_shell *shell, char *input)
 {
 	int		i;
@@ -24,6 +24,7 @@ void	tokenizer(t_shell *shell, char *input)
     update_token_type(shell->token);
 }
 
+// * Combines multiple characters or quoted strings into a single token
 static void	get_combined_token(t_shell *shell, char *input, int *i, t_token **tokens)
 {
 	char	*combined;
@@ -46,6 +47,7 @@ static void	get_combined_token(t_shell *shell, char *input, int *i, t_token **to
 	free(combined);
 }
 
+// * Extracts a quoted substring from the input
 static char	*get_quote_part(t_shell *shell, char *input, int *i, char **combined)
 {
 	int		start;
@@ -75,6 +77,7 @@ static char	*get_quote_part(t_shell *shell, char *input, int *i, char **combined
 	return (new_part);
 }
 
+// * Extracts a regular unquoted substring from the input
 static char	*get_default_part(t_shell *shell, char *input, int *i, char **combined)
 {
 	int		start;
@@ -95,6 +98,7 @@ static char	*get_default_part(t_shell *shell, char *input, int *i, char **combin
 	return (new_part);
 }
 
+// * Extracts special operator tokens (e.g., ||, &&, >>)
 static void	get_special_token(t_shell *shell, t_token **tokens, char *input, int *i)
 {
 	char	operator[3];
@@ -118,7 +122,3 @@ static void	get_special_token(t_shell *shell, t_token **tokens, char *input, int
 	add_token(shell, tokens, opt_value);
 	free(opt_value);
 }
-
-
-
-
