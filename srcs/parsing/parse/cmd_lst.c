@@ -36,23 +36,22 @@ static void    free_redir_list(t_dir *redir)
 }
 
 // * Frees the entire command list including redirections and arguments
-void    free_cmd_list(t_cmd *head)
+void	free_cmd_list(t_cmd *head)
 {
-    t_cmd *curr;
-    t_cmd *next;
+	t_cmd	*curr;
+	t_cmd	*next;
 
-    curr = head;
-    while (curr)
-    {
-        next = curr->next;
-        if (curr->args)
-            free_tokens(curr->args);
-        if (curr->redir_list)
-            free_redir_list(curr->redir_list);
-        close_redirections(curr);
-        free(curr);
-        curr = next;
-    }
+	curr = head;
+	while (curr)
+	{
+		next = curr->next;
+		if (curr->args)
+			free_tokens(curr->args);
+		if (curr->redir_list)
+			free_redir_list(curr->redir_list);
+		free(curr);
+		curr = next;
+	}
 }
 
 // * Creates a new redirection node with the specified type and filename
