@@ -21,8 +21,9 @@ void print_export(t_shell *shell)
 		{
 			ft_putstr_fd("= \"", 1);
 			ft_putstr_fd(get_env_value(shell->env, sorted_keys[i]), 1);
-			ft_putendl_fd("\"", 1);
+			ft_putstr_fd("\"", 1);
 		}
+		ft_putendl_fd("", 1);
 		i++;
 	}
 	free(sorted_keys);
