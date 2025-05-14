@@ -49,7 +49,7 @@ static void	remove_null_value_tokens(t_token **head)
 			else
 				*head = curr->next;
 			curr = curr->next;
-			free(to_delete);
+			free_token_node(to_delete);
 		}
 		else
 		{
