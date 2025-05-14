@@ -61,7 +61,7 @@ static void general_process(t_shell *shell, char *prompt)
 	shell->input = prompt;
     (shell->number_of_prompts)++;
 	tokenizer(shell, prompt);
-    if (!(check_syntax(shell->token) && are_quotes_closed(shell->token)))
+    if (!(check_syntax(shell, shell->token) && are_quotes_closed(shell->token)))
         return ;
     parser(shell);
 	shell->num_pipes = count_pipes(shell->cmd);
