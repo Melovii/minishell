@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char *update_heredoc_prompt(t_shell *shell, bool is_quoted, char *line);
+static char *update_heredoc_input(t_shell *shell, bool is_quoted, char *line);
 static int	setup_heredoc(t_shell *shell, t_dir *redir);
 static void	handle_heredoc_child(t_shell *shell, t_dir *redir);
 static int	wait_for_heredoc_child(pid_t pid);
@@ -75,7 +75,7 @@ static void	handle_heredoc_child(t_shell *shell, t_dir *redir)
 			free(line);
 			break;
 		}
-		line = update_heredoc_prompt(shell, is_quoted, line);
+		line = update_heredoc_input(shell, is_quoted, line);
 		ft_putendl_fd(line, redir->heredoc_fd[WRITE_END]);
 		free(line);
 	}
@@ -108,7 +108,7 @@ static int wait_for_heredoc_child(pid_t pid)
 }
 
 // * Waits for the heredoc child process to finish and returns the exit status or signal
-static char *update_heredoc_prompt(t_shell *shell, bool is_quoted, char *line)
+static char *update_heredoc_input(t_shell *shell, bool is_quoted, char *line)
 {
 	char  *temp;
 
