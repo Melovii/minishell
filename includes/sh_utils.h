@@ -22,7 +22,7 @@ char	*ft_strjoin_path(char *dir, char *cmd);
 
 // * =======================================================>>>>> Syntax utils
 
-bool	check_syntax(t_token *tokens);
+bool	check_syntax(t_shell *shell, t_token *tokens);
 bool	does_included_quote(char *str);
 bool	are_quotes_closed(t_token *tokens);
 

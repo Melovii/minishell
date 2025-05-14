@@ -53,4 +53,6 @@
 
 # define PIPE_PAIR 2
 
+# define SYN_ERR_MSG_1 "minishell: syntax error near unexpected token `newline'"
+
 #endif
