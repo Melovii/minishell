@@ -28,7 +28,6 @@
 # include "sh_signals.h"
 # include "sh_tokenizer.h"
 # include "sh_utils.h"
-# include "structs.h"
 
 // * ======================================================= >>>>> Macros
 

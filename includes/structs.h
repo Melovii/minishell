@@ -17,7 +17,6 @@ typedef enum e_token_type
 	HEREDOC,      // '<<'
 	APPEND,       // '>>'
 	NIL           // NULL (default)
-
 }						t_token_type;
 
 // * Enum for redirection types
@@ -27,7 +26,6 @@ typedef enum e_redir_type
 	DIR_OUT,    // '>'
 	DIR_APPEND, // '>>'
 	DIR_HEREDOC // '<<'
-
 }						t_redir_type;
 
 // * Struct for holding signal status
@@ -111,7 +109,6 @@ typedef struct s_shell
 	t_token				*token;
 	t_status			status;
 	t_termios			termios;
-
 }						t_shell;
 
 #endif
