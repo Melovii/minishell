@@ -22,9 +22,11 @@ int	main(int argc, char **argv, char **envp)
 		return (EX_KO);
 	}
 	init_env(shell, envp);
-	setup_termios(shell, SAVE);
+	if (setup_termios(shell, SAVE) != EX_OK)
+		shut_program(shell, NULL, EX_KO);
 	shell_loop(shell);
-	setup_termios(shell, LOAD);
+	if (setup_termios(shell, LOAD) != EX_OK)
+		shut_program(shell, NULL, EX_KO);
 	free_shell(shell);
 	return (0);
 }
