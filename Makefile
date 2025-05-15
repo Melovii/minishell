@@ -115,7 +115,7 @@ leaks:
 			  --verbose									\
 			  ./$(NAME)
 
-test:
+test: all
 	@cd minishell_tester && ./tester && cd -
 
 count_lines:
