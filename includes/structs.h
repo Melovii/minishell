@@ -1,5 +1,5 @@
-#ifndef STRUCTURES_H
-# define STRUCTURES_H
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
 # include <stdbool.h>
 # include <termios.h>
