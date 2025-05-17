@@ -19,7 +19,7 @@ void print_export(t_shell *shell)
 		ft_putstr_fd(sorted_keys[i], 1);
 		if (get_env_value(shell->env, sorted_keys[i]) != NULL)
 		{
-			ft_putstr_fd("= \"", 1);
+			ft_putstr_fd("=\"", 1);
 			ft_putstr_fd(get_env_value(shell->env, sorted_keys[i]), 1);
 			ft_putstr_fd("\"", 1);
 		}
