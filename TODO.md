@@ -1,4 +1,0 @@
-- make cd into 25 lines (fml 42norm)
-- apply 42 norm for every singular damn file
-- ask someone about CTRL + \ (why does subject.pdf ask us to quit minishell?)
-- research cd ~ (do we need this?)
