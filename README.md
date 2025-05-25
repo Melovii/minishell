@@ -194,7 +194,6 @@ minishell/
 │   ├── parsing/      # Tokenization and command parsing
 │   ├── utils/        # Utility functions
 │   └── main.c        # Entry point
-├── minishell_tester/ # Third-party test suite
 └── Makefile          # Build configuration
 ```
 
