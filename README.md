@@ -45,7 +45,7 @@ A comprehensive set of essential shell built-ins, each implemented to match bash
 ### Build Process
 ```bash
 # Clone the repository
-git clone [repository-url]
+git clone git@github.com:Melovii/minishell.git
 cd minishell
 
 # Compile the project
