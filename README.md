@@ -198,24 +198,8 @@ minishell/
 └── Makefile          # Build configuration
 ```
 
-
-## 🧪 Testing
-
-This project has been thoroughly tested using external test suites to ensure reliability and compatibility:
-
-- **minishell_tester**: Third-party testing framework created by the 42 community
- - Repository: [LucasKuhn/minishell_tester](https://github.com/LucasKuhn/minishell_tester)
- - Provides comprehensive edge case testing
- - Validates bash compatibility across various scenarios
-
-To run tests (after installing the tester and building the project):
-```bash
-cd minishell_tester
-./tester
-```
+*Created as part of the 42 School curriculum - a testament to systems programming mastery.*
 
 ---
-
-*Created as part of the 42 School curriculum - a testament to systems programming mastery.*
 
 *"The shell is not just a program, but a philosophy of elegant simplicity."*
