@@ -11,194 +11,169 @@ Minishell is a custom shell implementation written in C that mimics the core fun
 ## ✨ Features
 
 ### Core Shell Functionality
-- **Interactive Prompt**: Displays a clean prompt waiting for user commands
-- **Command History**: Maintains a working history of executed commands
-- **Executable Search**: Locates and launches programs using PATH variable or absolute/relative paths
-- **Signal Management**: Proper handling of shell signals with bash-like behavior
+- **Interactive Prompt**: Clean prompt with command history support
+- **Executable Search**: Locates programs using PATH variable or absolute/relative paths
+- **Signal Management**: Proper handling of Ctrl+C, Ctrl+D, and Ctrl+\ with bash-like behavior
 - **Memory Safety**: Zero memory leaks with comprehensive cleanup
 
-### Advanced Parsing & Execution
-- **Quote Handling**: Sophisticated parsing of single and double quotes
-- **Variable Expansion**: Environment variable substitution with `$VAR` syntax
-- **Exit Status Tracking**: Access last command's exit code via `$?`
-- **Pipeline Support**: Command chaining with pipes (`|`)
-- **I/O Redirection**: Complete redirection suite (`<`, `>`, `>>`, `<<`)
+### Advanced Command Processing
+- **Quote Handling**: Sophisticated parsing of single (`'`) and double (`"`) quotes
+- **Variable Expansion**: Environment variable substitution with `$VAR` and exit status via `$?`
+- **Pipeline Support**: Command chaining with pipes (`|`) and proper error propagation
+- **I/O Redirection**: Complete suite (`<`, `>`, `>>`, `<<`) with here-document support
 
 ### Built-in Commands
-A comprehensive set of essential shell built-ins, each implemented to match bash behavior:
-- `echo` (with `-n` option support)
-- `cd` (relative and absolute path navigation)
-- `pwd` (current directory display)
-- `export` (environment variable management)
-- `unset` (variable removal)
-- `env` (environment display)
-- `exit` (graceful shell termination)
+Essential shell built-ins implemented to match bash behavior:
+`echo` • `cd` • `pwd` • `export` • `unset` • `env` • `exit`
 
-## 🛠️ Installation & Compilation
+## 🛠️ Installation & Setup
 
 ### Prerequisites
 - GCC compiler
 - Make utility
 - Standard C library
-- Readline library
+- Readline library (libreadline-dev)
 
-### Build Process
+### Dependencies Installation
+Before compiling, install each required component:
+
 ```bash
-# Clone the repository
-git clone git@github.com:Melovii/minishell.git
-cd minishell
+# Ubuntu/Debian
+sudo apt update
+sudo apt install gcc make libreadline-dev
 
-# Compile the project
-make
+# CentOS/RHEL/Fedora
+sudo dnf install gcc make readline-devel
+
+# macOS
+# Install Xcode Command Line Tools (includes GCC and Make)
+xcode-select --install
+# Install readline via Homebrew
+brew install readline
 ```
 
-The Makefile includes all standard rules and compiles with strict flags (`-Wall -Wextra -Werror`) ensuring code quality.
-
-## 🚀 Usage
-
-### Starting Minishell
+### Quick Start
 ```bash
+# Clone and build
+git clone git@github.com:Melovii/minishell.git
+cd minishell
+make
+
+# Run minishell
 ./minishell
 ```
 
-### Basic Command Examples
+## 🚀 Usage Examples
+
 ```bash
-minishell> echo "Hello, World!"
-Hello, World!
+# Basic commands
+minishell> echo "Goodbye, World?"
+Goodbye, World?
 
-minishell> ls -la | grep minishell
--rwxr-xr-x  1 user  staff  12345 Jan 01 12:00 minishell
+# Pipelines and redirections
+minishell> ls -la | grep minishell > output.txt
+minishell> cat < input.txt | sort | uniq >> results.txt
 
+# Environment variables
 minishell> export MY_VAR="test value"
-minishell> echo $MY_VAR
-test value
+minishell> echo "Value: $MY_VAR, Exit code: $?"
+Value: test value, Exit code: 0
 
-minishell> pwd
-/path/to/current/directory
+# Complex quoting
+minishell> export USER="Melovi"
+minishell> echo "'Hello $USER'" vs '"Hello $USER"'
+'Hello Melovi' vs "Hello $USER"
 ```
 
-## 🔧 Built-in Commands
+## 🔧 Built-in Commands Reference
 
 | Command | Syntax | Description |
 |---------|--------|-------------|
 | `echo` | `echo [-n] [text...]` | Display text with optional newline suppression |
-| `cd` | `cd [path]` | Change current directory |
+| `cd` | `cd [path]` | Change current directory (supports relative/absolute paths) |
 | `pwd` | `pwd` | Print current working directory |
-| `export` | `export [VAR=value]` | Set environment variables |
+| `export` | `export [VAR=value]` | Set/display environment variables |
 | `unset` | `unset [VAR]` | Remove environment variables |
 | `env` | `env` | Display all environment variables |
 | `exit` | `exit [status]` | Exit shell with optional status code |
 
-## 🔄 Parsing and Execution Flow
+## 🔄 Architecture & Processing Flow
 
-Minishell processes commands through a sophisticated multi-stage pipeline:
+Minishell processes commands through a sophisticated pipeline:
 
-1. **Tokenization**: Input string is broken into meaningful tokens
-2. **Parsing**: Tokens are organized into command structures with proper syntax validation
-3. **Expansion**: Environment variables and special parameters are expanded
-4. **Execution**: Commands are executed with proper process management and I/O handling
+1. **Tokenization** → Break input into meaningful tokens
+2. **Parsing** → Build command structures with syntax validation  
+3. **Expansion** → Resolve variables and special parameters
+4. **Execution** → Launch processes with proper I/O and signal handling
 
-This design ensures robust command processing while maintaining excellent performance.
+This multi-stage design ensures robust command processing while maintaining excellent performance.
 
-## 📡 Redirections and Pipes
+## 📡 Advanced Features
 
-### Input/Output Redirection
-- `command < file` - Redirect input from file
-- `command > file` - Redirect output to file (overwrite)
-- `command >> file` - Redirect output to file (append)
-- `command << delimiter` - Here-document input until delimiter
-
-### Pipeline Processing
-- `cmd1 | cmd2 | cmd3` - Chain commands with seamless data flow
-- Supports complex multi-stage pipelines with proper error propagation
-
-## 🎛️ Signal Handling
-
-Minishell implements bash-compatible signal behavior:
-
-- **Ctrl+C**: Interrupts current command and displays new prompt
-- **Ctrl+D**: Gracefully exits the shell (EOF)  
-- **Ctrl+\\**: Ignored (no action taken)
-
-Signal handling uses minimal global state (single global variable) for clean implementation.
-
-## 🌍 Environment Variables & Exit Status
-
-### Variable Expansion
-- `$VAR` - Expands to the value of environment variable VAR
-- `$?` - Expands to exit status of last executed command
-- Handles unset variables gracefully
-
-### Special Quote Behavior
-A sophisticated quoting system that perfectly matches bash behavior:
-
+### Redirection & Pipes
 ```bash
-# Set USER environment variable for testing
-minishell> export USER="john_doe"
+# Input/Output redirection
+command < infile          # Read from file
+command > outfile         # Write to file (overwrite)
+command >> outfile        # Append to file
+command << EOF            # Here-document until "EOF"
 
-# Test single quotes within double quotes
-minishell> echo "'$USER'"
-'john_doe'
-
-# Test double quotes within single quotes  
-minishell> echo '"$USER"'
-"$USER"
+# Pipeline processing
+cmd1 | cmd2 | cmd3        # Chain commands with data flow
 ```
 
-This nuanced handling demonstrates the shell's advanced parsing capabilities!
+### Quote System Mastery
+- **Single quotes (`'`)**: Preserve all characters literally (no expansion)
+- **Double quotes (`"`)**: Allow variable expansion while preserving most characters
+- **Nested quoting**: Handles complex scenarios like `"'$VAR'"` and `'"$VAR"'`
 
-## 🔤 Quoting System
+### Signal Handling
+- **Ctrl+C**: Interrupt current command, display new prompt
+- **Ctrl+D**: Graceful shell exit (EOF)
+- **Ctrl+\\**: Ignored (bash-compatible behavior)
 
-### Single Quotes (`'`)
-- Preserve literal value of all characters within quotes
-- No variable expansion or special character interpretation
-- Cannot contain single quotes
+## 🛡️ Robustness & Error Handling
 
-### Double Quotes (`"`)
-- Allow variable expansion with `$`
-- Preserve literal value of most characters
-- Enable complex string construction with embedded variables
+Minishell gracefully handles edge cases including:
+- Malformed syntax and unclosed quotes
+- Permission errors and invalid file paths  
+- Unset variables and complex expansion scenarios
+- Memory management with comprehensive leak prevention
+- Process control and child process management
+- Special characters and complex quoting scenarios
 
-## 🛡️ Error Handling and Edge Cases
+## ⚠️ Current Limitations
 
-Minishell is built for robustness, gracefully handling:
-
-- **Input Validation**: Empty commands, malformed syntax, unclosed quotes
-- **File Operations**: Permission errors, non-existent files, invalid paths
-- **Variable Handling**: Unset variables, complex expansion scenarios
-- **Memory Management**: Comprehensive leak prevention and cleanup
-- **Process Control**: Proper signal handling and child process management
-- **Special Characters**: Filenames with spaces, complex quoting scenarios
-- **Pipeline Edge Cases**: Empty commands in pipelines, multiple redirections
-
-## 🎁 Bonus Features
-
-### Advanced Quote Processing
-The shell includes sophisticated quote handling that perfectly replicates bash behavior, including the complex interaction between single and double quotes in nested scenarios.
-
-## ⚠️ Known Limitations
-
-- Does not support command line editing features (arrow keys for history navigation)
-- Backslash escaping is not implemented
-- Advanced bash features like command substitution are not supported
+- No command line editing (arrow key history navigation)
+- Backslash escaping not implemented
+- Advanced bash features (command substitution, wildcards) not supported
 
 ## 📁 Project Structure
 
 ```
 minishell/
-├── includes/         # Header files
-├── libft/            # Custom C library  
-├── srcs/             # Source code
-│   ├── builtins/     # Built-in command implementations
-│   ├── execution/    # Command execution and process management
-│   ├── parsing/      # Tokenization and command parsing
-│   ├── utils/        # Utility functions
-│   └── main.c        # Entry point
-└── Makefile          # Build configuration
+├── includes/         # Header files and function prototypes
+├── libft/           # Custom C utility library
+├── srcs/            # Source code organized by functionality
+│   ├── builtins/    # Built-in command implementations
+│   ├── execution/   # Process management and execution
+│   ├── parsing/     # Tokenization and command parsing
+│   ├── utils/       # Helper functions and utilities
+│   └── main.c       # Program entry point
+└── Makefile         # Build configuration with strict flags
 ```
 
-*Created as part of the 42 School curriculum - a testament to systems programming mastery.*
+## 🎓 Technical Highlights
+
+This implementation showcases advanced C programming concepts:
+- **Process Management**: Fork, exec, wait, and pipe system calls
+- **File Descriptor Manipulation**: Complex I/O redirection handling
+- **Memory Management**: Custom allocation strategies with zero leaks
+- **Signal Processing**: Proper signal handling in multi-process environment
+- **String Processing**: Sophisticated tokenization and parsing algorithms
 
 ---
 
-*"The shell is not just a program, but a philosophy of elegant simplicity."*
+*Built as part of the 42 School curriculum - a testament to systems programming excellence.*
+
+**"The shell is not just a program, but a philosophy of elegant simplicity."**
