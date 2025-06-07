@@ -170,6 +170,6 @@ This implementation showcases advanced C programming concepts:
 
 ---
 
-*Built as part of the 42 School curriculum - a testament to systems programming excellence.*
+**Built as part of the 42 School curriculum - a testament to systems programming excellence.**
 
-**"The shell is not just a program, but a philosophy of elegant simplicity."**
+*"The shell is not just a program, but a philosophy of elegant simplicity."*
