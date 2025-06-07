@@ -32,29 +32,17 @@ Essential shell built-ins implemented to match bash behavior:
 - GCC compiler
 - Make utility
 - Standard C library
-- Readline library (libreadline-dev)
+- Internet connection (for automatic readline download)
 
-### Dependencies Installation
-Before compiling, install each required component:
-
-```bash
-# Ubuntu/Debian
-sudo apt update
-sudo apt install gcc make libreadline-dev
-
-# CentOS/RHEL/Fedora
-sudo dnf install gcc make readline-devel
-
-# macOS
-# Install Xcode Command Line Tools (includes GCC and Make)
-xcode-select --install
-# Install readline via Homebrew
-brew install readline
-```
+### Automated Build Process
+The Makefile handles all dependencies automatically, including:
+- **Readline Library**: Automatically downloads, compiles, and links readline 8.2
+- **Libft Integration**: Builds the custom utility library
+- **Dependency Management**: Sets up proper linking with rpath for portable execution
 
 ### Quick Start
 ```bash
-# Clone and build
+# Clone and build (everything is automated!)
 git clone git@github.com:Melovii/minishell.git
 cd minishell
 make
@@ -62,6 +50,14 @@ make
 # Run minishell
 ./minishell
 ```
+
+The build process will:
+1. Download readline 8.2 source code from GNU FTP
+2. Configure and compile readline locally
+3. Build the libft utility library
+4. Compile all minishell sources with proper linking
+
+*Note: First build may take a few minutes due to readline compilation, but subsequent builds are relatively fast.*
 
 ## 🚀 Usage Examples
 
