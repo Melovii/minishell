@@ -134,6 +134,7 @@ readline_uninstall:
 clean: readline_uninstall
 	@echo "$(RED)🧹 Cleaning object files...$(RESET)"
 	@rm -rf $(OBJ_DIR)
+	@rm -rf lib
 	@make fclean -C libft --silent
 
 fclean: clean
