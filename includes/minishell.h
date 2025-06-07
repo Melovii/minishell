@@ -6,6 +6,7 @@
 // TODO: Remove unused includes (check with clang-tidy)
 # include <errno.h>
 # include <fcntl.h>
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdlib.h>
