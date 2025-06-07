@@ -131,14 +131,14 @@ readline_uninstall:
 	@rm -f $(READLINE_TARBALL) $(READLINE_A)
 
 #* Clean objects
-clean: readline_uninstall
+clean:
 	@echo "$(RED)🧹 Cleaning object files...$(RESET)"
 	@rm -rf $(OBJ_DIR)
-	@rm -rf lib
 	@make fclean -C libft --silent
 
-fclean: clean
+fclean: clean readline_uninstall
 	@echo "$(RED)🗑️  Removing executable...$(RESET)"
+	@rm -rf lib
 	@rm -f $(NAME)
 
 re: fclean all
