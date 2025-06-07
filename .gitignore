@@ -1,6 +1,18 @@
+# IDE and editor configs
 .vscode
-objs
-libft/objs
+
+# Build artifacts
 minishell
 valgrind-out.txt
+
+# Object files
+objs/
+libft/objs/
+
+# Static libraries
 libft/libft.a
+
+# Readline
+lib/
+readline_build
+readline-8.2.tar.gz
