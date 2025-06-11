@@ -4,7 +4,7 @@ static bool	is_tilde_path(char *s);
 static char	*expand_tilde(char *arg);
 static char	*get_oldpwd_path(t_env *env, bool *print_path);
 
-// * Update PWD and OLDPWD using malloc'lı getcwd()
+// * Update PWD and OLDPWD using malloc getcwd()
 int	update_pwd_vars(t_shell *shell, char *oldpwd)
 {
 	char	*cwd;
